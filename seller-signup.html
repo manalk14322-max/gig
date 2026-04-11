@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1E3A8A" />
+    <meta
+      name="description"
+      content="Create a PakGigs seller account with real Google sign-in and a modern profile setup flow."
+    />
+    <title>Create Seller Account | PakGigs</title>
+    <link rel="stylesheet" href="styles.css?v=blue2026" />
+    <link rel="stylesheet" href="theme-lock.css?v=blue2026" />
+    <script src="config.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="seller-auth.js" defer></script>
+  </head>
+  <body class="signup-page">
+    <main class="signup-stage">
+      <a class="signup-back" href="seller.html#top">Back to seller page</a>
+
+      <section class="signup-shell" aria-labelledby="signupTitle">
+        <div class="signup-story">
+          <p class="eyebrow">Success starts here</p>
+          <h1 id="signupTitle">Let's show the world what you've got to offer.</h1>
+          <ul class="signup-points" aria-label="Seller benefits">
+            <li>Reach buyers across Pakistan and beyond.</li>
+            <li>Publish clear services with simple pricing.</li>
+            <li>Keep your workflow fast, local, and professional.</li>
+          </ul>
+
+          <div class="signup-visual" aria-hidden="true">
+            <div class="signup-visual__scene">
+              <span class="signup-visual__halo"></span>
+              <span class="signup-visual__card signup-visual__card--back"></span>
+              <article class="signup-visual__card signup-visual__card--front">
+                <span class="signup-visual__pill">PakGigs seller</span>
+                <span class="signup-visual__avatar">MK</span>
+                <div class="signup-visual__meta">
+                  <strong>Profile ready to launch</strong>
+                  <span>Manal Khan | Lahore | PKR pricing</span>
+                </div>
+              </article>
+              <span class="signup-visual__tag signup-visual__tag--top">Clear packages</span>
+              <span class="signup-visual__tag signup-visual__tag--bottom">Fast payouts</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="signup-panel">
+          <p class="eyebrow signup-panel__eyebrow">Create your account</p>
+          <h2>Continue with Google</h2>
+          <p class="signup-panel__sub">
+            Use your Google account to create a trusted PakGigs seller profile.
+          </p>
+
+          <div class="signup-google-mount" id="googleButtonMount" aria-label="Sign in with Google"></div>
+          <p class="signup-panel__note" id="googleStatus">A secure Google popup will appear after you continue.</p>
+
+          <details class="signup-details">
+            <summary>Or continue with email</summary>
+            <form class="signup-email-form">
+              <label>
+                <span>Full name</span>
+                <input type="text" name="name" placeholder="Manal Khan" autocomplete="name" />
+              </label>
+              <label>
+                <span>Email address</span>
+                <input type="email" name="email" placeholder="manal@example.com" autocomplete="email" />
+              </label>
+              <label>
+                <span>Password</span>
+                <input type="password" name="password" placeholder="Create a password" autocomplete="new-password" />
+              </label>
+              <label>
+                <span>Role</span>
+                <select name="role">
+                  <option value="seller">Seller</option>
+                  <option value="buyer">Buyer</option>
+                </select>
+              </label>
+              <button class="signup-submit" type="submit">Create your profile</button>
+            </form>
+          </details>
+
+          <p class="signup-panel__note">Additional verification may be required at a later stage.</p>
+          <p class="signup-panel__legal">
+            By joining, you agree to the PakGigs Terms of Service and Privacy Policy.
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

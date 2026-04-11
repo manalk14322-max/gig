@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1E3A8A" />
+    <meta
+      name="description"
+      content="PakGigs is a freelance marketplace for Pakistan with verified talent, local payments, and fast project matching."
+    />
+    <title>PakGigs | Freelance marketplace for Pakistan</title>
+    <link rel="stylesheet" href="styles.css?v=blue2026" />
+    <link rel="stylesheet" href="theme-lock.css?v=blue2026" />
+  </head>
+  <body>
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <div class="orb orb-c" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="PakGigs home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-copy">
+          <strong>PakGigs</strong>
+          <small id="brandTag">Pakistan's freelance marketplace</small>
+        </span>
+      </a>
+      <nav class="top-links" aria-label="Primary">
+        <a href="#categories" id="navMarketplace">Explore</a>
+        <a href="how.html" id="navWhy">How it works</a>
+        <a href="mobile.html" id="navMobile">Mobile UI</a>
+        <a href="seller.html" id="navTrust">Become a Seller</a>
+        <a href="profile.html" id="navProfile">Profile</a>
+      </nav>
+      <div class="top-actions">
+        <a class="btn btn--ghost" href="#categories" id="navSignin">Browse talent</a>
+        <button class="chip chip--ghost" id="langToggle" type="button">اردو</button>
+        <button class="btn btn--primary" id="navStart" type="button">Get started</button>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero card" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow" id="heroEyebrow">Trusted freelance marketplace</p>
+          <h1 id="heroTitle">Find the <span class="hero-highlight">right freelancer</span>.</h1>
+          <p class="hero-lead" id="heroLead">
+            Search verified Pakistani talent for design, development, writing, and more.
+          </p>
+          <form class="hero-search" id="heroSearchForm">
+            <input id="heroSearchInput" type="search" placeholder="Search freelancers, skills, or cities..." autocomplete="off" />
+            <button type="submit" id="heroSearchButton">&#8981;</button>
+          </form>
+          <div class="hero-pills" id="heroPills">
+            <button type="button" data-hero-query="Website Development">Website Development</button>
+            <button type="button" data-hero-query="Logo Design">Logo Design</button>
+            <button type="button" data-hero-query="SEO">SEO</button>
+            <button type="button" data-hero-query="Video Editing">Video Editing</button>
+            <button type="button" data-hero-query="Urdu Translation">Urdu Translation</button>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn--secondary" href="#categories" id="heroBrowse">Browse categories</a>
+            <button class="btn btn--ghost" id="heroPostProject" type="button">Browse freelancers</button>
+          </div>
+          <div class="hero-stats" aria-label="Marketplace stats">
+            <article>
+              <strong>1,250+</strong>
+              <span id="statFreelancersLabel">Verified freelancers</span>
+            </article>
+            <article>
+              <strong>18</strong>
+              <span id="statCitiesLabel">Cities covered</span>
+            </article>
+            <article>
+              <strong>4</strong>
+              <span id="statPayoutsLabel">Local payment methods</span>
+            </article>
+          </div>
+          <div class="hero-tags">
+            <span>Verified profiles</span>
+            <span>PKR pricing</span>
+            <span>Local support</span>
+          </div>
+        </div>
+
+        <div class="hero-preview" aria-hidden="true">
+          <div class="device-shell">
+            <div class="device-bar">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="device-time">9:41</span>
+            </div>
+            <div class="device-content">
+              <div class="mini-card mini-card--accent">
+                <p class="mini-kicker" id="miniEyebrow">Best local match</p>
+                <h3 id="miniTitle">WordPress store setup</h3>
+                <div class="mini-meta">
+                  <span>4.9 rating</span>
+                  <span>3 days</span>
+                  <span>PKR 38,000</span>
+                </div>
+              </div>
+              <div class="mini-card">
+                <p class="mini-kicker">Popular service</p>
+                <h4>Bilingual landing page</h4>
+                <div class="mini-meta">
+                  <span>Islamabad</span>
+                  <span>PKR 45,000 budget</span>
+                </div>
+              </div>
+              <div class="mini-card mini-card--soft">
+                <p class="mini-kicker">Payments</p>
+                <h4>Easypaisa, JazzCash, Raast</h4>
+                <div class="mini-meta">
+                  <span>Fast payouts</span>
+                  <span>Secure milestones</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="hero-divider" aria-hidden="true">
+        <span></span>
+      </div>
+      <section class="app-shell card" id="marketplace">
+        <div class="shell-head">
+          <div>
+            <p class="eyebrow" id="panelEyebrow">Live marketplace</p>
+            <h2 id="panelTitle">Marketplace</h2>
+            <p class="panel-lead" id="panelLead">Filter by city, category, and budget to find the right freelancer faster.</p>
+          </div>
+          <div class="segmented" id="viewTabs" role="tablist" aria-label="App views"></div>
+        </div>
+
+        <div class="shell-grid">
+          <aside class="sidebar card card--inner">
+            <div class="sidebar-section">
+              <label class="field-label" for="searchInput" id="searchLabel">Search services</label>
+              <input id="searchInput" type="search" placeholder="Logo design, SEO, WordPress..." />
+            </div>
+            <div class="sidebar-section">
+              <label class="field-label" for="citySelect" id="cityLabel">City</label>
+              <select id="citySelect"></select>
+            </div>
+            <div class="sidebar-section">
+              <label class="field-label" for="categorySelect" id="categoryLabel">Category</label>
+              <select id="categorySelect"></select>
+            </div>
+            <div class="sidebar-section">
+              <label class="field-label field-label--budget" for="budgetRange">
+                <span id="budgetLabel">Max budget</span>
+                <strong id="budgetValue">PKR 60,000</strong>
+              </label>
+              <input id="budgetRange" type="range" min="10000" max="60000" step="1000" value="60000" />
+            </div>
+            <div class="sidebar-section">
+              <p class="field-label" id="paymentLabel">Local payment options</p>
+              <div class="chip-stack" id="paymentPills"></div>
+            </div>
+            <div class="sidebar-section quick-stats">
+              <div>
+                <strong id="resultCount">0</strong>
+                <span id="resultCountLabel">results</span>
+              </div>
+              <div>
+                <strong id="savedCount">0</strong>
+                <span id="savedCountLabel">bookmarks</span>
+              </div>
+            </div>
+            <div class="sidebar-section">
+              <p class="field-label" id="quickPostLabel">Quick actions</p>
+              <button class="btn btn--primary full" id="quickHireBtn" type="button">Post a brief</button>
+              <button class="btn btn--ghost full" id="quickGigBtn" type="button">Create a service</button>
+            </div>
+          </aside>
+
+          <section class="view-panel card card--inner" id="viewPanel" aria-live="polite"></section>
+        </div>
+      </section>
+
+      <section class="category-showcase card" id="categories" aria-labelledby="categoriesTitle">
+        <div class="section-copy category-showcase__copy">
+          <p class="eyebrow" id="categoriesEyebrow">Browse by category</p>
+          <h2 id="categoriesTitle">Explore popular services.</h2>
+        </div>
+        <div class="category-rail" id="categoryRail">
+          <button class="category-card" type="button" data-category-pick="Web Development">
+            <span class="category-icon" aria-hidden="true">&lt;/&gt;</span>
+            <strong>Programming &amp; Tech</strong>
+          </button>
+          <button class="category-card" type="button" data-category-pick="Graphic Design">
+            <span class="category-icon" aria-hidden="true">✦</span>
+            <strong>Brand Design</strong>
+          </button>
+          <button class="category-card" type="button" data-category-pick="SEO">
+            <span class="category-icon" aria-hidden="true">↗</span>
+            <strong>Digital Marketing</strong>
+          </button>
+          <button class="category-card" type="button" data-category-pick="Content Writing">
+            <span class="category-icon" aria-hidden="true">Aa</span>
+            <strong>Writing &amp; Translation</strong>
+          </button>
+          <button class="category-card" type="button" data-category-pick="Video Editing">
+            <span class="category-icon" aria-hidden="true">▶</span>
+            <strong>Video &amp; Animation</strong>
+          </button>
+          <button class="category-card" type="button" data-category-pick="Mobile App Design">
+            <span class="category-icon" aria-hidden="true">◎</span>
+            <strong>App Design</strong>
+          </button>
+          <button class="category-card" type="button" data-category-pick="Urdu Translation">
+            <span class="category-icon" aria-hidden="true">UR</span>
+            <strong>Urdu Translation</strong>
+          </button>
+          <button class="category-card" type="button" data-category-pick="Social Media">
+            <span class="category-icon" aria-hidden="true">☰</span>
+            <strong>Social Media</strong>
+          </button>
+        </div>
+      </section>
+
+      <section class="talent-spotlight card" id="spotlight" aria-labelledby="spotlightTitle">
+        <div class="talent-spotlight__copy">
+          <p class="eyebrow" id="spotlightEyebrow">Featured freelancers</p>
+          <h2 id="spotlightTitle">Meet top talent in Pakistan.</h2>
+          <p class="spotlight-lead" id="spotlightLead">
+            Compare verified freelancers by skill, city, budget, and rating without the clutter.
+          </p>
+          <ul class="spotlight-list" aria-label="Spotlight benefits">
+            <li id="spotlightPoint1">Verified profiles with recent work</li>
+            <li id="spotlightPoint2">Clear delivery times and PKR pricing</li>
+            <li id="spotlightPoint3">Local payments and smooth communication</li>
+          </ul>
+          <div class="spotlight-actions">
+            <a class="btn btn--primary" href="#categories" id="spotlightPrimary">Browse freelancers</a>
+            <a class="btn btn--ghost" href="#how" id="spotlightSecondary">How it works</a>
+          </div>
+        </div>
+
+        <div class="talent-spotlight__visual" aria-hidden="true">
+          <div class="spotlight-stack">
+            <article class="spotlight-profile spotlight-profile--back">
+              <span class="spotlight-avatar">HM</span>
+              <div class="spotlight-profile__body">
+                <p class="spotlight-profile__kicker">Graphic Design</p>
+                <strong>Brand identity for startups</strong>
+                <span>Islamabad · 3-day delivery</span>
+              </div>
+              <span class="spotlight-score">4.9</span>
+            </article>
+            <article class="spotlight-profile spotlight-profile--main">
+              <span class="spotlight-avatar">AS</span>
+              <div class="spotlight-profile__body">
+                <p class="spotlight-profile__kicker">Web Development</p>
+                <strong>WordPress store setup</strong>
+                <span>Lahore · PKR 38,000</span>
+              </div>
+              <span class="spotlight-score spotlight-score--accent">Verified</span>
+            </article>
+            <article class="spotlight-profile spotlight-profile--front">
+              <span class="spotlight-avatar">ZR</span>
+              <div class="spotlight-profile__body">
+                <p class="spotlight-profile__kicker">SEO</p>
+                <strong>SEO audit in Urdu &amp; English</strong>
+                <span>Karachi · Fast turnaround</span>
+              </div>
+              <span class="spotlight-score">Top rated</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-section card" id="how" aria-labelledby="howTitle">
+        <div class="section-copy how-section__copy">
+          <p class="eyebrow" id="howEyebrow">How it works</p>
+          <h2 id="howTitle">Post, compare, and hire in three simple steps.</h2>
+          <p class="section-lead" id="howLead">A clear process that keeps the platform fast, friendly, and easy to trust.</p>
+        </div>
+        <div class="how-grid">
+          <article class="how-card">
+            <span class="how-step">1</span>
+            <h3>Share your brief</h3>
+            <p>Tell us what you need, your budget, and your preferred delivery time.</p>
+          </article>
+          <article class="how-card">
+            <span class="how-step">2</span>
+            <h3>Compare freelancers</h3>
+            <p>Review ratings, portfolios, city, and verified work before you decide.</p>
+          </article>
+          <article class="how-card">
+            <span class="how-step">3</span>
+            <h3>Hire and start</h3>
+            <p>Message, agree on terms, and move the project forward with confidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="testimonial-section card" id="testimonials" aria-labelledby="testimonialTitle">
+        <div class="section-copy testimonial-section__copy">
+          <p class="eyebrow" id="testimonialEyebrow">Testimonials</p>
+          <h2 id="testimonialTitle">Trusted by clients and freelancers across Pakistan.</h2>
+        </div>
+        <div class="testimonial-grid">
+          <article class="testimonial-card">
+            <p class="testimonial-quote">"I found a developer in Lahore who understood the brief immediately. The process felt simple and professional."</p>
+            <div class="testimonial-meta">
+              <span class="testimonial-avatar">SA</span>
+              <div>
+                <strong>Sana Ali</strong>
+                <small>Founder, ecommerce brand</small>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card">
+            <p class="testimonial-quote">"The category filters and clean profiles made it easy to shortlist the right work fast."</p>
+            <div class="testimonial-meta">
+              <span class="testimonial-avatar">AR</span>
+              <div>
+                <strong>Ahmed Raza</strong>
+                <small>Startup founder</small>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial-card">
+            <p class="testimonial-quote">"As a freelancer, the profile layout feels premium. Clients understand my services right away."</p>
+            <div class="testimonial-meta">
+              <span class="testimonial-avatar">HK</span>
+              <div>
+                <strong>Hira Khan</strong>
+                <small>Brand designer</small>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="trust-band card" id="trust">
+        <div>
+          <strong>Verified talent</strong>
+          <span>Profiles and services designed for local discovery.</span>
+        </div>
+        <div>
+          <strong>Secure milestones</strong>
+          <span>Set clear checkpoints before the work begins.</span>
+        </div>
+        <div>
+          <strong>Local payments</strong>
+          <span>JazzCash, Easypaisa, bank transfer, and Raast ready.</span>
+        </div>
+        <div>
+          <strong>Mobile friendly</strong>
+          <span>Designed to feel smooth on any screen.</span>
+        </div>
+      </section>
+
+      <section class="footer-cta card">
+        <div>
+          <p class="eyebrow">Next step</p>
+          <h2>Want a polished marketplace or a full custom platform?</h2>
+          <p>We can add authentication, admin tools, real payments, backend APIs, and native mobile apps next.</p>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn--primary" id="resetDemo" type="button">Reset demo data</button>
+          <a class="btn btn--ghost" href="#top">Back to top</a>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
