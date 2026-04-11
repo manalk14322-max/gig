@@ -1,4 +1,5 @@
 import { Routes, Route, NavLink } from 'react-router-dom';
+import { useState } from 'react';
 import GigCreate from './pages/GigCreate.jsx';
 import GigList from './pages/GigList.jsx';
 import GigDetail from './pages/GigDetail.jsx';
@@ -21,6 +22,7 @@ const navLink = ({ isActive }) =>
 
 export default function App() {
   const { user } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-base">
       {/* Global navigation */}
@@ -33,6 +35,13 @@ export default function App() {
               <p className="text-xs text-muted">Premium freelance marketplace</p>
             </div>
           </div>
+          <button
+            className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] text-sm font-semibold lg:hidden"
+            onClick={() => setMobileOpen(true)}
+            type="button"
+          >
+            ☰
+          </button>
           <div className="hidden flex-1 md:flex">
             <div className="flex w-full max-w-[420px] items-center gap-3 rounded-full border border-[#E5E7EB] bg-white px-4 py-2 shadow-soft">
               <span className="text-muted">Search</span>
@@ -94,6 +103,47 @@ export default function App() {
             )}
           </div>
         </div>
+        {mobileOpen && (
+          <div className="lg:hidden fixed inset-0 z-50 bg-black/40">
+            <div className="absolute right-0 top-0 h-full w-72 bg-white p-6 shadow-soft">
+              <div className="flex items-center justify-between">
+                <p className="text-lg font-semibold">Menu</p>
+                <button className="text-xl" onClick={() => setMobileOpen(false)} type="button">
+                  ×
+                </button>
+              </div>
+              <div className="mt-6 flex flex-col gap-3 text-sm font-semibold text-ink">
+                <NavLink to="/" onClick={() => setMobileOpen(false)}>
+                  Marketplace
+                </NavLink>
+                <NavLink to="/favorites" onClick={() => setMobileOpen(false)}>
+                  Saved
+                </NavLink>
+                <NavLink to="/create" onClick={() => setMobileOpen(false)}>
+                  Create Gig
+                </NavLink>
+                <NavLink to="/dashboard" onClick={() => setMobileOpen(false)}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/orders" onClick={() => setMobileOpen(false)}>
+                  Orders
+                </NavLink>
+                <NavLink to="/messages" onClick={() => setMobileOpen(false)}>
+                  Messages
+                </NavLink>
+                <NavLink to="/profile" onClick={() => setMobileOpen(false)}>
+                  Profile
+                </NavLink>
+                <NavLink to="/wallet" onClick={() => setMobileOpen(false)}>
+                  Wallet
+                </NavLink>
+                <NavLink to="/settings" onClick={() => setMobileOpen(false)}>
+                  Settings
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* App pages */}

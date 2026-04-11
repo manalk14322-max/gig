@@ -167,6 +167,18 @@ export default function GigDetail() {
         </aside>
       </section>
 
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E5E7EB] bg-white p-4 lg:hidden">
+        <div className="mx-auto flex max-w-6xl items-center gap-3">
+          <div>
+            <p className="text-xs text-muted">Starting from</p>
+            <p className="text-lg font-semibold text-ink">PKR {gig.basePrice.toLocaleString('en-PK')}</p>
+          </div>
+          <button className="btn-gradient ml-auto" onClick={payWithStripe} type="button">
+            Pay with Stripe
+          </button>
+        </div>
+      </div>
+
       {/* Ratings and reviews */}
       <section className="card p-6 space-y-6">
         <div className="flex items-center justify-between">

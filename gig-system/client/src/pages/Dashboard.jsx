@@ -68,7 +68,7 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {['Active orders', 'Pending review', 'Total earnings'].map((item) => (
           <div key={item} className="card card-hover p-5">
             <p className="text-sm text-muted">{item}</p>

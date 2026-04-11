@@ -10,7 +10,7 @@ export default function Orders() {
           <button className="btn-primary text-sm">Create order</button>
         </div>
       </section>
-      <section className="grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {['Active', 'In review', 'Completed'].map((item) => (
           <div key={item} className="card card-hover p-5">
             <p className="text-sm text-muted">{item} orders</p>
@@ -26,7 +26,7 @@ export default function Orders() {
         <div className="mt-4 grid gap-3">
           {['Logo design package', 'Shopify store setup', 'AI video explainer'].map((item) => (
             <div key={item} className="rounded-2xl border border-[#E5E7EB] bg-white px-4 py-3">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <p className="font-semibold text-ink">{item}</p>
                 <span className="text-xs text-muted">In progress</span>
               </div>

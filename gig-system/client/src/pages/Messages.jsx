@@ -20,7 +20,7 @@ export default function Messages() {
           ))}
         </div>
         <div className="card p-6 flex flex-col gap-4">
-          <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-[#E5E7EB] pb-3">
             <div>
               <p className="font-semibold text-ink">Manal Khan</p>
               <p className="text-xs text-muted">Online</p>
@@ -31,7 +31,7 @@ export default function Messages() {
             <div className="rounded-2xl bg-soft px-4 py-3 text-muted">Thanks for sharing the brief. I’ll send the first draft today.</div>
             <div className="rounded-2xl bg-primary text-white px-4 py-3 ml-auto w-fit">Perfect, looking forward to it.</div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <input className="flex-1 rounded-full border border-[#E5E7EB] px-4 py-3 text-sm" placeholder="Type a message" />
             <button className="btn-primary text-sm">Send</button>
           </div>
