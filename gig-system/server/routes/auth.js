@@ -7,15 +7,21 @@ const router = express.Router();
 
 router.post('/signup', async (req, res) => {
   const { name, email, password, role = 'buyer' } = req.body;
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  const trimmedName = (name || '').trim();
+  const normalizedEmail = (email || '').trim().toLowerCase();
+  if (!trimmedName || !normalizedEmail || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required.' });
   }
-  const exists = await User.findOne({ email });
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+  }
+  const safeRole = role === 'seller' ? 'seller' : 'buyer';
+  const exists = await User.findOne({ email: normalizedEmail });
   if (exists) {
     return res.status(409).json({ error: 'Email already registered' });
   }
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = await User.create({ name, email, passwordHash, role });
+  const user = await User.create({ name: trimmedName, email: normalizedEmail, passwordHash, role: safeRole });
   const token = jwt.sign({ id: user._id, role: user.role, email: user.email, name: user.name }, process.env.JWT_SECRET || 'dev_secret', {
     expiresIn: '7d',
   });
@@ -24,7 +30,11 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const normalizedEmail = (email || '').trim().toLowerCase();
+  if (!normalizedEmail || !password) {
+    return res.status(400).json({ error: 'Email and password are required.' });
+  }
+  const user = await User.findOne({ email: normalizedEmail });
   if (!user) return res.status(401).json({ error: 'Invalid credentials' });
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return res.status(401).json({ error: 'Invalid credentials' });

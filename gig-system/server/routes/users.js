@@ -17,6 +17,8 @@ router.get('/me', requireAuth, async (req, res) => {
     title: user.title,
     location: user.location,
     avatarUrl: user.avatarUrl,
+    description: user.description,
+    skills: user.skills || [],
     portfolio: user.portfolio || [],
   });
 });
@@ -26,11 +28,13 @@ router.put('/me', requireAuth, async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) return res.status(404).json({ error: 'User not found' });
 
-  const { name, title, location, avatarUrl, portfolio, role } = req.body;
+  const { name, title, location, avatarUrl, portfolio, role, description, skills } = req.body;
   if (name) user.name = name;
   if (title !== undefined) user.title = title;
   if (location !== undefined) user.location = location;
   if (avatarUrl !== undefined) user.avatarUrl = avatarUrl;
+  if (description !== undefined) user.description = description;
+  if (skills !== undefined) user.skills = skills;
   if (portfolio !== undefined) user.portfolio = portfolio;
   if (role === 'buyer' || role === 'seller') user.role = role;
 
@@ -44,6 +48,8 @@ router.put('/me', requireAuth, async (req, res) => {
     title: user.title,
     location: user.location,
     avatarUrl: user.avatarUrl,
+    description: user.description,
+    skills: user.skills || [],
     portfolio: user.portfolio || [],
   });
 });
@@ -60,6 +66,8 @@ router.get('/:id/public', async (req, res) => {
       title: user.title,
       location: user.location,
       avatarUrl: user.avatarUrl,
+      description: user.description,
+      skills: user.skills || [],
       portfolio: user.portfolio || [],
       role: user.role,
     },

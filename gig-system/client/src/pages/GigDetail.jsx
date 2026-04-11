@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { createOrder, createReview, fetchGig, initEasypaisa, startChat } from '../api.js';
+import { createOrder, createReview, fetchGig, initEasypaisa, startChat, createStripeCheckout } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 export default function GigDetail() {
@@ -31,6 +31,15 @@ export default function GigDetail() {
     alert('Order placed. Easypaisa payment initialized (stub).');
   };
 
+  const payWithStripe = async () => {
+    if (!user) return alert('Please login to pay.');
+    const order = await createOrder({ gigId: id });
+    const session = await createStripeCheckout({ orderId: order._id });
+    if (session.url) {
+      window.location.href = session.url;
+    }
+  };
+
   const openChat = async () => {
     if (!user) return alert('Please login to start a chat.');
     await startChat({ gigId: id });
@@ -43,20 +52,44 @@ export default function GigDetail() {
 
   return (
     <div className="space-y-8">
-      <Link className="text-sm font-semibold text-primary" to="/">
-        &lt;- Back to marketplace
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link className="text-sm font-semibold text-primary" to="/">
+          &lt;- Back to marketplace
+        </Link>
+        <div className="flex items-center gap-2 text-xs text-muted">
+          <span>Home</span>
+          <span>/</span>
+          <span>{gig.category}</span>
+        </div>
+      </div>
 
       {/* Gig detail + seller sidebar */}
       <section className="grid gap-6 lg:grid-cols-[2fr,1fr]">
         <div className="space-y-6">
-          <div className="card p-6">
-            <p className="text-xs uppercase tracking-widest text-primary">{gig.category}</p>
-            <h1 className="text-3xl font-bold">{gig.title}</h1>
+          <div className="card card-gold p-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-xs uppercase tracking-widest text-primary">{gig.category}</p>
+              {gig.quickTask && (
+                <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-primary">
+                  Quick Task
+                </span>
+              )}
+              {gig.featured && (
+                <span className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary">
+                  Featured
+                </span>
+              )}
+            </div>
+            <h1 className="mt-3 font-display text-3xl font-semibold">{gig.title}</h1>
             <p className="mt-3 text-muted">{gig.description}</p>
+            <div className="mt-6 flex items-center gap-4 text-sm text-muted">
+              <span>⭐ {gig.ratingAverage.toFixed(1)}</span>
+              <span>({gig.ratingCount} reviews)</span>
+              <span>Delivery {gig.quickTask ? `${gig.quickDeliveryHours}h` : `${gig.deliveryDays}d`}</span>
+            </div>
             <div className="mt-4 flex flex-wrap gap-2">
               {gig.tags?.map((tag) => (
-                <span key={tag} className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-primary">
+                <span key={tag} className="tag">
                   {tag}
                 </span>
               ))}
@@ -65,8 +98,8 @@ export default function GigDetail() {
 
           {/* Video preview */}
           <div className="card p-6 space-y-4">
-            <h2 className="text-xl font-semibold">Video preview</h2>
-            <div className="aspect-[9/16] w-full overflow-hidden rounded-2xl bg-black">
+            <h2 className="text-xl font-semibold">Gig preview</h2>
+            <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl bg-black">
               <video controls className="h-full w-full object-cover">
                 <source src={gig.videoUrl} />
               </video>
@@ -75,10 +108,10 @@ export default function GigDetail() {
 
           {/* Dynamic services list */}
           <div className="card p-6 space-y-4">
-            <h2 className="text-xl font-semibold">Services in this gig</h2>
+            <h2 className="text-xl font-semibold">Packages & add-ons</h2>
             <div className="grid gap-4 md:grid-cols-2">
               {gig.services?.map((item, index) => (
-                <div key={`${item.title}-${index}`} className="rounded-2xl border border-black/5 bg-base p-4">
+                <div key={`${item.title}-${index}`} className="rounded-2xl border border-[#E5E7EB] bg-base p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold">{item.title}</p>
                     <span className="text-sm text-muted">PKR {item.price.toLocaleString('en-PK')}</span>
@@ -99,7 +132,7 @@ export default function GigDetail() {
           {/* Seller card */}
           <div className="card p-6">
             <p className="text-sm font-semibold text-muted">Seller</p>
-            <h3 className="text-xl font-bold">{gig.freelancer?.name}</h3>
+            <h3 className="text-xl font-semibold">{gig.freelancer?.name}</h3>
             <p className="text-sm text-muted">{gig.freelancer?.title}</p>
             <p className="mt-2 text-sm text-muted">{gig.freelancer?.location}</p>
             {gig.freelancerId && (
@@ -120,12 +153,16 @@ export default function GigDetail() {
               <span className="text-lg font-bold text-primary">PKR {gig.basePrice.toLocaleString('en-PK')}</span>
             </div>
             <p className="text-sm text-muted">Delivery in {gig.quickTask ? `${gig.quickDeliveryHours} hours` : `${gig.deliveryDays} days`}</p>
+            <button className="btn-gradient w-full" onClick={payWithStripe} type="button">
+              Pay with Stripe
+            </button>
             <button className="btn-primary w-full" onClick={placeOrder} type="button">
               Order with Easypaisa
             </button>
             <button className="btn-ghost w-full" onClick={openChat} type="button">
               Start chat
             </button>
+            <p className="text-xs text-muted">Secure checkout. Release payment after approval.</p>
           </div>
         </aside>
       </section>
@@ -136,16 +173,16 @@ export default function GigDetail() {
           <h2 className="text-xl font-semibold">Reviews</h2>
           <span className="text-sm text-muted">{gig.ratingCount} total</span>
         </div>
-        <form onSubmit={submitReview} className="grid gap-3 md:grid-cols-[1fr,120px]">
+        <form onSubmit={submitReview} className="grid gap-3 md:grid-cols-[1fr,140px]">
           <input
-            className="rounded-full border border-black/10 px-4 py-2"
+            className="rounded-full border border-[#E5E7EB] px-4 py-2"
             placeholder="Your name"
             value={form.reviewer}
             onChange={(event) => setForm({ ...form, reviewer: event.target.value })}
             required
           />
           <select
-            className="rounded-full border border-black/10 px-4 py-2"
+            className="rounded-full border border-[#E5E7EB] px-4 py-2"
             value={form.rating}
             onChange={(event) => setForm({ ...form, rating: Number(event.target.value) })}
           >
@@ -156,7 +193,7 @@ export default function GigDetail() {
             ))}
           </select>
           <textarea
-            className="md:col-span-2 rounded-2xl border border-black/10 px-4 py-3"
+            className="md:col-span-2 rounded-2xl border border-[#E5E7EB] px-4 py-3"
             rows="3"
             placeholder="Share your experience"
             value={form.comment}
@@ -168,7 +205,7 @@ export default function GigDetail() {
 
         <div className="grid gap-4">
           {reviews.map((review) => (
-            <div key={review._id} className="rounded-2xl border border-black/5 bg-base p-4">
+            <div key={review._id} className="rounded-2xl border border-[#E5E7EB] bg-base p-4">
               <div className="flex items-center justify-between">
                 <p className="font-semibold">{review.reviewer}</p>
                 <span className="text-sm text-primary">{review.rating} stars</span>

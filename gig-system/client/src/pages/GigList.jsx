@@ -2,39 +2,51 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchGigs, searchGigs } from '../api.js';
 
-const categories = [
-  { name: 'Web Development', icon: 'WD' },
-  { name: 'Graphic Design', icon: 'GD' },
-  { name: 'Digital Marketing', icon: 'DM' },
-  { name: 'Video Editing', icon: 'VE' },
-  { name: 'Writing & Translation', icon: 'WT' },
-  { name: 'AI Services', icon: 'AI' },
-  { name: 'Business', icon: 'BZ' },
-  { name: 'Finance', icon: 'FN' },
+const topCategories = [
+  'Graphics & Design',
+  'Programming & Tech',
+  'Digital Marketing',
+  'Video & Animation',
+  'Writing & Translation',
+  'Music & Audio',
+  'Business',
+  'AI Services',
 ];
 
-const featuredFreelancers = [
+const categoryTiles = [
+  { name: 'Logo Design', code: 'LD' },
+  { name: 'Web Development', code: 'WD' },
+  { name: 'Social Media', code: 'SM' },
+  { name: 'Video Editing', code: 'VE' },
+  { name: 'SEO', code: 'SEO' },
+  { name: 'Mobile Apps', code: 'APP' },
+  { name: 'Branding', code: 'BR' },
+  { name: 'Voice Over', code: 'VO' },
+];
+
+const megaMenu = [
   {
-    id: 'ff1',
-    name: 'Manal Khan',
-    title: 'Brand identity & web expert',
-    rating: 4.9,
-    skills: ['Branding', 'UX', 'React'],
+    title: 'Graphics & Design',
+    items: ['Logo Design', 'Brand Style Guides', 'Illustration', 'Social Media Design'],
   },
   {
-    id: 'ff2',
-    name: 'Ayaan Malik',
-    title: 'Performance marketing strategist',
-    rating: 4.8,
-    skills: ['Meta Ads', 'Google', 'SEO'],
+    title: 'Programming & Tech',
+    items: ['Web Development', 'E-commerce', 'WordPress', 'Mobile Apps'],
   },
   {
-    id: 'ff3',
-    name: 'Sana Zahra',
-    title: 'Short-form video producer',
-    rating: 4.9,
-    skills: ['Reels', 'TikTok', 'Editing'],
+    title: 'Digital Marketing',
+    items: ['SEO', 'Social Media', 'Content Marketing', 'Email Marketing'],
   },
+  {
+    title: 'Video & Animation',
+    items: ['Video Editing', 'Explainer Videos', 'Animated Ads', 'Shorts'],
+  },
+];
+
+const highlightStats = [
+  { label: 'Verified sellers', value: '1,250+' },
+  { label: 'Avg response time', value: '1 hour' },
+  { label: 'Projects delivered', value: '24k+' },
 ];
 
 export default function GigList() {
@@ -66,71 +78,116 @@ export default function GigList() {
   const activeResults = useMemo(() => results.slice(0, 12), [results]);
 
   return (
-    <div className="space-y-14">
-      <section className="grid gap-10 rounded-3xl bg-white p-10 shadow-soft md:grid-cols-[1.3fr,1fr]">
-        <div className="space-y-5">
-          <p className="inline-flex items-center rounded-full bg-soft px-4 py-1 text-xs font-semibold text-primary">
-            Premium freelance marketplace
-          </p>
-          <h1 className="font-display text-4xl font-semibold leading-tight text-ink md:text-5xl">
-            Hire Top Freelancers in Seconds
-          </h1>
-          <p className="text-base text-muted">
-            A curated network of professionals with intelligent matching, verified delivery, and fast collaboration.
-          </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <div className="flex w-full items-center gap-3 rounded-full border border-[#E5E7EB] bg-white px-5 py-3 shadow-soft sm:w-[420px]">
-              <span className="text-muted">Search</span>
-              <input
-                className="w-full border-none bg-transparent text-sm focus:outline-none"
-                placeholder="Search gigs, skills, or freelancers"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </div>
-            <button className="btn-gradient">Search</button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {['Web Design', 'Logo', 'AI Video', 'SEO', 'Translation'].map((tag) => (
-              <span key={tag} className="tag">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="rounded-2xl bg-gradient-to-br from-soft via-white to-white p-6">
-          <p className="text-sm font-semibold text-muted">Featured gigs</p>
-          <div className="mt-5 space-y-4">
-            {featured.slice(0, 3).map((gig) => (
-              <Link key={gig._id} to={`/gig/${gig._id}`} className="block rounded-2xl bg-white p-4 shadow-soft">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold">{gig.title}</p>
-                  <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-primary">Featured</span>
-                </div>
-                <p className="text-sm text-muted">{gig.freelancer?.name}</p>
-              </Link>
-            ))}
-            {!featured.length && <p className="text-sm text-muted">No featured gigs yet.</p>}
-          </div>
-        </div>
-      </section>
+    <div className="space-y-12">
+      {/* Category bar */}
+      <div className="hidden w-full items-center justify-between gap-4 overflow-x-auto rounded-full bg-white/70 px-6 py-3 text-sm font-semibold text-ink shadow-soft lg:flex">
+        {topCategories.map((item) => (
+          <button key={item} className="whitespace-nowrap text-muted hover:text-primary transition">
+            {item}
+          </button>
+        ))}
+      </div>
 
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold">Explore Categories</h2>
-          <button className="btn-ghost text-sm">View all</button>
+      {/* Hero */}
+      <section className="rounded-3xl bg-white p-10 shadow-soft card-gold">
+        <div className="grid gap-10 lg:grid-cols-[1.3fr,0.7fr]">
+          <div className="space-y-6">
+            <p className="inline-flex items-center rounded-full bg-soft px-4 py-1 text-xs font-semibold text-primary">
+              Premium freelance marketplace
+            </p>
+            <h1 className="font-display text-4xl font-semibold leading-tight text-ink md:text-5xl">
+              Hire top freelancers in seconds.
+            </h1>
+            <p className="text-base text-muted">
+              Build faster with vetted talent, smart matching, and premium service options designed for busy teams.
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex w-full items-center gap-3 rounded-full border border-[#E5E7EB] bg-white px-5 py-3 shadow-soft sm:w-[440px]">
+                <span className="text-muted">Search</span>
+                <input
+                  className="w-full border-none bg-transparent text-sm text-ink placeholder:text-muted focus:outline-none"
+                  placeholder="Try: logo design, Shopify, AI video"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+              </div>
+              <button className="btn-gradient">Search</button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {['Website Design', 'Logo', 'AI Video', 'SEO', 'Translation'].map((tag) => (
+                <span key={tag} className="tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl bg-soft p-6">
+            <p className="text-sm font-semibold text-muted">Featured gigs</p>
+            <div className="mt-5 space-y-4">
+              {featured.slice(0, 3).map((gig) => (
+                <Link key={gig._id} to={`/gig/${gig._id}`} className="block rounded-2xl bg-white p-4 shadow-soft">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold">{gig.title}</p>
+                    <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-primary">Featured</span>
+                  </div>
+                  <p className="text-sm text-muted">{gig.freelancer?.name}</p>
+                </Link>
+              ))}
+              {!featured.length && <p className="text-sm text-muted">No featured gigs yet.</p>}
+            </div>
+          </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((item) => (
-            <div key={item.name} className="card card-hover p-5">
-              <div className="text-sm font-semibold text-primary">{item.icon}</div>
-              <p className="mt-4 font-semibold text-ink">{item.name}</p>
-              <p className="text-sm text-muted">Top talent verified weekly.</p>
+
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
+          {highlightStats.map((stat) => (
+            <div key={stat.label} className="rounded-2xl border border-[#E5E7EB] bg-white px-6 py-4">
+              <p className="text-sm text-muted">{stat.label}</p>
+              <p className="mt-2 text-2xl font-semibold text-ink">{stat.value}</p>
             </div>
           ))}
         </div>
       </section>
 
+      {/* Categories grid */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-2xl font-semibold">Explore services</h2>
+          <button className="btn-ghost text-sm">View all</button>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {categoryTiles.map((item) => (
+            <div key={item.name} className="card card-hover p-5">
+              <div className="text-sm font-semibold text-primary">{item.code}</div>
+              <p className="mt-4 font-semibold text-ink">{item.name}</p>
+              <p className="text-sm text-muted">Top talent, fast delivery.</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Category mega menu */}
+      <section className="card p-6">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-2xl font-semibold">Browse categories</h2>
+          <button className="btn-ghost text-sm">All categories</button>
+        </div>
+        <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {megaMenu.map((group) => (
+            <div key={group.title} className="space-y-3">
+              <p className="font-semibold text-ink">{group.title}</p>
+              <ul className="space-y-2 text-sm text-muted">
+                {group.items.map((item) => (
+                  <li key={item} className="hover:text-primary transition">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Best match */}
       {bestMatch && (
         <section className="card p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -146,6 +203,7 @@ export default function GigList() {
         </section>
       )}
 
+      {/* Filters + results */}
       <section className="grid gap-6 lg:grid-cols-[260px,1fr]">
         <aside className="card p-6 space-y-5">
           <div>
@@ -156,9 +214,9 @@ export default function GigList() {
               onChange={(event) => setCategory(event.target.value)}
             >
               <option value="">All categories</option>
-              {categories.map((item) => (
-                <option key={item.name} value={item.name}>
-                  {item.name}
+              {topCategories.map((item) => (
+                <option key={item} value={item}>
+                  {item}
                 </option>
               ))}
             </select>
@@ -189,6 +247,15 @@ export default function GigList() {
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {activeResults.map((gig) => (
             <Link key={gig._id} to={`/gig/${gig._id}`} className="card card-hover group p-5">
+              <div className="mb-4 h-40 w-full overflow-hidden rounded-2xl bg-white">
+                {gig.images?.[0] ? (
+                  <img src={gig.images[0]} alt={gig.title} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-xs text-muted">
+                    Gig preview
+                  </div>
+                )}
+              </div>
               <div className="flex items-center justify-between">
                 <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-primary">
                   {gig.category}
@@ -199,50 +266,12 @@ export default function GigList() {
               <p className="mt-2 text-sm text-muted line-clamp-2">{gig.description}</p>
               <div className="mt-4 flex items-center justify-between text-sm">
                 <span className="font-semibold text-ink">PKR {gig.basePrice.toLocaleString('en-PK')}</span>
-                <span className="text-muted">{gig.ratingAverage.toFixed(1)} stars</span>
+                <span className="text-muted">***** {gig.ratingAverage.toFixed(1)}/5</span>
               </div>
               <button className="mt-4 w-full rounded-full border border-primary/20 bg-soft px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary hover:text-white">
                 Quick Hire
               </button>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold">Top Rated Freelancers</h2>
-          <button className="btn-ghost text-sm">Browse talent</button>
-        </div>
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {featuredFreelancers.map((freelancer) => (
-            <div key={freelancer.id} className="card card-hover p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-full bg-soft text-primary grid place-items-center font-semibold">
-                    {freelancer.name
-                      .split(' ')
-                      .map((part) => part[0])
-                      .join('')}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-ink">{freelancer.name}</p>
-                    <p className="text-sm text-muted">{freelancer.title}</p>
-                  </div>
-                </div>
-                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                  Top Rated
-                </span>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {freelancer.skills.map((skill) => (
-                  <span key={skill} className="tag">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-              <p className="mt-4 text-sm text-muted">Rating {freelancer.rating} average</p>
-            </div>
           ))}
         </div>
       </section>

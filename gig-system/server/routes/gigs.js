@@ -26,6 +26,14 @@ router.get('/:id', async (req, res) => {
   res.json({ gig, reviews });
 });
 
+// Get reviews for a gig
+router.get('/:id/reviews', async (req, res) => {
+  const gig = await Gig.findById(req.params.id);
+  if (!gig) return res.status(404).json({ error: 'Gig not found' });
+  const reviews = await Review.find({ gigId: gig._id }).sort({ createdAt: -1 });
+  res.json(reviews);
+});
+
 // Create a new gig (video intro required)
 router.post('/', requireAuth, async (req, res) => {
   const payload = req.body;
@@ -53,7 +61,7 @@ router.put('/:id', requireAuth, async (req, res) => {
   if (!gig) return res.status(404).json({ error: 'Gig not found' });
   const user = await User.findById(req.user.id);
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
-  if (gig.freelancer?.name !== user.name) {
+  if (!gig.freelancerId || gig.freelancerId.toString() !== user._id.toString()) {
     return res.status(403).json({ error: 'Not allowed' });
   }
   Object.assign(gig, req.body);
@@ -66,7 +74,7 @@ router.delete('/:id', requireAuth, async (req, res) => {
   if (!gig) return res.status(404).json({ error: 'Gig not found' });
   const user = await User.findById(req.user.id);
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
-  if (gig.freelancer?.name !== user.name) {
+  if (!gig.freelancerId || gig.freelancerId.toString() !== user._id.toString()) {
     return res.status(403).json({ error: 'Not allowed' });
   }
   await gig.deleteOne();
@@ -79,6 +87,12 @@ router.post('/:id/reviews', async (req, res) => {
   if (!gig) return res.status(404).json({ error: 'Gig not found' });
 
   const { reviewer, rating, comment } = req.body;
+  if (!reviewer || !comment || !rating) {
+    return res.status(400).json({ error: 'Reviewer, rating, and comment are required.' });
+  }
+  if (rating < 1 || rating > 5) {
+    return res.status(400).json({ error: 'Rating must be between 1 and 5.' });
+  }
   const review = await Review.create({ gigId: gig._id, reviewer, rating, comment });
 
   const reviews = await Review.find({ gigId: gig._id });

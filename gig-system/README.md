@@ -1,4 +1,8 @@
-# Gig System (PakGigs Pro)
+# UniHire
+
+## GitHub Pages
+Client will publish to:
+`https://manalk14322-max.github.io/gig/`
 
 Full-stack gig creation system inspired by Fiverr, built with React + Tailwind on the frontend and Node.js + Express + MongoDB on the backend.
 

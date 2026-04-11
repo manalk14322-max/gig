@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema(
     title: { type: String, default: '' },
     location: { type: String, default: 'Pakistan' },
     avatarUrl: { type: String, default: '' },
+    description: { type: String, default: '' },
+    skills: [{ type: String }],
     portfolio: [{ type: String }],
   },
   { timestamps: true },

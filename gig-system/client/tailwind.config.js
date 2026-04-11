@@ -7,20 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: '#F9FAFB',
-        primary: '#1E3A8A',
-        secondary: '#6D28D9',
-        accent: '#3B82F6',
+        base: '#F8F6F2',
+        primary: '#0B1F3A',
+        secondary: '#B88A2E',
+        accent: '#E6D7B8',
         ink: '#111827',
         muted: '#6B7280',
-        soft: '#EEF2FF',
+        soft: '#F3EFE7',
         'card-bg': '#FFFFFF',
         'border-color': '#E5E7EB',
         'bg-light': '#F3F4F6',
       },
       boxShadow: {
-        soft: '0 20px 60px rgba(15, 23, 42, 0.12)',
-        lift: '0 14px 30px rgba(15, 23, 42, 0.12)',
+        soft: '0 24px 70px rgba(11, 31, 58, 0.12)',
+        lift: '0 18px 36px rgba(11, 31, 58, 0.16)',
       },
       borderRadius: {
         xl: '16px',

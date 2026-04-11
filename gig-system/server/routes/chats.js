@@ -18,7 +18,8 @@ router.post('/start', requireAuth, async (req, res) => {
   const gig = await Gig.findById(gigId);
   if (!gig) return res.status(404).json({ error: 'Gig not found' });
   const buyer = await User.findById(req.user.id);
-  const seller = await User.findOne({ name: gig.freelancer?.name });
+  if (!gig.freelancerId) return res.status(400).json({ error: 'Seller not linked to gig' });
+  const seller = await User.findById(gig.freelancerId);
   if (!buyer || !seller) return res.status(400).json({ error: 'Missing users' });
 
   const existing = await Conversation.findOne({ gigId: gig._id, buyerId: buyer._id, sellerId: seller._id });

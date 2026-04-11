@@ -6,9 +6,10 @@ const router = express.Router();
 
 // Smart search with basic relevance scoring and best match
 router.get('/', async (req, res) => {
-  const { q = '', category, quick, minPrice, maxPrice } = req.query;
+  const { q = '', category, quick, minPrice, maxPrice, tag } = req.query;
   const filter = {};
   if (category) filter.category = category;
+  if (tag) filter.tags = tag;
   if (quick === 'true') filter.quickTask = true;
   if (minPrice || maxPrice) {
     filter.basePrice = {};

@@ -148,12 +148,12 @@ export default function GigCreate() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs uppercase tracking-widest text-primary">Gig creation</p>
-            <h1 className="text-3xl font-bold">Create an AI-powered gig</h1>
+            <h1 className="font-display text-3xl font-semibold">Create an AI-powered gig</h1>
             <p className="text-muted">
               Use the AI suggestions button to auto-generate pricing, tags, and descriptions based on your input.
             </p>
           </div>
-          <button className="btn-primary" type="button" onClick={runAiSuggest}>
+          <button className="btn-gradient" type="button" onClick={runAiSuggest}>
             AI Suggest
           </button>
         </div>
@@ -167,14 +167,14 @@ export default function GigCreate() {
           <section className="card p-6 space-y-4">
             <h2 className="text-xl font-semibold">Gig essentials</h2>
             <input
-              className="w-full rounded-2xl border border-black/10 px-4 py-3"
+              className="w-full rounded-2xl border border-[#E5E7EB] px-4 py-3"
               placeholder="Gig title"
               value={form.title}
               onChange={(event) => setForm({ ...form, title: event.target.value })}
               required
             />
             <textarea
-              className="w-full rounded-2xl border border-black/10 px-4 py-3"
+              className="w-full rounded-2xl border border-[#E5E7EB] px-4 py-3"
               rows="5"
               placeholder="Describe your gig"
               value={form.description}
@@ -183,7 +183,7 @@ export default function GigCreate() {
             />
             <div className="grid gap-4 md:grid-cols-2">
               <select
-                className="rounded-2xl border border-black/10 px-4 py-3"
+                className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
                 value={form.category}
                 onChange={(event) => setForm({ ...form, category: event.target.value })}
               >
@@ -194,7 +194,7 @@ export default function GigCreate() {
                 ))}
               </select>
               <input
-                className="rounded-2xl border border-black/10 px-4 py-3"
+                className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
                 placeholder="Tags (comma separated)"
                 value={form.tags}
                 onChange={(event) => setForm({ ...form, tags: event.target.value })}
@@ -208,14 +208,14 @@ export default function GigCreate() {
             <div className="grid gap-4 md:grid-cols-2">
               <input
                 type="number"
-                className="rounded-2xl border border-black/10 px-4 py-3"
+                className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
                 placeholder="Base price"
                 value={form.basePrice}
                 onChange={(event) => setForm({ ...form, basePrice: event.target.value })}
               />
               <input
                 type="number"
-                className="rounded-2xl border border-black/10 px-4 py-3"
+                className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
                 placeholder="Delivery days"
                 value={form.deliveryDays}
                 onChange={(event) => setForm({ ...form, deliveryDays: event.target.value })}
@@ -232,7 +232,7 @@ export default function GigCreate() {
             {form.quickTask && (
               <input
                 type="number"
-                className="rounded-2xl border border-black/10 px-4 py-3"
+                className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
                 placeholder="Quick delivery hours"
                 value={form.quickDeliveryHours}
                 onChange={(event) => setForm({ ...form, quickDeliveryHours: event.target.value })}
@@ -250,10 +250,10 @@ export default function GigCreate() {
             </div>
             <div className="space-y-4">
               {services.map((service, index) => (
-                <div key={`service-${index}`} className="rounded-2xl border border-black/5 bg-base p-4">
+                <div key={`service-${index}`} className="rounded-2xl border border-[#E5E7EB] bg-base p-4">
                   <div className="flex items-center justify-between">
                     <input
-                      className="w-full rounded-full border border-black/10 px-3 py-2 text-sm"
+                      className="w-full rounded-full border border-[#E5E7EB] px-3 py-2 text-sm"
                       placeholder="Service title (logo, social kit, etc.)"
                       value={service.title}
                       onChange={(event) => handleServiceChange(index, 'title', event.target.value)}
@@ -271,14 +271,14 @@ export default function GigCreate() {
                   <div className="mt-3 grid gap-3 md:grid-cols-3">
                     <input
                       type="number"
-                      className="rounded-full border border-black/10 px-3 py-2 text-sm"
+                      className="rounded-full border border-[#E5E7EB] px-3 py-2 text-sm"
                       placeholder="Price"
                       value={service.price}
                       onChange={(event) => handleServiceChange(index, 'price', event.target.value)}
                     />
                     <input
                       type="number"
-                      className="rounded-full border border-black/10 px-3 py-2 text-sm"
+                      className="rounded-full border border-[#E5E7EB] px-3 py-2 text-sm"
                       placeholder="Duration (hours)"
                       value={service.durationHours}
                       onChange={(event) => handleServiceChange(index, 'durationHours', event.target.value)}
@@ -288,7 +288,7 @@ export default function GigCreate() {
                     {service.included.map((feature, fIdx) => (
                       <input
                         key={`feature-${index}-${fIdx}`}
-                        className="w-full rounded-full border border-black/10 px-3 py-2 text-sm"
+                        className="w-full rounded-full border border-[#E5E7EB] px-3 py-2 text-sm"
                         placeholder="Included feature"
                         value={feature}
                         onChange={(event) => handleIncludeChange(index, fIdx, event.target.value)}
@@ -307,13 +307,13 @@ export default function GigCreate() {
           <section className="card p-6 space-y-4">
             <h2 className="text-xl font-semibold">Media</h2>
             <input
-              className="w-full rounded-2xl border border-black/10 px-4 py-3"
+              className="w-full rounded-2xl border border-[#E5E7EB] px-4 py-3"
               placeholder="Image URLs (comma separated)"
               value={form.images}
               onChange={(event) => setForm({ ...form, images: event.target.value })}
             />
             <input
-              className="w-full rounded-2xl border border-black/10 px-4 py-3"
+              className="w-full rounded-2xl border border-[#E5E7EB] px-4 py-3"
               placeholder="Video intro URL (required)"
               value={form.videoUrl}
               onChange={(event) => setForm({ ...form, videoUrl: event.target.value })}
@@ -352,7 +352,7 @@ export default function GigCreate() {
           </div>
 
           <div className="card p-6">
-            <button className="btn-primary w-full" type="submit" disabled={submitting}>
+            <button className="btn-gradient w-full" type="submit" disabled={submitting}>
               {submitting ? 'Publishing...' : 'Publish gig'}
             </button>
           </div>
