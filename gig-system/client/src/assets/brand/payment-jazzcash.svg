@@ -1,0 +1,6 @@
+<svg width="120" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="36" rx="18" fill="#FFF7ED"/>
+  <circle cx="20" cy="18" r="12" fill="#F97316"/>
+  <text x="20" y="22" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="white">JC</text>
+  <text x="42" y="22" font-family="Inter, Arial" font-size="12" font-weight="600" fill="#B45309">JazzCash</text>
+</svg>

@@ -1,7 +1,27 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { createOrder, createReview, fetchGig, initEasypaisa, startChat, createStripeCheckout } from '../api.js';
+import { Link, useParams } from 'react-router-dom';
+import { createOrder, createReview, createStripeCheckout, fetchGig, initEasypaisa, startChat } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
+
+function money(value) {
+  return `PKR ${Number(value || 0).toLocaleString('en-PK')}`;
+}
+
+function initials(name = 'Seller') {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+function studentLabel(freelancer = {}) {
+  if (freelancer.verifiedStudent) return 'Verified student';
+  if (freelancer.verificationStatus === 'pending') return 'Verification pending';
+  return 'Local student seller';
+}
 
 export default function GigDetail() {
   const { id } = useParams();
@@ -51,43 +71,48 @@ export default function GigDetail() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <Link className="text-sm font-semibold text-primary" to="/">
-          &lt;- Back to marketplace
+    <div className="space-y-8 pb-24 md:pb-10">
+      <div className="flex items-center justify-between gap-4">
+        <Link className="text-sm font-semibold text-primary hover:text-secondary" to="/">
+          {'<-'} Back to marketplace
         </Link>
-        <div className="flex items-center gap-2 text-xs text-muted">
+        <div className="hidden items-center gap-2 text-xs text-muted md:flex">
           <span>Home</span>
           <span>/</span>
           <span>{gig.category}</span>
         </div>
       </div>
 
-      {/* Gig detail + seller sidebar */}
-      <section className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        <div className="space-y-6">
-          <div className="card card-gold p-6">
-            <div className="flex flex-wrap items-center gap-3">
-              <p className="text-xs uppercase tracking-widest text-primary">{gig.category}</p>
+      <section className="overflow-hidden rounded-[28px] border border-border-color bg-card-bg shadow-soft">
+        <div className="grid gap-0 lg:grid-cols-[1.5fr,0.75fr]">
+          <div className="p-5 md:p-8">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-primary">{gig.category}</span>
               {gig.quickTask && (
-                <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-primary">
+                <span className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary">
                   Quick Task
                 </span>
               )}
               {gig.featured && (
-                <span className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary">
+                <span className="rounded-full bg-[#F7F3EA] px-3 py-1 text-xs font-semibold text-primary">
                   Featured
                 </span>
               )}
             </div>
-            <h1 className="mt-3 font-display text-3xl font-semibold">{gig.title}</h1>
-            <p className="mt-3 text-muted">{gig.description}</p>
-            <div className="mt-6 flex items-center gap-4 text-sm text-muted">
-              <span>⭐ {gig.ratingAverage.toFixed(1)}</span>
-              <span>({gig.ratingCount} reviews)</span>
-              <span>Delivery {gig.quickTask ? `${gig.quickDeliveryHours}h` : `${gig.deliveryDays}d`}</span>
+
+            <h1 className="mt-4 font-display text-[2.2rem] font-semibold leading-tight text-ink md:text-5xl">{gig.title}</h1>
+            <p className="mt-4 max-w-3xl text-base leading-7 text-muted md:text-lg">{gig.description}</p>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-muted">
+            <span className="rounded-full bg-[#EEF2F7] px-3 py-2">Rating {gig.ratingAverage.toFixed(1)}</span>
+              <span className="rounded-full bg-[#EEF2F7] px-3 py-2">{gig.ratingCount} reviews</span>
+              <span className="rounded-full bg-[#EEF2F7] px-3 py-2">
+                Delivery {gig.quickTask ? `${gig.quickDeliveryHours}h` : `${gig.deliveryDays}d`}
+              </span>
+              <span className="rounded-full bg-[#EEF2F7] px-3 py-2">{gig.quickTask ? 'Instant option available' : 'Standard delivery'}</span>
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
+
+            <div className="mt-5 flex flex-wrap gap-2">
               {gig.tags?.map((tag) => (
                 <span key={tag} className="tag">
                   {tag}
@@ -96,138 +121,278 @@ export default function GigDetail() {
             </div>
           </div>
 
-          {/* Video preview */}
-          <div className="card p-6 space-y-4">
-            <h2 className="text-xl font-semibold">Gig preview</h2>
-            <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl bg-black">
-              <video controls className="h-full w-full object-cover">
-                <source src={gig.videoUrl} />
-              </video>
+          <div className="border-t border-border-color bg-[#EEF2F7] p-5 md:p-6 lg:border-l lg:border-t-0">
+            <div className="overflow-hidden rounded-[24px] border border-border-color bg-card-bg shadow-soft">
+              <div className="relative h-[22rem] bg-black">
+                {gig.images?.[0] ? (
+                  <img src={gig.images[0]} alt={gig.title} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="grid h-full place-items-center bg-gradient-to-br from-[#1B2742] via-[#223052] to-[#0B1F3A] text-white/80">
+                    Premium gig preview
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                <div className="absolute inset-x-4 bottom-4 rounded-[22px] bg-[#EEF2F7]/95 p-4 shadow-soft">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">Student seller</p>
+                      <p className="mt-1 text-lg font-semibold text-ink">{gig.freelancer?.name}</p>
+                      <p className="text-sm text-muted">{gig.freelancer?.title}</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {gig.freelancer?.verifiedStudent && (
+                          <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-semibold text-emerald-700">
+                            Verified badge
+                          </span>
+                        )}
+                        <span className="rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary">
+                          {studentLabel(gig.freelancer)}
+                        </span>
+                        {gig.freelancer?.university && (
+                          <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-[11px] font-semibold text-ink">
+                            {gig.freelancer.university}
+                          </span>
+                        )}
+                        {gig.freelancer?.department && (
+                          <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-[11px] font-semibold text-ink">
+                            {gig.freelancer.department}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-sm font-bold text-white">
+                      {initials(gig.freelancer?.name)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4 p-5">
+                <div className="grid grid-cols-3 gap-3 text-center text-sm">
+                  <div className="rounded-2xl bg-[#EEF2F7] px-3 py-3">
+                    <p className="text-muted">Price</p>
+                    <p className="mt-1 font-semibold text-ink">{money(gig.basePrice)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-[#EEF2F7] px-3 py-3">
+                    <p className="text-muted">Rating</p>
+                    <p className="mt-1 font-semibold text-ink">{gig.ratingAverage.toFixed(1)}</p>
+                  </div>
+                  <div className="rounded-2xl bg-[#EEF2F7] px-3 py-3">
+                    <p className="text-muted">Speed</p>
+                    <p className="mt-1 font-semibold text-ink">{gig.quickTask ? `${gig.quickDeliveryHours}h` : `${gig.deliveryDays}d`}</p>
+                  </div>
+                </div>
+
+                <button className="btn-gradient w-full" onClick={payWithStripe} type="button">
+                  Pay with Stripe
+                </button>
+                <button className="btn-primary w-full" onClick={placeOrder} type="button">
+                  Order with Easypaisa
+                </button>
+                <button className="btn-ghost w-full" onClick={openChat} type="button">
+                  Start chat
+                </button>
+                <p className="text-xs leading-5 text-muted">Secure checkout. Release payment after approval and delivery.</p>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Dynamic services list */}
-          <div className="card p-6 space-y-4">
-            <h2 className="text-xl font-semibold">Packages & add-ons</h2>
-            <div className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-6 lg:grid-cols-[1.4fr,0.6fr]">
+        <div className="space-y-6">
+          <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft md:p-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-ink">Gig preview</h2>
+              <span className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
+                Video intro optional
+              </span>
+            </div>
+            {gig.videoUrl ? (
+              <div className="mt-5 overflow-hidden rounded-[24px] bg-black shadow-lift">
+                <video controls className="aspect-[16/9] w-full object-cover">
+                  <source src={gig.videoUrl} />
+                </video>
+              </div>
+            ) : (
+                <div className="mt-5 overflow-hidden rounded-[24px] border border-dashed border-border-color bg-[#EEF2F7] p-8 text-center text-sm text-muted">
+                This gig has no video yet. Add a short intro later for a richer preview.
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft md:p-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-ink">Packages & add-ons</h2>
+              <span className="text-xs text-muted">Custom builder</span>
+            </div>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
               {gig.services?.map((item, index) => (
-                <div key={`${item.title}-${index}`} className="rounded-2xl border border-[#E5E7EB] bg-base p-4">
-                  <div className="flex items-center justify-between">
-                    <p className="font-semibold">{item.title}</p>
-                    <span className="text-sm text-muted">PKR {item.price.toLocaleString('en-PK')}</span>
+                <div key={`${item.title}-${index}`} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-semibold text-ink">{item.title}</p>
+                      <p className="mt-1 text-xs uppercase tracking-[0.2em] text-secondary">{item.durationHours} hours</p>
+                    </div>
+                    <span className="price-pill">{money(item.price)}</span>
                   </div>
-                    <p className="mt-1 text-xs text-muted">{item.durationHours} hours</p>
-                    <ul className="mt-3 space-y-1 text-sm text-muted">
-                      {item.included.map((feature) => (
-                      <li key={feature}>- {feature}</li>
-                      ))}
-                    </ul>
+                  <ul className="mt-4 space-y-2 text-sm text-muted">
+                    {item.included.map((feature) => (
+                      <li key={feature}>• {feature}</li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
           </div>
+
+          {gig.faqs?.length > 0 && (
+            <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft md:p-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-ink">FAQs</h2>
+                <span className="text-xs text-muted">Student answers</span>
+              </div>
+              <div className="mt-5 space-y-4">
+                {gig.faqs.map((item, index) => (
+                  <div key={`faq-${index}`} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                    <p className="font-semibold text-ink">{item.question}</p>
+                    <p className="mt-2 text-sm text-muted">{item.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {gig.requirements?.length > 0 && (
+            <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft md:p-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-ink">Requirements</h2>
+                <span className="text-xs text-muted">What buyers should share</span>
+              </div>
+              <div className="mt-5 space-y-4">
+                {gig.requirements.map((item, index) => (
+                  <div key={`req-${index}`} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="font-semibold text-ink">{item.question}</p>
+                      <span className="rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary">
+                        {item.type}
+                      </span>
+                    </div>
+                    {item.options?.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {item.options.map((opt) => (
+                          <span key={opt} className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink">
+                            {opt}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <p className="mt-3 text-xs text-muted">
+                      {item.mandatory ? 'Required for order start.' : 'Optional request.'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <section className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft md:p-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-ink">Reviews</h2>
+              <span className="text-sm text-muted">{gig.ratingCount} total</span>
+            </div>
+            <form onSubmit={submitReview} className="mt-5 grid gap-3 md:grid-cols-[1fr,140px]">
+              <input
+                className="rounded-full border border-[#E5E7EB] px-4 py-3"
+                placeholder="Your name"
+                value={form.reviewer}
+                onChange={(event) => setForm({ ...form, reviewer: event.target.value })}
+                required
+              />
+              <select
+                className="rounded-full border border-[#E5E7EB] px-4 py-3"
+                value={form.rating}
+                onChange={(event) => setForm({ ...form, rating: Number(event.target.value) })}
+              >
+                {[5, 4, 3, 2, 1].map((score) => (
+                  <option key={score} value={score}>
+                    {score} stars
+                  </option>
+                ))}
+              </select>
+              <textarea
+                className="md:col-span-2 rounded-[22px] border border-[#E5E7EB] px-4 py-3"
+                rows="4"
+                placeholder="Share your experience"
+                value={form.comment}
+                onChange={(event) => setForm({ ...form, comment: event.target.value })}
+                required
+              />
+              <button className="btn-primary md:col-span-2">Submit review</button>
+            </form>
+
+            <div className="mt-6 grid gap-4">
+              {reviews.map((review) => (
+                <div key={review._id} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-ink">{review.reviewer}</p>
+                    <span className="text-sm font-semibold text-primary">{review.rating} stars</span>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-muted">{review.comment}</p>
+                </div>
+              ))}
+              {!reviews.length && <p className="text-sm text-muted">No reviews yet.</p>}
+            </div>
+          </section>
         </div>
 
-        <aside className="space-y-6">
-          {/* Seller card */}
-          <div className="card p-6">
-            <p className="text-sm font-semibold text-muted">Seller</p>
-            <h3 className="text-xl font-semibold">{gig.freelancer?.name}</h3>
-            <p className="text-sm text-muted">{gig.freelancer?.title}</p>
-            <p className="mt-2 text-sm text-muted">{gig.freelancer?.location}</p>
+        <aside className="space-y-6 lg:sticky lg:top-24 h-fit">
+          <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Student summary</p>
+            <h3 className="mt-3 text-2xl font-semibold text-ink">{gig.freelancer?.name}</h3>
+            <p className="mt-1 text-sm text-muted">{gig.freelancer?.title}</p>
+            <p className="mt-1 text-sm text-muted">{gig.freelancer?.location}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {gig.freelancer?.verifiedStudent && (
+                <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  Verified badge
+                </span>
+              )}
+              <span className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary">
+                {studentLabel(gig.freelancer)}
+              </span>
+              {gig.freelancer?.department && (
+                <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-ink">
+                  {gig.freelancer.department}
+                </span>
+              )}
+            </div>
             {gig.freelancerId && (
-              <a className="mt-3 inline-block text-sm font-semibold text-primary" href={`/seller/${gig.freelancerId}`}>
-                View profile
-              </a>
+              <Link className="mt-4 inline-flex text-sm font-semibold text-primary hover:text-secondary" to={`/seller/${gig.freelancerId}`}>
+                View public profile
+              </Link>
             )}
-            <div className="mt-4 flex items-center justify-between text-sm">
-              <span className="font-semibold">Rating</span>
-              <span>{gig.ratingAverage.toFixed(1)} stars</span>
+            <div className="mt-5 grid gap-3">
+                {['Top campus creator', 'Fast replies', 'Trusted by local buyers'].map((item) => (
+                <div key={item} className="rounded-2xl bg-[#EEF2F7] px-4 py-3 text-sm text-muted">
+                  {item}
+                </div>
+              ))}
             </div>
-          </div>
-
-          {/* Pricing CTA */}
-          <div className="card p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-muted">Starting price</p>
-              <span className="text-lg font-bold text-primary">PKR {gig.basePrice.toLocaleString('en-PK')}</span>
-            </div>
-            <p className="text-sm text-muted">Delivery in {gig.quickTask ? `${gig.quickDeliveryHours} hours` : `${gig.deliveryDays} days`}</p>
-            <button className="btn-gradient w-full" onClick={payWithStripe} type="button">
-              Pay with Stripe
-            </button>
-            <button className="btn-primary w-full" onClick={placeOrder} type="button">
-              Order with Easypaisa
-            </button>
-            <button className="btn-ghost w-full" onClick={openChat} type="button">
-              Start chat
-            </button>
-            <p className="text-xs text-muted">Secure checkout. Release payment after approval.</p>
           </div>
         </aside>
       </section>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E5E7EB] bg-white p-4 lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border-color bg-card-bg p-4 shadow-lift lg:hidden">
         <div className="mx-auto flex max-w-6xl items-center gap-3">
           <div>
             <p className="text-xs text-muted">Starting from</p>
-            <p className="text-lg font-semibold text-ink">PKR {gig.basePrice.toLocaleString('en-PK')}</p>
+            <p className="text-lg font-semibold text-ink">{money(gig.basePrice)}</p>
           </div>
           <button className="btn-gradient ml-auto" onClick={payWithStripe} type="button">
-            Pay with Stripe
+            Buy now
           </button>
         </div>
       </div>
-
-      {/* Ratings and reviews */}
-      <section className="card p-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Reviews</h2>
-          <span className="text-sm text-muted">{gig.ratingCount} total</span>
-        </div>
-        <form onSubmit={submitReview} className="grid gap-3 md:grid-cols-[1fr,140px]">
-          <input
-            className="rounded-full border border-[#E5E7EB] px-4 py-2"
-            placeholder="Your name"
-            value={form.reviewer}
-            onChange={(event) => setForm({ ...form, reviewer: event.target.value })}
-            required
-          />
-          <select
-            className="rounded-full border border-[#E5E7EB] px-4 py-2"
-            value={form.rating}
-            onChange={(event) => setForm({ ...form, rating: Number(event.target.value) })}
-          >
-            {[5, 4, 3, 2, 1].map((score) => (
-              <option key={score} value={score}>
-                {score} stars
-              </option>
-            ))}
-          </select>
-          <textarea
-            className="md:col-span-2 rounded-2xl border border-[#E5E7EB] px-4 py-3"
-            rows="3"
-            placeholder="Share your experience"
-            value={form.comment}
-            onChange={(event) => setForm({ ...form, comment: event.target.value })}
-            required
-          />
-          <button className="btn-primary md:col-span-2">Submit review</button>
-        </form>
-
-        <div className="grid gap-4">
-          {reviews.map((review) => (
-            <div key={review._id} className="rounded-2xl border border-[#E5E7EB] bg-base p-4">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold">{review.reviewer}</p>
-                <span className="text-sm text-primary">{review.rating} stars</span>
-              </div>
-              <p className="mt-2 text-sm text-muted">{review.comment}</p>
-            </div>
-          ))}
-          {!reviews.length && <p className="text-sm text-muted">No reviews yet.</p>}
-        </div>
-      </section>
     </div>
   );
 }

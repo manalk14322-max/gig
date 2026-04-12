@@ -2,6 +2,7 @@ import express from 'express';
 import Stripe from 'stripe';
 import { requireAuth } from '../middleware/auth.js';
 import Order from '../models/Order.js';
+import { createOrder as devCreateOrder } from '../lib/devStore.js';
 
 const router = express.Router();
 
@@ -14,7 +15,14 @@ router.post('/checkout', requireAuth, async (req, res) => {
   if (!orderId) return res.status(400).json({ error: 'Order ID required' });
 
   if (!process.env.STRIPE_SECRET_KEY) {
-    return res.status(400).json({ error: 'Stripe is not configured' });
+    if (req.app.locals.dbReady === true) {
+      return res.status(400).json({ error: 'Stripe is not configured' });
+    }
+    return res.json({ url: 'https://stripe.example.com/demo-checkout' });
+  }
+
+  if (req.app.locals.dbReady !== true) {
+    return res.json({ url: 'https://stripe.example.com/demo-checkout' });
   }
 
   const order = await Order.findById(orderId);

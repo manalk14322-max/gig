@@ -22,9 +22,7 @@ export default function Dashboard() {
     socket.on('message', ({ conversationId, message: incoming }) => {
       setChats((prev) =>
         prev.map((chat) =>
-          chat._id === conversationId
-            ? { ...chat, messages: [...chat.messages, incoming] }
-            : chat,
+          chat._id === conversationId ? { ...chat, messages: [...chat.messages, incoming] } : chat,
         ),
       );
       if (activeChat && activeChat._id === conversationId) {
@@ -82,7 +80,7 @@ export default function Dashboard() {
           <h2 className="text-xl font-semibold">Orders</h2>
           <div className="mt-4 space-y-3">
             {orders.map((order) => (
-              <div key={order._id} className="rounded-2xl border border-[#E5E7EB] bg-base p-4">
+              <div key={order._id} className="rounded-2xl border border-border-color bg-card-bg p-4">
                 <p className="font-semibold">Order #{order._id.slice(-6)}</p>
                 <p className="text-sm text-muted">Amount: PKR {order.amount.toLocaleString('en-PK')}</p>
                 <p className="text-sm text-muted">Status: {order.status}</p>
@@ -97,7 +95,12 @@ export default function Dashboard() {
           <h2 className="text-xl font-semibold">Chats</h2>
           <div className="mt-4 grid gap-3">
             {chats.map((chat) => (
-              <button key={chat._id} className="rounded-2xl border border-[#E5E7EB] bg-base p-3 text-left" onClick={() => openChat(chat)} type="button">
+              <button
+                key={chat._id}
+                className="rounded-2xl border border-border-color bg-card-bg p-3 text-left"
+                onClick={() => openChat(chat)}
+                type="button"
+              >
                 <p className="font-semibold">Gig #{chat.gigId.slice(-6)}</p>
                 <p className="text-xs text-muted">{chat.messages.length} messages</p>
               </button>
@@ -106,7 +109,7 @@ export default function Dashboard() {
           </div>
           {activeChat && (
             <form onSubmit={submitMessage} className="mt-4 space-y-2">
-              <div className="h-32 overflow-auto rounded-2xl border border-[#E5E7EB] bg-white p-3">
+              <div className="h-32 overflow-auto rounded-2xl border border-border-color bg-[#EEF2F7] p-3">
                 {activeChat.messages.map((msg) => (
                   <p key={msg._id} className="text-sm">
                     <strong>{msg.senderId === user.id ? 'You' : 'Them'}:</strong> {msg.text}
@@ -114,7 +117,7 @@ export default function Dashboard() {
                 ))}
               </div>
               <input
-                className="w-full rounded-2xl border border-[#E5E7EB] px-4 py-2"
+                className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
                 placeholder="Type a message"
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}

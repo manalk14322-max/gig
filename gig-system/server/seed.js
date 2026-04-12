@@ -10,18 +10,23 @@ dotenv.config();
 async function seed() {
   await mongoose.connect(process.env.MONGO_URI, { autoIndex: true });
 
-  const passwordHash = await bcrypt.hash('Password123!', 10);
+  const passwordHash = await bcrypt.hash('Manal1212', 10);
 
   const seller = await User.findOneAndUpdate(
-    { email: 'manal.khan@example.com' },
+    { email: 'manalk14322@gmail.com' },
     {
       name: 'Manal Khan',
-      email: 'manal.khan@example.com',
+      email: 'manalk14322@gmail.com',
       passwordHash,
       role: 'seller',
       title: 'Brand identity & web expert',
       location: 'Lahore, Pakistan',
       avatarUrl: '',
+      university: 'University of the Punjab',
+      department: 'Computer Science',
+      studentId: 'PU-2026-0142',
+      verificationStatus: 'verified',
+      verifiedStudent: true,
       portfolio: [
         'https://dribbble.com/shots/branding-portfolio',
         'https://behance.net/portfolio/manal-khan',
@@ -39,6 +44,11 @@ async function seed() {
       role: 'buyer',
       title: 'Product manager',
       location: 'Karachi, Pakistan',
+      university: '',
+      department: '',
+      studentId: '',
+      verificationStatus: 'pending',
+      verifiedStudent: false,
     },
     { new: true, upsert: true },
   );
@@ -68,13 +78,18 @@ async function seed() {
       videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
       featured: true,
       freelancerId: seller._id,
-      freelancer: {
-        name: seller.name,
-        title: seller.title,
-        location: seller.location,
-        avatarUrl: seller.avatarUrl,
-        portfolio: seller.portfolio,
-      },
+        freelancer: {
+          name: seller.name,
+          title: seller.title,
+          location: seller.location,
+          avatarUrl: seller.avatarUrl,
+          portfolio: seller.portfolio,
+          university: seller.university,
+          department: seller.department,
+          studentId: seller.studentId,
+          verificationStatus: seller.verificationStatus,
+          verifiedStudent: seller.verifiedStudent,
+        },
     },
     {
       title: 'Build a bilingual landing page in React',
@@ -98,13 +113,18 @@ async function seed() {
       videoUrl: 'https://www.w3schools.com/html/movie.mp4',
       featured: true,
       freelancerId: seller._id,
-      freelancer: {
-        name: seller.name,
-        title: seller.title,
-        location: seller.location,
-        avatarUrl: seller.avatarUrl,
-        portfolio: seller.portfolio,
-      },
+        freelancer: {
+          name: seller.name,
+          title: seller.title,
+          location: seller.location,
+          avatarUrl: seller.avatarUrl,
+          portfolio: seller.portfolio,
+          university: seller.university,
+          department: seller.department,
+          studentId: seller.studentId,
+          verificationStatus: seller.verificationStatus,
+          verifiedStudent: seller.verifiedStudent,
+        },
     },
     {
       title: 'Premium product photos & edits',
@@ -123,13 +143,18 @@ async function seed() {
       videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
       featured: false,
       freelancerId: seller._id,
-      freelancer: {
-        name: seller.name,
-        title: seller.title,
-        location: seller.location,
-        avatarUrl: seller.avatarUrl,
-        portfolio: seller.portfolio,
-      },
+        freelancer: {
+          name: seller.name,
+          title: seller.title,
+          location: seller.location,
+          avatarUrl: seller.avatarUrl,
+          portfolio: seller.portfolio,
+          university: seller.university,
+          department: seller.department,
+          studentId: seller.studentId,
+          verificationStatus: seller.verificationStatus,
+          verifiedStudent: seller.verifiedStudent,
+        },
     },
   ]);
 

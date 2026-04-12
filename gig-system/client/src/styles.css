@@ -6,6 +6,15 @@ body {
   font-family: 'Inter', system-ui, sans-serif;
   color: #111827;
   background: #f9fafb;
+  overflow-x: hidden;
+}
+
+body.rtl {
+  direction: rtl;
+}
+
+body.rtl .rtl-text {
+  text-align: right;
 }
 
 h1,
@@ -21,11 +30,18 @@ h3,
 }
 
 .card {
-  @apply rounded-2xl bg-soft shadow-soft border border-[#E5E7EB];
+  @apply rounded-2xl bg-card-bg shadow-soft border border-border-color;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(239, 244, 249, 0.9));
 }
 
 .card-hover {
   @apply transition transform hover:-translate-y-1 hover:shadow-lift;
+  border-color: rgba(184, 138, 46, 0.18);
+}
+
+.card-premium {
+  background-image: radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), rgba(228, 235, 244, 0.9));
+  border: 1px solid rgba(184, 138, 46, 0.22);
 }
 
 .card-gold {
@@ -38,7 +54,7 @@ h3,
 }
 
 .price-pill {
-  @apply rounded-full bg-soft px-3 py-1 text-xs font-semibold text-ink border border-[#E5E7EB];
+  @apply rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-ink border border-border-color;
 }
 
 .gold-text {
@@ -68,7 +84,7 @@ h3,
 
 
 .tag {
-  @apply rounded-full border border-[#E5E7EB] bg-soft px-3 py-1 text-xs font-medium text-muted;
+  @apply rounded-full border border-border-color bg-soft px-3 py-1 text-xs font-medium text-muted;
 }
 
 .lux-blur {

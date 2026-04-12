@@ -22,6 +22,8 @@ export const searchGigs = (params) => api.get('/search', { params }).then((res) 
 export const aiSuggest = (payload) => api.post('/ai/suggest', payload).then((res) => res.data);
 export const signup = (payload) => api.post('/auth/signup', payload).then((res) => res.data);
 export const login = (payload) => api.post('/auth/login', payload).then((res) => res.data);
+export const verifyCampusEmail = (payload) => api.post('/auth/verify-campus', payload).then((res) => res.data);
+export const resendCampusOtp = (payload) => api.post('/auth/resend-campus', payload).then((res) => res.data);
 export const fetchMe = () => api.get('/auth/me').then((res) => res.data);
 export const createOrder = (payload) => api.post('/orders', payload).then((res) => res.data);
 export const fetchOrders = () => api.get('/orders').then((res) => res.data);
@@ -33,5 +35,11 @@ export const createStripeCheckout = (payload) => api.post('/stripe/checkout', pa
 export const fetchProfile = () => api.get('/users/me').then((res) => res.data);
 export const updateProfile = (payload) => api.put('/users/me', payload).then((res) => res.data);
 export const fetchSellerPublic = (id) => api.get(`/users/${id}/public`).then((res) => res.data);
+export const requestVerification = (payload) => api.post('/users/verify-request', payload).then((res) => res.data);
+export const fetchVerificationQueue = () => api.get('/admin/verification').then((res) => res.data);
+export const approveVerification = (id, payload) =>
+  api.patch(`/admin/verification/${id}`, { status: 'verified', ...(payload || {}) }).then((res) => res.data);
+export const rejectVerification = (id, payload) =>
+  api.patch(`/admin/verification/${id}`, { status: 'rejected', ...(payload || {}) }).then((res) => res.data);
 
 export default api;

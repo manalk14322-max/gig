@@ -24,9 +24,9 @@ export default function BuyerProfile() {
         <h2 className="text-xl font-semibold">Recent activity</h2>
         <div className="mt-4 grid gap-3">
           {['New brief drafted', 'Saved 3 gigs', 'Completed order review'].map((item) => (
-            <div key={item} className="rounded-2xl border border-[#E5E7EB] bg-white px-4 py-3">
+            <div key={item} className="rounded-2xl border border-border-color bg-card-bg px-4 py-3">
               <p className="font-semibold text-ink">{item}</p>
-              <p className="text-sm text-muted mt-1">Keep your hiring workflow organized and fast.</p>
+              <p className="mt-1 text-sm text-muted">Keep your hiring workflow organized and fast.</p>
             </div>
           ))}
         </div>

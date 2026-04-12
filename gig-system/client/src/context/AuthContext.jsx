@@ -25,14 +25,25 @@ export function AuthProvider({ children }) {
     const data = await apiLogin(payload);
     localStorage.setItem('gig.token', data.token);
     setUser(data.user);
-    return data.user;
+    return data;
   };
 
   const signup = async (payload) => {
     const data = await apiSignup(payload);
     localStorage.setItem('gig.token', data.token);
     setUser(data.user);
-    return data.user;
+    return data;
+  };
+
+  const refreshUser = async () => {
+    const data = await fetchMe();
+    if (data.user) {
+      const profile = await fetchProfile().catch(() => null);
+      setUser(profile || data.user);
+      return profile || data.user;
+    }
+    setUser(null);
+    return null;
   };
 
   const logout = () => {
@@ -40,7 +51,7 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  return <AuthContext.Provider value={{ user, ready, login, signup, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, ready, login, signup, refreshUser, logout }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
