@@ -26,7 +26,7 @@ const navLink = ({ isActive }) =>
 
 export default function App() {
   const { user } = useAuth();
-  const { lang, setLang, speak, t } = useLang();
+  const { t } = useLang();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -70,23 +70,6 @@ export default function App() {
           </div>
 
           <div className="hidden flex-shrink-0 items-center gap-3 lg:flex">
-            <div className="hidden items-center gap-2 text-muted xl:flex">
-              {['en', 'ur', 'ps'].map((item) => (
-                <button
-                  key={item}
-                  className={`grid h-9 min-w-9 place-items-center rounded-full border px-2 text-xs font-bold ${
-                    lang === item ? 'border-primary bg-soft text-primary' : 'border-border-color bg-white'
-                  }`}
-                  onClick={() => setLang(item)}
-                  type="button"
-                >
-                  {item.toUpperCase()}
-                </button>
-              ))}
-              <button className="grid h-9 min-w-9 place-items-center rounded-full border border-border-color bg-white px-2 text-xs font-bold" onClick={() => speak()} type="button">
-                VO
-              </button>
-            </div>
             {user ? (
               <div className="flex items-center gap-2">
                 {user.verifiedStudent && (
@@ -162,26 +145,6 @@ export default function App() {
                 <button className="grid h-10 w-10 place-items-center rounded-full bg-bg-light text-xl leading-none" onClick={() => setMobileOpen(false)} type="button" aria-label="Close menu">
                   x
                 </button>
-              </div>
-              <div className="mt-5 rounded-2xl border border-border-color bg-bg-light p-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Language</p>
-                <div className="mt-3 grid grid-cols-4 gap-2">
-                  {['en', 'ur', 'ps'].map((item) => (
-                    <button
-                      key={item}
-                      className={`rounded-full px-3 py-2 text-xs font-bold ${
-                        lang === item ? 'bg-primary text-white' : 'bg-white text-ink'
-                      }`}
-                      onClick={() => setLang(item)}
-                      type="button"
-                    >
-                      {item.toUpperCase()}
-                    </button>
-                  ))}
-                  <button className="rounded-full bg-white px-3 py-2 text-xs font-bold text-ink" onClick={() => speak()} type="button">
-                    VO
-                  </button>
-                </div>
               </div>
               <div className="mt-6 flex flex-col gap-2 text-sm font-semibold text-ink">
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/" onClick={() => setMobileOpen(false)}>
