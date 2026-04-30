@@ -405,41 +405,6 @@ export default function GigList() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
-        {startCards.map((card) => {
-          const content = (
-            <>
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">{card.audience}</p>
-              <h2 className="mt-3 text-2xl font-semibold text-ink">{card.title}</h2>
-              <p className="mt-3 text-sm leading-6 text-muted">{card.description}</p>
-              <span className="mt-5 inline-flex rounded-full bg-soft px-4 py-2 text-sm font-semibold text-primary">
-                {card.action}
-              </span>
-            </>
-          );
-
-          return card.href.startsWith('#') ? (
-            <a key={card.title} href={card.href} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
-              {content}
-            </a>
-          ) : (
-            <Link key={card.title} to={card.href} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
-              {content}
-            </Link>
-          );
-        })}
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-3">
-        {platformAdvantages.map((item) => (
-          <div key={item.title} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">UniHire difference</p>
-            <h2 className="mt-3 text-xl font-semibold text-ink">{item.title}</h2>
-            <p className="mt-3 text-sm leading-6 text-muted">{item.description}</p>
-          </div>
-        ))}
-      </section>
-
       <section className="rounded-[26px] border border-border-color bg-white p-4 shadow-soft md:p-5">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {proofPoints.map((item) => (
@@ -680,6 +645,41 @@ export default function GigList() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-2">
+        {startCards.map((card) => {
+          const content = (
+            <>
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">{card.audience}</p>
+              <h2 className="mt-3 text-2xl font-semibold text-ink">{card.title}</h2>
+              <p className="mt-3 text-sm leading-6 text-muted">{card.description}</p>
+              <span className="mt-5 inline-flex rounded-full bg-soft px-4 py-2 text-sm font-semibold text-primary">
+                {card.action}
+              </span>
+            </>
+          );
+
+          return card.href.startsWith('#') ? (
+            <a key={card.title} href={card.href} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+              {content}
+            </a>
+          ) : (
+            <Link key={card.title} to={card.href} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+              {content}
+            </Link>
+          );
+        })}
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-3">
+        {platformAdvantages.map((item) => (
+          <div key={item.title} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">UniHire difference</p>
+            <h2 className="mt-3 text-xl font-semibold text-ink">{item.title}</h2>
+            <p className="mt-3 text-sm leading-6 text-muted">{item.description}</p>
+          </div>
+        ))}
       </section>
 
       <footer className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] bg-[#0B0F1D] px-6 py-10 text-white shadow-lift md:px-10 -mb-24 md:-mb-10">
