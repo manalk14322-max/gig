@@ -42,7 +42,7 @@ export default function App() {
           </div>
 
           <button
-            className="ml-auto inline-flex h-10 items-center justify-center rounded-full border border-border-color px-4 text-sm font-semibold lg:hidden"
+            className="ml-auto inline-flex h-10 items-center justify-center rounded-full border border-border-color bg-white px-4 text-sm font-semibold shadow-soft lg:hidden"
             onClick={() => setMobileOpen(true)}
             type="button"
           >
@@ -129,43 +129,43 @@ export default function App() {
 
         {mobileOpen && (
           <div className="fixed inset-0 z-50 bg-black/40 lg:hidden">
-            <div className="absolute right-0 top-0 h-full w-72 bg-card-bg p-6 shadow-soft">
+            <div className="absolute right-0 top-0 h-full w-[86vw] max-w-sm overflow-y-auto bg-card-bg p-6 shadow-soft">
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold">Menu</p>
                 <button className="text-xl leading-none" onClick={() => setMobileOpen(false)} type="button">
                   x
                 </button>
               </div>
-              <div className="mt-6 flex flex-col gap-3 text-sm font-semibold text-ink">
-                <NavLink to="/" onClick={() => setMobileOpen(false)}>
+              <div className="mt-6 flex flex-col gap-2 text-sm font-semibold text-ink">
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/" onClick={() => setMobileOpen(false)}>
                   Marketplace
                 </NavLink>
-                <NavLink to="/favorites" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/favorites" onClick={() => setMobileOpen(false)}>
                   Saved
                 </NavLink>
-                <NavLink to="/create" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/create" onClick={() => setMobileOpen(false)}>
                   Create Gig
                 </NavLink>
-                <NavLink to="/dashboard" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/dashboard" onClick={() => setMobileOpen(false)}>
                   Dashboard
                 </NavLink>
-                <NavLink to="/orders" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/orders" onClick={() => setMobileOpen(false)}>
                   Orders
                 </NavLink>
-                <NavLink to="/messages" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/messages" onClick={() => setMobileOpen(false)}>
                   Messages
                 </NavLink>
-                <NavLink to="/profile" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/profile" onClick={() => setMobileOpen(false)}>
                   Profile
                 </NavLink>
-                <NavLink to="/wallet" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/wallet" onClick={() => setMobileOpen(false)}>
                   Wallet
                 </NavLink>
-                <NavLink to="/settings" onClick={() => setMobileOpen(false)}>
+                <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/settings" onClick={() => setMobileOpen(false)}>
                   Settings
                 </NavLink>
                 {user?.role === 'admin' && (
-                  <NavLink to="/admin/verification" onClick={() => setMobileOpen(false)}>
+                  <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/admin/verification" onClick={() => setMobileOpen(false)}>
                     Verification
                   </NavLink>
                 )}
@@ -175,7 +175,7 @@ export default function App() {
         )}
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8 pb-24 sm:px-6 md:py-10 md:pb-10">
+      <main className="mx-auto max-w-6xl px-4 py-6 pb-28 sm:px-6 md:py-10 md:pb-10">
         <Routes>
           <Route path="/" element={<GigList />} />
           <Route path="/create" element={<GigCreate />} />
@@ -194,20 +194,20 @@ export default function App() {
         </Routes>
       </main>
 
-      <nav className="fixed bottom-3 left-1/2 z-40 flex w-[94%] max-w-md -translate-x-1/2 items-center justify-between rounded-[20px] bg-card-bg/95 px-3 py-2.5 shadow-lift backdrop-blur-md md:hidden">
-        <NavLink to="/" className="text-xs font-semibold text-muted">
+      <nav className="fixed bottom-3 left-1/2 z-40 flex w-[94%] max-w-md -translate-x-1/2 items-center justify-between rounded-[20px] bg-card-bg/95 px-2 py-2.5 shadow-lift backdrop-blur-md md:hidden">
+        <NavLink to="/" className="rounded-2xl px-2 py-2 text-xs font-semibold text-muted">
           Home
         </NavLink>
-        <NavLink to="/favorites" className="text-xs font-semibold text-muted">
+        <NavLink to="/favorites" className="rounded-2xl px-2 py-2 text-xs font-semibold text-muted">
           Explore
         </NavLink>
-        <NavLink to="/orders" className="text-xs font-semibold text-muted">
+        <NavLink to="/orders" className="rounded-2xl px-2 py-2 text-xs font-semibold text-muted">
           Orders
         </NavLink>
-        <NavLink to="/messages" className="text-xs font-semibold text-muted">
+        <NavLink to="/messages" className="rounded-2xl px-2 py-2 text-xs font-semibold text-muted">
           Messages
         </NavLink>
-        <NavLink to="/profile" className="text-xs font-semibold text-muted">
+        <NavLink to="/profile" className="rounded-2xl px-2 py-2 text-xs font-semibold text-muted">
           Profile
         </NavLink>
       </nav>

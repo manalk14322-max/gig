@@ -187,9 +187,9 @@ function GigCard({ gig }) {
   return (
     <Link
       to={`/gig/${gig._id}`}
-      className="group card-premium overflow-hidden rounded-[24px] shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+      className="group card-premium overflow-hidden rounded-[20px] shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift sm:rounded-[24px]"
     >
-      <div className="relative h-52 overflow-hidden bg-soft">
+      <div className="relative h-44 overflow-hidden bg-soft sm:h-52">
         {gig.images?.[0] ? (
           <img
             src={gig.images[0]}
@@ -214,8 +214,8 @@ function GigCard({ gig }) {
         </div>
       </div>
 
-      <div className="space-y-4 p-5">
-        <div className="flex items-start justify-between gap-3">
+      <div className="space-y-4 p-4 sm:p-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
               {gig.quickTask ? 'Quick task' : `Delivery ${gig.deliveryDays} days`}
@@ -227,7 +227,7 @@ function GigCard({ gig }) {
 
         <p className="text-sm leading-6 text-muted line-clamp-2">{gig.description}</p>
 
-        <div className="flex items-center justify-between rounded-2xl bg-bg-light px-3 py-3">
+        <div className="flex flex-col gap-3 rounded-2xl bg-bg-light px-3 py-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-xs font-bold text-white">
               {gig.freelancer?.name ? initials(gig.freelancer.name) : 'U'}
@@ -252,7 +252,7 @@ function GigCard({ gig }) {
               </div>
             </div>
           </div>
-          <div className="text-right">
+          <div className="text-left sm:text-right">
             <p className="text-sm font-semibold text-primary">4.9</p>
             <p className="text-xs text-muted">Local support</p>
           </div>
@@ -302,7 +302,7 @@ export default function GigList() {
 
   return (
     <div className="space-y-6 pb-0 md:space-y-10">
-      <div className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] flex flex-wrap items-center gap-2 rounded-none border-y border-border-color bg-white px-6 py-1 text-xs font-semibold text-ink">
+      <div className="hide-scrollbar relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] flex items-center gap-2 overflow-x-auto border-y border-border-color bg-white px-4 py-2 text-xs font-semibold text-ink sm:px-6">
         <button
           type="button"
           onClick={() => setCategory('')}
@@ -329,8 +329,8 @@ export default function GigList() {
       <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden bg-bg-light">
         <div className="px-0 py-0">
           <div className="overflow-hidden border border-border-color bg-white shadow-lift">
-            <div className="grid min-h-[560px] gap-0 lg:grid-cols-[0.98fr,1.02fr]">
-              <div className="flex items-center px-6 py-12 sm:px-10 lg:px-16">
+            <div className="grid gap-0 lg:min-h-[560px] lg:grid-cols-[0.98fr,1.02fr]">
+              <div className="flex items-center px-4 py-10 sm:px-10 lg:px-16">
                 <div className="max-w-2xl space-y-5">
                   <div className="inline-flex items-center rounded-full bg-soft px-4 py-1.5 text-xs font-semibold text-primary">
                     Verified graduates only
@@ -338,20 +338,20 @@ export default function GigList() {
                   <p className="text-sm font-semibold text-muted">
                     {user ? `Welcome back, ${heroName}` : 'Welcome to UniHire'}
                   </p>
-                  <h1 className="font-display text-[2.8rem] font-semibold leading-[1.02] tracking-tight text-ink md:text-6xl">
+                  <h1 className="font-display text-4xl font-semibold leading-[1.06] tracking-tight text-ink sm:text-5xl md:text-6xl">
                     {t('heroTitle')}
                   </h1>
                   <p className="max-w-xl text-base leading-7 text-muted md:text-lg">
                     {t('heroSubtitle')}
                   </p>
-                  <div className="flex max-w-xl flex-col gap-3 rounded-[22px] border border-border-color bg-bg-light p-3 shadow-soft sm:flex-row">
+                  <div className="flex max-w-xl flex-col gap-3 rounded-[20px] border border-border-color bg-bg-light p-3 shadow-soft sm:flex-row sm:rounded-[22px]">
                     <input
                       className="min-h-12 flex-1 rounded-[16px] border border-transparent bg-white px-4 text-sm text-ink outline-none focus:border-primary"
                       placeholder="What do you need built?"
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
                     />
-                    <button className="rounded-[16px] bg-primary px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+                    <button className="rounded-[16px] bg-primary px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift sm:w-auto">
                       Search
                     </button>
                   </div>
@@ -367,11 +367,11 @@ export default function GigList() {
                       </button>
                     ))}
                   </div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Link to="/profile" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+                  <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-center">
+                    <Link to="/profile" className="rounded-full bg-primary px-6 py-3 text-center text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
                       Apply as seller
                     </Link>
-                    <a href="#marketplace" className="rounded-full border border-border-color bg-white px-6 py-3 text-sm font-semibold text-ink shadow-soft">
+                    <a href="#marketplace" className="rounded-full border border-border-color bg-white px-6 py-3 text-center text-sm font-semibold text-ink shadow-soft">
                       Browse gigs
                     </a>
                   </div>
@@ -382,14 +382,14 @@ export default function GigList() {
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[460px] bg-bg-light">
+              <div className="relative min-h-[300px] bg-bg-light sm:min-h-[380px] lg:min-h-[460px]">
                 <img
                   src={heroTeam}
                   alt="Verified Pakistani graduate talent"
                   className="absolute inset-0 h-full w-full object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-white/10 to-white/75" />
-                <div className="absolute bottom-6 left-6 right-6 rounded-[24px] border border-white/60 bg-white/90 p-5 shadow-lift backdrop-blur">
+                <div className="absolute bottom-4 left-4 right-4 rounded-[20px] border border-white/60 bg-white/90 p-4 shadow-lift backdrop-blur sm:bottom-6 sm:left-6 sm:right-6 sm:rounded-[24px] sm:p-5">
                   <p className="text-sm font-semibold text-ink">Trust-first marketplace</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {['Degree review', 'Approved gigs', 'Lower fees'].map((item) => (
@@ -417,12 +417,12 @@ export default function GigList() {
       </section>
 
       <section className="space-y-4">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Verified services</p>
             <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Admin-reviewed gigs from Pakistani graduates</h2>
           </div>
-          <button className="btn-ghost text-sm" onClick={() => setFilterOpen(true)} type="button">
+          <button className="btn-ghost w-full text-sm sm:w-auto" onClick={() => setFilterOpen(true)} type="button">
             Campus filters
           </button>
         </div>
@@ -435,12 +435,12 @@ export default function GigList() {
       </section>
 
       <section id="marketplace" className="scroll-mt-36 space-y-5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Marketplace</p>
             <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Popular graduate-powered services</h2>
           </div>
-          <button className="btn-ghost text-sm" onClick={() => setFilterOpen(true)} type="button">
+          <button className="btn-ghost w-full text-sm sm:w-auto" onClick={() => setFilterOpen(true)} type="button">
             Campus filters
           </button>
         </div>
@@ -473,12 +473,12 @@ export default function GigList() {
       </section>
 
       <section className="space-y-5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Explore</p>
             <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Built differently from open marketplaces</h2>
           </div>
-          <button className="btn-ghost text-sm">All categories</button>
+          <button className="btn-ghost w-full text-sm sm:w-auto">All categories</button>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {browseGroups.map((group) => (
@@ -500,15 +500,15 @@ export default function GigList() {
       </section>
 
 
-      <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden rounded-[28px] border border-border-color bg-card-bg shadow-soft">
-        <div className="grid gap-6 px-6 py-6 md:grid-cols-[1.1fr,0.9fr] md:items-center">
+      <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden border-y border-border-color bg-card-bg shadow-soft sm:rounded-[28px] sm:border">
+        <div className="grid gap-6 px-4 py-6 sm:px-6 md:grid-cols-[1.1fr,0.9fr] md:items-center">
           <div className="flex h-full flex-col justify-center gap-5">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Become a UniHire seller</p>
-            <h2 className="font-display text-3xl font-semibold text-ink">Turn your Pakistani degree into global freelance work</h2>
+            <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">Turn your Pakistani degree into global freelance work</h2>
             <p className="text-sm leading-6 text-muted">
               Apply with your BS or university details, complete profile verification, and publish gigs after admin approval.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid gap-3 sm:flex sm:flex-wrap">
               <Link to="/profile" className="btn-gradient text-sm">
                 Create your profile
               </Link>
@@ -522,11 +522,11 @@ export default function GigList() {
               ))}
             </div>
           </div>
-          <div className="rounded-[24px] bg-bg-light p-4">
+          <div className="rounded-[20px] bg-bg-light p-3 sm:rounded-[24px] sm:p-4">
             <img
               src={heroMagazineLight}
               alt="Student creator"
-              className="h-full w-full rounded-[20px] object-cover"
+              className="h-64 w-full rounded-[18px] object-cover sm:h-full sm:rounded-[20px]"
             />
           </div>
         </div>
@@ -582,7 +582,7 @@ export default function GigList() {
         >
           <div className="space-y-6">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Trust first</p>
-            <h2 className="font-display text-3xl font-semibold leading-tight">
+            <h2 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">
               A safer way to hire emerging Pakistani talent
             </h2>
             <p className="text-sm text-white/70 md:text-base">
@@ -600,7 +600,7 @@ export default function GigList() {
               Explore marketplace
             </a>
           </div>
-          <div className="relative min-h-[280px] overflow-hidden rounded-[22px] bg-white/5">
+          <div className="relative min-h-[220px] overflow-hidden rounded-[22px] bg-white/5 sm:min-h-[280px]">
             <img src={heroTeam} alt="Campus teams" className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
           </div>
@@ -617,7 +617,7 @@ export default function GigList() {
         }}
       >
         <div className="max-w-2xl space-y-4">
-          <h2 className="font-display text-3xl font-semibold">Show the world what verified Pakistani talent can build</h2>
+          <h2 className="font-display text-2xl font-semibold sm:text-3xl">Show the world what verified Pakistani talent can build</h2>
           <p className="text-sm text-white/70">
             Apply as a student seller, complete verification, and start earning from global clients with lower platform fees.
           </p>
@@ -682,7 +682,7 @@ export default function GigList() {
         ))}
       </section>
 
-      <footer className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] bg-[#0B0F1D] px-6 py-10 text-white shadow-lift md:px-10 -mb-24 md:-mb-10">
+      <footer className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] bg-[#0B0F1D] px-4 py-10 text-white shadow-lift sm:px-6 md:px-10 -mb-24 md:-mb-10">
         <div className="grid gap-8 md:grid-cols-[1.2fr,0.8fr,0.8fr,0.8fr]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">UniHire</p>
