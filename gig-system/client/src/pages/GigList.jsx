@@ -78,6 +78,13 @@ const platformAdvantages = [
   },
 ];
 
+const proofPoints = [
+  { value: 'BS+', label: 'minimum education review' },
+  { value: 'PK', label: 'Pakistani seller network' },
+  { value: '24h', label: 'admin response target' },
+  { value: 'Fair', label: 'lower commission model' },
+];
+
 const paymentLogos = [
   {
     name: 'Easypaisa',
@@ -339,9 +346,9 @@ export default function GigList() {
                     <Link to="/profile" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
                       Apply as a verified seller
                     </Link>
-                    <Link to="#marketplace" className="rounded-full border border-border-color bg-white px-6 py-3 text-sm font-semibold text-ink shadow-soft">
+                    <a href="#marketplace" className="rounded-full border border-border-color bg-white px-6 py-3 text-sm font-semibold text-ink shadow-soft">
                       Browse services
-                    </Link>
+                    </a>
                   </div>
                   <div className="grid gap-3 pt-2 sm:grid-cols-3">
                     {trustStats.map((stat) => (
@@ -384,6 +391,17 @@ export default function GigList() {
             <p className="mt-3 text-sm leading-6 text-muted">{item.description}</p>
           </div>
         ))}
+      </section>
+
+      <section className="rounded-[26px] border border-border-color bg-white p-4 shadow-soft md:p-5">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {proofPoints.map((item) => (
+            <div key={item.label} className="rounded-[20px] bg-bg-light px-5 py-4">
+              <p className="text-2xl font-semibold text-primary">{item.value}</p>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted">{item.label}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="space-y-4">
@@ -554,9 +572,9 @@ export default function GigList() {
                 </div>
               ))}
             </div>
-            <button className="inline-flex rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white/90 hover:bg-white/10">
+            <a href="#marketplace" className="inline-flex rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white/90 hover:bg-white/10">
               Explore marketplace
-            </button>
+            </a>
           </div>
           <div className="relative min-h-[280px] overflow-hidden rounded-[22px] bg-white/5">
             <img src={heroTeam} alt="Campus teams" className="absolute inset-0 h-full w-full object-cover" />
@@ -659,7 +677,7 @@ export default function GigList() {
       </footer>
 
       {filterOpen && (
-        <div className="fixed inset-0 z-40 bg-black/40 lg:hidden">
+        <div className="fixed inset-0 z-40 bg-black/40">
           <div className="absolute right-0 top-0 h-full w-80 bg-card-bg p-6 shadow-soft">
             <div className="flex items-center justify-between">
               <p className="font-semibold text-ink">Campus filters</p>
