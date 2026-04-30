@@ -137,7 +137,7 @@ export default function Profile() {
               >
                 {form.verifiedStudent ? 'Verified student' : 'Verification pending'}
               </span>
-              <span className="rounded-full bg-[#EEF2F7] px-4 py-2 text-xs font-semibold text-ink shadow-soft">
+              <span className="rounded-full bg-[#F3F7FA] px-4 py-2 text-xs font-semibold text-ink shadow-soft">
                 {form.role === 'seller' ? 'Seller profile' : 'Buyer profile'}
               </span>
               {form.university && (
@@ -155,7 +155,7 @@ export default function Profile() {
             { label: 'Student status', value: form.verifiedStudent ? 'Verified' : 'Pending' },
             { label: 'Gig access', value: form.role === 'seller' ? 'Unlock after completion' : 'Buyer mode' },
           ].map((item) => (
-            <div key={item.label} className="rounded-[22px] border border-border-color bg-[#EEF2F7] px-4 py-4">
+            <div key={item.label} className="rounded-[22px] border border-border-color bg-[#F3F7FA] px-4 py-4">
               <p className="text-xs uppercase tracking-[0.18em] text-muted">{item.label}</p>
               <p className="mt-2 text-lg font-semibold text-ink">{item.value}</p>
             </div>
@@ -250,12 +250,12 @@ export default function Profile() {
                   value={form.studentId}
                   onChange={(event) => setForm({ ...form, studentId: event.target.value })}
                 />
-                <div className="rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm text-muted">
+                <div className="rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm text-muted">
                   Verified student badge appears after review.
                 </div>
               </div>
 
-              <div className="mt-4 rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+              <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                 <p className="text-sm font-semibold text-ink">Upload verification</p>
                 <p className="mt-1 text-xs text-muted">
                   Add a clear university ID and a selfie. This is used for student verification.
@@ -334,7 +334,7 @@ export default function Profile() {
         <aside className="space-y-6 lg:sticky lg:top-24 h-fit">
           <section className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Trust preview</p>
-            <div className="mt-4 rounded-[22px] bg-gradient-to-r from-[#E3E9F0] to-[#EEF2F7] p-4">
+            <div className="mt-4 rounded-[22px] bg-gradient-to-r from-[#E6F4F1] to-[#F3F7FA] p-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-ink">Verification status</p>
@@ -352,26 +352,26 @@ export default function Profile() {
               </div>
             </div>
             <div className="mt-4 space-y-3">
-              <div className="rounded-[22px] bg-[#EEF2F7] p-4">
+              <div className="rounded-[22px] bg-[#F3F7FA] p-4">
                 <p className="text-sm text-muted">University</p>
                 <p className="mt-1 font-semibold text-ink">{form.university || 'Not added yet'}</p>
               </div>
-              <div className="rounded-[22px] bg-[#EEF2F7] p-4">
+              <div className="rounded-[22px] bg-[#F3F7FA] p-4">
                 <p className="text-sm text-muted">University email</p>
                 <p className="mt-1 font-semibold text-ink">{form.universityEmail || 'Not added yet'}</p>
               </div>
-              <div className="rounded-[22px] bg-[#EEF2F7] p-4">
+              <div className="rounded-[22px] bg-[#F3F7FA] p-4">
                 <p className="text-sm text-muted">Department</p>
                 <p className="mt-1 font-semibold text-ink">{form.department || 'Not added yet'}</p>
               </div>
-              <div className="rounded-[22px] bg-[#EEF2F7] p-4">
+              <div className="rounded-[22px] bg-[#F3F7FA] p-4">
                 <p className="text-sm text-muted">Student ID</p>
                 <p className="mt-1 font-semibold text-ink">{form.studentId || 'Not added yet'}</p>
               </div>
             </div>
           </section>
 
-          <section className="rounded-[28px] border border-border-color bg-[#EEF2F7] p-6 shadow-soft">
+          <section className="rounded-[28px] border border-border-color bg-[#F3F7FA] p-6 shadow-soft">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Checklist</p>
             <ul className="mt-4 space-y-3 text-sm text-muted">
               <li>Full name and role</li>

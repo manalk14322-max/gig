@@ -109,7 +109,7 @@ export default function Dashboard() {
           </div>
           {activeChat && (
             <form onSubmit={submitMessage} className="mt-4 space-y-2">
-              <div className="h-32 overflow-auto rounded-2xl border border-border-color bg-[#EEF2F7] p-3">
+              <div className="h-32 overflow-auto rounded-2xl border border-border-color bg-[#F3F7FA] p-3">
                 {activeChat.messages.map((msg) => (
                   <p key={msg._id} className="text-sm">
                     <strong>{msg.senderId === user.id ? 'You' : 'Them'}:</strong> {msg.text}
@@ -117,7 +117,7 @@ export default function Dashboard() {
                 ))}
               </div>
               <input
-                className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+                className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
                 placeholder="Type a message"
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}

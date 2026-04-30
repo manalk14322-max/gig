@@ -308,7 +308,7 @@ export default function GigCreate() {
       )}
 
       {user && !profileComplete && (
-        <div className="rounded-[24px] border border-border-color bg-[#EEF2F7] p-6 shadow-soft">
+        <div className="rounded-[24px] border border-border-color bg-[#F3F7FA] p-6 shadow-soft">
           <p className="font-semibold text-ink">Complete your student profile first</p>
           <p className="mt-1 text-sm text-muted">Add title, location, description, skills, and campus details to unlock gig creation.</p>
           <Link className="btn-secondary mt-4 inline-flex" to="/profile">
@@ -334,7 +334,7 @@ export default function GigCreate() {
             </div>
             {aiStatus && <p className="mt-4 text-sm text-primary">{aiStatus}</p>}
 
-            <div className="mt-4 rounded-[22px] border border-border-color bg-[#EEF2F7] p-4 text-sm text-muted">
+            <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4 text-sm text-muted">
               Gig creation is unlocked after a completed student profile with verified campus details.
             </div>
 
@@ -347,7 +347,7 @@ export default function GigCreate() {
                   className={`rounded-[22px] border p-4 text-left transition ${
                     step === item.id
                       ? 'border-secondary bg-[#F7F3EA] shadow-soft'
-                      : 'border-border-color bg-[#EEF2F7] hover:bg-[#E7EDF4]'
+                      : 'border-border-color bg-[#F3F7FA] hover:bg-[#E7EDF4]'
                   }`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">{item.title}</p>
@@ -361,7 +361,7 @@ export default function GigCreate() {
             </div>
           </div>
 
-          <aside className="border-t border-border-color bg-[#EEF2F7] p-5 lg:border-l lg:border-t-0 lg:sticky lg:top-24 h-fit">
+          <aside className="border-t border-border-color bg-[#F3F7FA] p-5 lg:border-l lg:border-t-0 lg:sticky lg:top-24 h-fit">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Preview</p>
             <div className="mt-4 overflow-hidden rounded-[24px] bg-primary shadow-lift">
               <div className="aspect-[3/4] w-full bg-black">
@@ -471,7 +471,7 @@ export default function GigCreate() {
                 onChange={(event) => setForm({ ...form, deliveryDays: event.target.value })}
               />
             </div>
-            <label className="mt-4 flex items-center gap-3 rounded-[20px] border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm font-semibold text-muted">
+            <label className="mt-4 flex items-center gap-3 rounded-[20px] border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-muted">
               <input
                 type="checkbox"
                 checked={form.quickTask}
@@ -502,10 +502,10 @@ export default function GigCreate() {
             </div>
             <div className="mt-5 space-y-4">
               {services.map((service, index) => (
-                <div key={`service-${index}`} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                <div key={`service-${index}`} className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                   <div className="flex items-center justify-between gap-3">
                     <input
-                      className="w-full rounded-full border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm"
+                      className="w-full rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
                       placeholder="Service title (logo, social kit, etc.)"
                       value={service.title}
                       onChange={(event) => handleServiceChange(index, 'title', event.target.value)}
@@ -523,14 +523,14 @@ export default function GigCreate() {
                   <div className="mt-3 grid gap-3 md:grid-cols-3">
                     <input
                       type="number"
-                      className="rounded-full border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm"
+                      className="rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
                       placeholder="Price"
                       value={service.price}
                       onChange={(event) => handleServiceChange(index, 'price', event.target.value)}
                     />
                     <input
                       type="number"
-                      className="rounded-full border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm"
+                      className="rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
                       placeholder="Duration (hours)"
                       value={service.durationHours}
                       onChange={(event) => handleServiceChange(index, 'durationHours', event.target.value)}
@@ -540,7 +540,7 @@ export default function GigCreate() {
                     {service.included.map((feature, fIdx) => (
                       <input
                         key={`feature-${index}-${fIdx}`}
-                      className="w-full rounded-full border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm"
+                      className="w-full rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
                         placeholder="Included feature"
                         value={feature}
                         onChange={(event) => handleIncludeChange(index, fIdx, event.target.value)}
@@ -584,7 +584,7 @@ export default function GigCreate() {
               <p className="text-xs text-muted">Video is optional. Add it later if you want a richer preview.</p>
             </div>
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
-              <div className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+              <div className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold text-ink">FAQs (optional)</p>
                   <button className="btn-ghost text-xs" type="button" onClick={addFaq}>
@@ -624,7 +624,7 @@ export default function GigCreate() {
                 </div>
               </div>
 
-              <div className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+              <div className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold text-ink">Buyer requirements (optional)</p>
                   <button className="btn-ghost text-xs" type="button" onClick={addRequirement}>
@@ -733,13 +733,13 @@ export default function GigCreate() {
                   </span>
                 )}
                 {sellerSummary.department && (
-              <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-ink">
+              <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-ink">
                     {sellerSummary.department}
                   </span>
                 )}
               </div>
             )}
-              <div className="mt-4 rounded-[22px] bg-[#EEF2F7] p-4">
+              <div className="mt-4 rounded-[22px] bg-[#F3F7FA] p-4">
               <p className="text-sm font-semibold text-ink">Portfolio links</p>
               <ul className="mt-2 space-y-1 text-xs text-primary">
                 {(sellerSummary.portfolio || ['Add portfolio links in your profile']).map((link) => (
@@ -749,7 +749,7 @@ export default function GigCreate() {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-border-color bg-[#EEF2F7] p-6 shadow-soft">
+          <div className="rounded-[28px] border border-border-color bg-[#F3F7FA] p-6 shadow-soft">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Campus checklist</p>
             <ul className="mt-4 space-y-3 text-sm text-muted">
               <li>Title, description, category, and tags</li>
@@ -762,7 +762,7 @@ export default function GigCreate() {
 
           <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Live checklist</p>
-            <div className="mt-4 rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+            <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-ink">Gig readiness</p>
@@ -772,7 +772,7 @@ export default function GigCreate() {
                 </div>
                 <span className="price-pill">{Math.round((checklistDone / checklistItems.length) * 100)}%</span>
               </div>
-              <div className="mt-3 h-2 w-full rounded-full bg-[#EEF2F7]">
+              <div className="mt-3 h-2 w-full rounded-full bg-[#F3F7FA]">
                 <div
                   className="h-2 rounded-full bg-primary transition-all"
                   style={{ width: `${(checklistDone / checklistItems.length) * 100}%` }}
@@ -781,7 +781,7 @@ export default function GigCreate() {
             </div>
             <div className="mt-4 space-y-3">
               {checklistItems.map((item) => (
-                <div key={item.label} className="flex items-center justify-between rounded-[18px] bg-[#EEF2F7] px-4 py-3">
+                <div key={item.label} className="flex items-center justify-between rounded-[18px] bg-[#F3F7FA] px-4 py-3">
                   <p className="text-sm text-ink">{item.label}</p>
                   <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${item.done ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                     {item.done ? 'Done' : 'Missing'}

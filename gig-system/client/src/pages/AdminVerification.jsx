@@ -45,7 +45,7 @@ export default function AdminVerification() {
             { label: 'Decision SLA', value: '24h' },
             { label: 'Queue status', value: pendingCount ? 'Active' : 'Clear' },
           ].map((item) => (
-            <div key={item.label} className="rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm">
+            <div key={item.label} className="rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm">
               <p className="text-xs uppercase tracking-[0.18em] text-muted">{item.label}</p>
               <p className="mt-2 text-lg font-semibold text-ink">{item.value}</p>
             </div>
@@ -70,13 +70,13 @@ export default function AdminVerification() {
                   </p>
                   {item.department && <p className="text-sm text-muted">{item.department}</p>}
                 </div>
-                <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-primary">
+                <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-primary">
                   {item.verificationStatus}
                 </span>
               </div>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-border-color bg-[#EEF2F7] p-3">
+                <div className="rounded-2xl border border-border-color bg-[#F3F7FA] p-3">
                   <p className="text-xs font-semibold text-muted">Student ID</p>
                   {item.verificationDocs?.idImage ? (
                     <img
@@ -94,7 +94,7 @@ export default function AdminVerification() {
                     </div>
                   )}
                 </div>
-                <div className="rounded-2xl border border-border-color bg-[#EEF2F7] p-3">
+                <div className="rounded-2xl border border-border-color bg-[#F3F7FA] p-3">
                   <p className="text-xs font-semibold text-muted">Selfie</p>
                   {item.verificationDocs?.selfieImage ? (
                     <img
@@ -117,7 +117,7 @@ export default function AdminVerification() {
               <div className="mt-4">
                 <label className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Decision note</label>
                 <input
-                  className="mt-2 w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2 text-sm"
+                  className="mt-2 w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2 text-sm"
                   placeholder="Add a quick reason for the decision..."
                   value={notes[item.id] || ''}
                   onChange={(event) => setNotes((prev) => ({ ...prev, [item.id]: event.target.value }))}
@@ -125,7 +125,7 @@ export default function AdminVerification() {
               </div>
 
               {item.verificationHistory?.length ? (
-                <div className="mt-4 rounded-2xl border border-border-color bg-[#EEF2F7] p-4">
+                <div className="mt-4 rounded-2xl border border-border-color bg-[#F3F7FA] p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Decision log</p>
                   <div className="mt-3 space-y-2 text-sm text-muted">
                     {item.verificationHistory.slice(-3).reverse().map((entry, index) => (
@@ -173,7 +173,7 @@ export default function AdminVerification() {
                 </button>
               </div>
             </div>
-            <div className="mt-4 overflow-hidden rounded-2xl border border-border-color bg-[#EEF2F7]">
+            <div className="mt-4 overflow-hidden rounded-2xl border border-border-color bg-[#F3F7FA]">
               <img
                 src={preview.src}
                 alt={preview.label}

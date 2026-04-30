@@ -1,10 +1,10 @@
 <svg width="640" height="480" viewBox="0 0 640 480" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="640" height="480" rx="32" fill="#ECFEFF"/>
-  <rect x="80" y="120" width="480" height="260" rx="28" fill="#0B1F3A"/>
+  <rect x="80" y="120" width="480" height="260" rx="28" fill="#102033"/>
   <rect x="120" y="160" width="200" height="40" rx="20" fill="#22D3EE"/>
   <rect x="120" y="220" width="360" height="28" rx="14" fill="#1E3A8A"/>
   <rect x="120" y="270" width="280" height="24" rx="12" fill="#6D28D9"/>
   <circle cx="470" cy="220" r="54" fill="#F59E0B"/>
-  <text x="430" y="228" font-family="Inter, Arial" font-size="18" font-weight="700" fill="#0B1F3A">PKR</text>
-  <text x="80" y="430" font-family="Poppins, Arial" font-size="22" font-weight="600" fill="#0B1F3A">Secure local payouts</text>
+  <text x="430" y="228" font-family="Inter, Arial" font-size="18" font-weight="700" fill="#102033">PKR</text>
+  <text x="80" y="430" font-family="Poppins, Arial" font-size="22" font-weight="600" fill="#102033">Secure local payouts</text>
 </svg>

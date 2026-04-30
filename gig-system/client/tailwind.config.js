@@ -7,20 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: '#F8F6F2',
-        primary: '#0B1F3A',
-        secondary: '#B88A2E',
-        accent: '#E6D7B8',
-        ink: '#111827',
-        muted: '#6B7280',
-        soft: '#D0DAE5',
-        'card-bg': '#BFCAD8',
-        'border-color': '#90A0B2',
-        'bg-light': '#EEF2F7',
+        base: '#F6F8FB',
+        primary: '#0F766E',
+        secondary: '#2563EB',
+        accent: '#F59E0B',
+        ink: '#102033',
+        muted: '#64748B',
+        soft: '#E6F4F1',
+        'card-bg': '#FFFFFF',
+        'border-color': '#D8E2EA',
+        'bg-light': '#F3F7FA',
       },
       boxShadow: {
-        soft: '0 24px 70px rgba(11, 31, 58, 0.12)',
-        lift: '0 18px 36px rgba(11, 31, 58, 0.16)',
+        soft: '0 18px 48px rgba(16, 32, 51, 0.08)',
+        lift: '0 24px 70px rgba(16, 32, 51, 0.14)',
       },
       borderRadius: {
         xl: '16px',

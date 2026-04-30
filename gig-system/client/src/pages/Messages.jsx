@@ -41,7 +41,7 @@ export default function Messages() {
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <input
-              className="flex-1 rounded-full border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm"
+              className="flex-1 rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
               placeholder="Type a message"
             />
             <button className="btn-primary text-sm">Send</button>

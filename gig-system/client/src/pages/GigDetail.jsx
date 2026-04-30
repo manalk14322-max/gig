@@ -104,12 +104,12 @@ export default function GigDetail() {
             <p className="mt-4 max-w-3xl text-base leading-7 text-muted md:text-lg">{gig.description}</p>
 
             <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-muted">
-            <span className="rounded-full bg-[#EEF2F7] px-3 py-2">Rating {gig.ratingAverage.toFixed(1)}</span>
-              <span className="rounded-full bg-[#EEF2F7] px-3 py-2">{gig.ratingCount} reviews</span>
-              <span className="rounded-full bg-[#EEF2F7] px-3 py-2">
+            <span className="rounded-full bg-[#F3F7FA] px-3 py-2">Rating {gig.ratingAverage.toFixed(1)}</span>
+              <span className="rounded-full bg-[#F3F7FA] px-3 py-2">{gig.ratingCount} reviews</span>
+              <span className="rounded-full bg-[#F3F7FA] px-3 py-2">
                 Delivery {gig.quickTask ? `${gig.quickDeliveryHours}h` : `${gig.deliveryDays}d`}
               </span>
-              <span className="rounded-full bg-[#EEF2F7] px-3 py-2">{gig.quickTask ? 'Instant option available' : 'Standard delivery'}</span>
+              <span className="rounded-full bg-[#F3F7FA] px-3 py-2">{gig.quickTask ? 'Instant option available' : 'Standard delivery'}</span>
             </div>
 
             <div className="mt-5 flex flex-wrap gap-2">
@@ -121,18 +121,18 @@ export default function GigDetail() {
             </div>
           </div>
 
-          <div className="border-t border-border-color bg-[#EEF2F7] p-5 md:p-6 lg:border-l lg:border-t-0">
+          <div className="border-t border-border-color bg-[#F3F7FA] p-5 md:p-6 lg:border-l lg:border-t-0">
             <div className="overflow-hidden rounded-[24px] border border-border-color bg-card-bg shadow-soft">
               <div className="relative h-[22rem] bg-black">
                 {gig.images?.[0] ? (
                   <img src={gig.images[0]} alt={gig.title} className="h-full w-full object-cover" />
                 ) : (
-                  <div className="grid h-full place-items-center bg-gradient-to-br from-[#1B2742] via-[#223052] to-[#0B1F3A] text-white/80">
+                  <div className="grid h-full place-items-center bg-gradient-to-br from-[#102033] via-[#0F766E] to-[#102033] text-white/80">
                     Premium gig preview
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                <div className="absolute inset-x-4 bottom-4 rounded-[22px] bg-[#EEF2F7]/95 p-4 shadow-soft">
+                <div className="absolute inset-x-4 bottom-4 rounded-[22px] bg-[#F3F7FA]/95 p-4 shadow-soft">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">Student seller</p>
@@ -148,12 +148,12 @@ export default function GigDetail() {
                           {studentLabel(gig.freelancer)}
                         </span>
                         {gig.freelancer?.university && (
-                          <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-[11px] font-semibold text-ink">
+                          <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-[11px] font-semibold text-ink">
                             {gig.freelancer.university}
                           </span>
                         )}
                         {gig.freelancer?.department && (
-                          <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-[11px] font-semibold text-ink">
+                          <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-[11px] font-semibold text-ink">
                             {gig.freelancer.department}
                           </span>
                         )}
@@ -168,15 +168,15 @@ export default function GigDetail() {
 
               <div className="space-y-4 p-5">
                 <div className="grid grid-cols-3 gap-3 text-center text-sm">
-                  <div className="rounded-2xl bg-[#EEF2F7] px-3 py-3">
+                  <div className="rounded-2xl bg-[#F3F7FA] px-3 py-3">
                     <p className="text-muted">Price</p>
                     <p className="mt-1 font-semibold text-ink">{money(gig.basePrice)}</p>
                   </div>
-                  <div className="rounded-2xl bg-[#EEF2F7] px-3 py-3">
+                  <div className="rounded-2xl bg-[#F3F7FA] px-3 py-3">
                     <p className="text-muted">Rating</p>
                     <p className="mt-1 font-semibold text-ink">{gig.ratingAverage.toFixed(1)}</p>
                   </div>
-                  <div className="rounded-2xl bg-[#EEF2F7] px-3 py-3">
+                  <div className="rounded-2xl bg-[#F3F7FA] px-3 py-3">
                     <p className="text-muted">Speed</p>
                     <p className="mt-1 font-semibold text-ink">{gig.quickTask ? `${gig.quickDeliveryHours}h` : `${gig.deliveryDays}d`}</p>
                   </div>
@@ -214,7 +214,7 @@ export default function GigDetail() {
                 </video>
               </div>
             ) : (
-                <div className="mt-5 overflow-hidden rounded-[24px] border border-dashed border-border-color bg-[#EEF2F7] p-8 text-center text-sm text-muted">
+                <div className="mt-5 overflow-hidden rounded-[24px] border border-dashed border-border-color bg-[#F3F7FA] p-8 text-center text-sm text-muted">
                 This gig has no video yet. Add a short intro later for a richer preview.
               </div>
             )}
@@ -227,7 +227,7 @@ export default function GigDetail() {
             </div>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               {gig.services?.map((item, index) => (
-                <div key={`${item.title}-${index}`} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                <div key={`${item.title}-${index}`} className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-semibold text-ink">{item.title}</p>
@@ -253,7 +253,7 @@ export default function GigDetail() {
               </div>
               <div className="mt-5 space-y-4">
                 {gig.faqs.map((item, index) => (
-                  <div key={`faq-${index}`} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                  <div key={`faq-${index}`} className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                     <p className="font-semibold text-ink">{item.question}</p>
                     <p className="mt-2 text-sm text-muted">{item.answer}</p>
                   </div>
@@ -270,7 +270,7 @@ export default function GigDetail() {
               </div>
               <div className="mt-5 space-y-4">
                 {gig.requirements.map((item, index) => (
-                  <div key={`req-${index}`} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                  <div key={`req-${index}`} className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-semibold text-ink">{item.question}</p>
                       <span className="rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary">
@@ -332,7 +332,7 @@ export default function GigDetail() {
 
             <div className="mt-6 grid gap-4">
               {reviews.map((review) => (
-                <div key={review._id} className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+                <div key={review._id} className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-ink">{review.reviewer}</p>
                     <span className="text-sm font-semibold text-primary">{review.rating} stars</span>
@@ -361,7 +361,7 @@ export default function GigDetail() {
                 {studentLabel(gig.freelancer)}
               </span>
               {gig.freelancer?.department && (
-                <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-ink">
+                <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-ink">
                   {gig.freelancer.department}
                 </span>
               )}
@@ -373,7 +373,7 @@ export default function GigDetail() {
             )}
             <div className="mt-5 grid gap-3">
                 {['Top campus creator', 'Fast replies', 'Trusted by local buyers'].map((item) => (
-                <div key={item} className="rounded-2xl bg-[#EEF2F7] px-4 py-3 text-sm text-muted">
+                <div key={item} className="rounded-2xl bg-[#F3F7FA] px-4 py-3 text-sm text-muted">
                   {item}
                 </div>
               ))}

@@ -20,7 +20,7 @@ import brandLogo from './assets/brand/photos/unihire-logo.jpg';
 
 const navLink = ({ isActive }) =>
   `px-3 py-2 rounded-full text-sm font-medium transition ${
-    isActive ? 'bg-[#F5F7FB] text-ink' : 'text-muted hover:text-ink'
+    isActive ? 'bg-soft text-primary' : 'text-muted hover:text-primary'
   }`;
 
 export default function App() {
@@ -37,7 +37,7 @@ export default function App() {
             </div>
             <div className="hidden sm:block">
               <p className="text-base font-semibold text-ink">UniHire</p>
-              <p className="text-[11px] text-muted">Premium freelance marketplace</p>
+              <p className="text-[11px] text-muted">Verified Pakistani talent</p>
             </div>
           </div>
 
@@ -86,13 +86,13 @@ export default function App() {
             </NavLink>
             <NavLink
               to="/wallet"
-              className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-white/80 hover:text-white transition"
+              className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-ink hover:text-primary transition"
             >
               Wallet
             </NavLink>
             <NavLink
               to="/settings"
-              className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-white/80 hover:text-white transition"
+              className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-ink hover:text-primary transition"
             >
               Settings
             </NavLink>

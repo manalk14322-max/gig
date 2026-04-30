@@ -8,5 +8,5 @@
   <rect x="4" y="4" width="44" height="44" rx="14" fill="url(#g1)"/>
   <path d="M22 16V36C22 37.1046 22.8954 38 24 38H36" stroke="white" stroke-width="3" stroke-linecap="round"/>
   <path d="M30 16V36" stroke="white" stroke-width="3" stroke-linecap="round"/>
-  <text x="58" y="34" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="600" fill="#0B1F3A">UniHire</text>
+  <text x="58" y="34" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="600" fill="#102033">UniHire</text>
 </svg>

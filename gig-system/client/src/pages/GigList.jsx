@@ -177,17 +177,17 @@ function GigCard({ gig }) {
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#F4EBDD] via-white to-[#EDE4D6] text-sm font-semibold text-muted">
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-soft via-white to-[#EFF6FF] text-sm font-semibold text-muted">
             Premium gig preview
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 p-4">
           <div className="flex items-center justify-between gap-3">
-            <span className="rounded-full bg-[#EEF2F7]/95 px-3 py-1 text-xs font-semibold text-primary shadow-soft">
+            <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-primary shadow-soft">
               {gig.category}
             </span>
-            <span className="rounded-full bg-[#EEF2F7]/95 px-3 py-1 text-xs font-semibold text-ink shadow-soft">
+            <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-ink shadow-soft">
               {gig.ratingAverage.toFixed(1)} rating
             </span>
           </div>
@@ -207,7 +207,7 @@ function GigCard({ gig }) {
 
         <p className="text-sm leading-6 text-muted line-clamp-2">{gig.description}</p>
 
-        <div className="flex items-center justify-between rounded-2xl bg-[#EEF2F7] px-3 py-3">
+        <div className="flex items-center justify-between rounded-2xl bg-bg-light px-3 py-3">
           <div className="flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-xs font-bold text-white">
               {gig.freelancer?.name ? initials(gig.freelancer.name) : 'U'}
@@ -225,7 +225,7 @@ function GigCard({ gig }) {
                   {gig.freelancer?.verifiedStudent ? 'Verified student' : 'Student seller'}
                 </span>
                 {gig.freelancer?.university && (
-                  <span className="rounded-full bg-[#EEF2F7] px-2 py-0.5 text-[10px] font-semibold text-ink">
+                  <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-ink">
                     {gig.freelancer.university}
                   </span>
                 )}
@@ -238,7 +238,7 @@ function GigCard({ gig }) {
           </div>
         </div>
 
-        <div className="w-full rounded-full border border-primary/15 bg-gradient-to-r from-[#F4E9D0] to-white px-4 py-3 text-center text-sm font-semibold text-primary transition group-hover:border-primary/30 group-hover:bg-primary group-hover:text-white">
+        <div className="w-full rounded-full border border-primary/15 bg-gradient-to-r from-soft to-white px-4 py-3 text-center text-sm font-semibold text-primary transition group-hover:border-primary/30 group-hover:bg-primary group-hover:text-white">
           Quick Hire
         </div>
       </div>
@@ -286,7 +286,7 @@ export default function GigList() {
         <button
           type="button"
           onClick={() => setCategory('')}
-          className="whitespace-nowrap rounded-full bg-[#F5F7FB] px-4 py-1.5 text-muted hover:text-primary border border-[#E2E8F0]"
+          className="whitespace-nowrap rounded-full bg-bg-light px-4 py-1.5 text-muted hover:text-primary border border-border-color"
         >
           Trending now
         </button>
@@ -298,7 +298,7 @@ export default function GigList() {
             className={`whitespace-nowrap rounded-full px-4 py-1.5 transition ${
               category === item
                 ? 'bg-primary text-white shadow-soft'
-                : 'bg-[#F5F7FB] text-muted hover:bg-white hover:text-primary border border-[#E2E8F0]'
+                : 'bg-bg-light text-muted hover:bg-white hover:text-primary border border-border-color'
             }`}
           >
             {item}
@@ -306,7 +306,7 @@ export default function GigList() {
         ))}
       </div>
 
-      <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden bg-[#EEF2F7]">
+      <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden bg-bg-light">
         <div className="px-0 py-0">
           <div className="overflow-hidden border border-border-color bg-white shadow-lift">
             <div className="grid min-h-[620px] gap-0 lg:grid-cols-[1.05fr,1fr]">
@@ -324,7 +324,7 @@ export default function GigList() {
                   <p className="max-w-xl text-base leading-7 text-muted md:text-lg">
                     {t('heroSubtitle')}
                   </p>
-                  <div className="flex max-w-xl flex-col gap-3 rounded-[22px] border border-border-color bg-[#F8FAFC] p-3 shadow-soft sm:flex-row">
+                  <div className="flex max-w-xl flex-col gap-3 rounded-[22px] border border-border-color bg-bg-light p-3 shadow-soft sm:flex-row">
                     <input
                       className="min-h-12 flex-1 rounded-[16px] border border-transparent bg-white px-4 text-sm text-ink outline-none focus:border-primary"
                       placeholder="Search web design, logo, video editing..."
@@ -353,7 +353,7 @@ export default function GigList() {
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[460px] bg-[#F2F5FA]">
+              <div className="relative min-h-[460px] bg-bg-light">
                 <img
                   src={heroTeam}
                   alt="Verified Pakistani graduate talent"
@@ -364,7 +364,7 @@ export default function GigList() {
                   <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Why clients trust it</p>
                   <div className="mt-4 grid gap-3 sm:grid-cols-3">
                     {['BS/degree check', 'Admin-approved gigs', 'Lower commission'].map((item) => (
-                      <div key={item} className="rounded-[16px] bg-[#EEF2F7] px-3 py-3 text-sm font-semibold text-ink">
+                      <div key={item} className="rounded-[16px] bg-soft px-3 py-3 text-sm font-semibold text-primary">
                         {item}
                       </div>
                     ))}
@@ -480,7 +480,7 @@ export default function GigList() {
               ))}
             </div>
           </div>
-          <div className="rounded-[24px] bg-[#EDEFF4] p-4">
+          <div className="rounded-[24px] bg-bg-light p-4">
             <img
               src={heroMagazineLight}
               alt="Student creator"
@@ -593,7 +593,7 @@ export default function GigList() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {pakCategoryTiles.map((tile) => (
             <div key={tile.label} className="card card-hover card-premium flex items-center gap-3 p-4">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#EEF2F7] text-xs font-semibold text-ink">
+              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-soft text-xs font-semibold text-primary">
                 {tile.icon}
               </span>
               <div>
@@ -671,7 +671,7 @@ export default function GigList() {
               <div>
                 <p className="text-sm font-semibold text-muted">Category</p>
                 <select
-                  className="mt-3 w-full rounded-xl border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm focus:border-primary focus:outline-none"
+                  className="mt-3 w-full rounded-xl border border-border-color bg-bg-light px-4 py-3 text-sm focus:border-primary focus:outline-none"
                   value={category}
                   onChange={(event) => setCategory(event.target.value)}
                 >
@@ -697,7 +697,7 @@ export default function GigList() {
               </div>
               <button
                 className={`rounded-full border px-4 py-3 text-sm font-semibold transition ${
-                  quickOnly ? 'border-primary bg-primary text-white' : 'border-border-color bg-[#EEF2F7] text-ink'
+                  quickOnly ? 'border-primary bg-primary text-white' : 'border-border-color bg-bg-light text-ink'
                 }`}
                 onClick={() => setQuickOnly((prev) => !prev)}
                 type="button"

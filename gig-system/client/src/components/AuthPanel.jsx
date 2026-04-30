@@ -179,17 +179,17 @@ export default function AuthPanel() {
 
           <div className="mt-5 space-y-3">
             <button
-              className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition disabled:cursor-not-allowed disabled:opacity-70"
               type="button"
               onClick={handleGoogle}
               disabled={googleLoading}
             >
               {googleLoading ? 'Connecting Google...' : 'Continue with Google'}
             </button>
-            <button className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition" type="button">
+            <button className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition" type="button">
               Continue with Apple
             </button>
-            <button className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition" type="button">
+            <button className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition" type="button">
               Continue with Facebook
             </button>
             <p className="text-xs text-muted">
@@ -205,7 +205,7 @@ export default function AuthPanel() {
           <form onSubmit={submit} className="mt-4 space-y-3">
         {mode === 'signup' && (
           <input
-            className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+            className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
             placeholder="Full name"
             value={form.name}
             onChange={(event) => setForm({ ...form, name: event.target.value })}
@@ -213,7 +213,7 @@ export default function AuthPanel() {
           />
         )}
         <input
-          className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+          className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
           placeholder={mode === 'signup' ? 'Email' : 'Email'}
           type="email"
           value={form.email}
@@ -221,7 +221,7 @@ export default function AuthPanel() {
           required
         />
         <input
-          className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+          className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
           placeholder="Password"
           type="password"
           value={form.password}
@@ -231,7 +231,7 @@ export default function AuthPanel() {
         {mode === 'signup' && (
           <>
             <select
-              className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+              className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
               value={form.role}
               onChange={(event) => setForm({ ...form, role: event.target.value })}
             >
@@ -241,13 +241,13 @@ export default function AuthPanel() {
             {form.role === 'seller' && (
               <div className="space-y-3">
                 <input
-                  className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+                  className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
                   placeholder="University"
                   value={form.university}
                   onChange={(event) => setForm({ ...form, university: event.target.value })}
                 />
                 <input
-                  className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+                  className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
                   placeholder="University email"
                   type="email"
                   value={form.universityEmail}
@@ -256,13 +256,13 @@ export default function AuthPanel() {
                 <p className="text-xs text-muted">{universityHint}</p>
                 <div className="grid gap-3 md:grid-cols-2">
                   <input
-                    className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+                    className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
                     placeholder="Department"
                     value={form.department}
                     onChange={(event) => setForm({ ...form, department: event.target.value })}
                   />
                   <input
-                    className="w-full rounded-2xl border border-border-color bg-[#EEF2F7] px-4 py-2"
+                    className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
                     placeholder="Student ID / Roll number"
                     value={form.studentId}
                     onChange={(event) => setForm({ ...form, studentId: event.target.value })}
@@ -278,7 +278,7 @@ export default function AuthPanel() {
           </form>
 
           {needsVerification && mode === 'signup' && (
-            <div className="mt-4 rounded-3xl border border-border-color bg-[#EEF2F7] p-4">
+            <div className="mt-4 rounded-3xl border border-border-color bg-[#F3F7FA] p-4">
               <p className="text-sm font-semibold text-ink">{t('campusVerification')}</p>
               <p className="mt-1 text-xs text-muted">
                 {verificationHint || 'Enter the demo OTP 123456 to verify your campus account.'}

@@ -56,7 +56,7 @@ export default function SellerProfile() {
       <section className="overflow-hidden rounded-[28px] border border-border-color bg-card-bg shadow-soft">
         <div className="grid gap-0 lg:grid-cols-[1.4fr,0.6fr]">
           <div className="relative">
-            <div className="h-40 bg-gradient-to-r from-[#F4E9D0] via-white to-[#E7D8B8] md:h-52" />
+            <div className="h-40 bg-gradient-to-r from-[#E6F4F1] via-white to-[#DDEBFF] md:h-52" />
             <div className="p-6 md:p-8">
               <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
                 <div className="-mt-20 flex items-end gap-4 md:-mt-24">
@@ -81,17 +81,17 @@ export default function SellerProfile() {
                         Decision: {seller.verificationStatus || 'pending'}
                       </span>
                       {seller.university && (
-                        <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-ink">
+                        <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-ink">
                           {seller.university}
                         </span>
                       )}
                       {seller.department && (
-                        <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-ink">
+                        <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-ink">
                           {seller.department}
                         </span>
                       )}
                       {seller.studentId && (
-                      <span className="rounded-full bg-[#EEF2F7] px-3 py-1 text-xs font-semibold text-primary shadow-soft">
+                      <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-primary shadow-soft">
                           ID {seller.studentId}
                         </span>
                       )}
@@ -111,7 +111,7 @@ export default function SellerProfile() {
                   { label: 'On-time delivery', value: '96%' },
                   { label: 'Repeat clients', value: '52%' },
                 ].map((stat) => (
-                  <div key={stat.label} className="rounded-[22px] border border-border-color bg-[#EEF2F7] px-4 py-4">
+                  <div key={stat.label} className="rounded-[22px] border border-border-color bg-[#F3F7FA] px-4 py-4">
                     <p className="text-xs uppercase tracking-[0.18em] text-muted">{stat.label}</p>
                     <p className="mt-2 text-2xl font-semibold text-ink">{stat.value}</p>
                   </div>
@@ -131,7 +131,7 @@ export default function SellerProfile() {
             </div>
           </div>
 
-          <aside className="border-t border-border-color bg-[#EEF2F7] p-6 lg:border-l lg:border-t-0 lg:p-8">
+          <aside className="border-t border-border-color bg-[#F3F7FA] p-6 lg:border-l lg:border-t-0 lg:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Quick summary</p>
             <p className="mt-3 text-3xl font-semibold text-ink">{money(15000)}</p>
             <p className="mt-2 text-sm text-muted">Average delivery: 3 days</p>
@@ -146,7 +146,7 @@ export default function SellerProfile() {
                 </p>
               </div>
               {(seller.university || seller.department) && (
-                <div className="rounded-[22px] border border-border-color bg-[#EEF2F7] p-4 text-sm text-muted">
+                <div className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4 text-sm text-muted">
                   <p className="font-semibold text-ink">Campus identity</p>
                   <p className="mt-2">{seller.university || 'University not added'}</p>
                   <p className="mt-1">{seller.department || 'Department not added'}</p>
@@ -164,7 +164,7 @@ export default function SellerProfile() {
               </div>
             )}
 
-            <div className="mt-4 rounded-[22px] border border-border-color bg-[#EEF2F7] p-4">
+            <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
               <p className="text-sm font-semibold text-ink">Verification history</p>
               {verificationLog.length ? (
                 <div className="mt-3 space-y-2 text-sm text-muted">
@@ -211,8 +211,8 @@ export default function SellerProfile() {
         </div>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {portfolioItems.map((item) => (
-            <div key={item} className="overflow-hidden rounded-[22px] border border-border-color bg-[#EEF2F7] shadow-soft">
-              <div className="h-40 bg-gradient-to-br from-[#DCE3EC] via-[#EEF2F7] to-[#C9D3DF]" />
+            <div key={item} className="overflow-hidden rounded-[22px] border border-border-color bg-[#F3F7FA] shadow-soft">
+              <div className="h-40 bg-gradient-to-br from-[#E6F4F1] via-[#F3F7FA] to-[#DDEBFF]" />
               <div className="p-4">
                 <p className="font-semibold text-ink">{item}</p>
                 <p className="mt-1 text-sm text-muted">A polished case study sample for buyers.</p>
@@ -244,12 +244,12 @@ export default function SellerProfile() {
                     className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#1B2742] via-[#223052] to-[#0B1F3A] text-white/70">
+                  <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#102033] via-[#0F766E] to-[#102033] text-white/70">
                     Gig preview
                   </div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent p-4">
-                      <span className="rounded-full bg-[#EEF2F7]/95 px-3 py-1 text-xs font-semibold text-primary shadow-soft">
+                      <span className="rounded-full bg-[#F3F7FA]/95 px-3 py-1 text-xs font-semibold text-primary shadow-soft">
                     {gig.category}
                   </span>
                 </div>

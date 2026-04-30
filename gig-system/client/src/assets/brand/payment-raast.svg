@@ -2,5 +2,5 @@
   <rect width="120" height="36" rx="18" fill="#ECFEFF"/>
   <circle cx="20" cy="18" r="12" fill="#0EA5E9"/>
   <text x="20" y="22" text-anchor="middle" font-family="Inter, Arial" font-size="10" font-weight="700" fill="white">R</text>
-  <text x="42" y="22" font-family="Inter, Arial" font-size="12" font-weight="600" fill="#0B1F3A">Raast</text>
+  <text x="42" y="22" font-family="Inter, Arial" font-size="12" font-weight="600" fill="#102033">Raast</text>
 </svg>
