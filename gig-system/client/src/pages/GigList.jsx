@@ -23,6 +23,8 @@ const topCategories = [
   'AI Services',
 ];
 
+const quickSearches = ['Logo design', 'React website', 'WordPress fixes', 'Video editing', 'SEO help'];
+
 const browseGroups = [
   {
     title: 'For global clients',
@@ -83,6 +85,23 @@ const proofPoints = [
   { value: 'PK', label: 'Pakistani seller network' },
   { value: '24h', label: 'admin response target' },
   { value: 'Fair', label: 'lower commission model' },
+];
+
+const startCards = [
+  {
+    audience: 'For clients',
+    title: 'Hire with more confidence',
+    description: 'Browse admin-reviewed gigs from verified Pakistani graduates and compare clear packages before ordering.',
+    action: 'Browse verified gigs',
+    href: '#marketplace',
+  },
+  {
+    audience: 'For students',
+    title: 'Apply once, then publish gigs',
+    description: 'Share your university and portfolio details. After review, your services can go live for global clients.',
+    action: 'Start seller profile',
+    href: '/profile',
+  },
 ];
 
 const paymentLogos = [
@@ -342,6 +361,19 @@ export default function GigList() {
                       Search talent
                     </button>
                   </div>
+                  <div className="flex max-w-xl flex-wrap items-center gap-2 text-xs font-semibold text-muted">
+                    <span>Popular:</span>
+                    {quickSearches.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => setQuery(item)}
+                        className="rounded-full border border-border-color bg-white px-3 py-1.5 text-ink transition hover:border-primary hover:text-primary"
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
                   <div className="flex flex-wrap items-center gap-3">
                     <Link to="/profile" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
                       Apply as a verified seller
@@ -383,6 +415,31 @@ export default function GigList() {
         </div>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-2">
+        {startCards.map((card) => {
+          const content = (
+            <>
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">{card.audience}</p>
+              <h2 className="mt-3 text-2xl font-semibold text-ink">{card.title}</h2>
+              <p className="mt-3 text-sm leading-6 text-muted">{card.description}</p>
+              <span className="mt-5 inline-flex rounded-full bg-soft px-4 py-2 text-sm font-semibold text-primary">
+                {card.action}
+              </span>
+            </>
+          );
+
+          return card.href.startsWith('#') ? (
+            <a key={card.title} href={card.href} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+              {content}
+            </a>
+          ) : (
+            <Link key={card.title} to={card.href} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+              {content}
+            </Link>
+          );
+        })}
+      </section>
+
       <section className="grid gap-4 md:grid-cols-3">
         {platformAdvantages.map((item) => (
           <div key={item.title} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft">
@@ -422,7 +479,7 @@ export default function GigList() {
         </div>
       </section>
 
-      <section id="marketplace" className="space-y-5">
+      <section id="marketplace" className="scroll-mt-36 space-y-5">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Marketplace</p>
@@ -438,6 +495,18 @@ export default function GigList() {
             <p className="font-semibold text-ink">No gigs matched your filters.</p>
             <p className="mt-2 text-sm text-muted">{emptyStateCopy[0]}</p>
             <p className="mt-1 text-sm text-muted">{emptyStateCopy[1]}</p>
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('');
+                setCategory('');
+                setQuickOnly(false);
+                setPriceRange([0, 70000]);
+              }}
+              className="mt-5 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white"
+            >
+              Clear filters
+            </button>
           </div>
         ) : (
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
