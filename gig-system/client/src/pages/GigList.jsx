@@ -27,12 +27,12 @@ const quickSearches = ['Logo', 'React site', 'WordPress', 'Video edits'];
 
 const browseGroups = [
   {
-    title: 'For global clients',
-    items: ['Verified Pakistani talent', 'Admin-approved gigs', 'Clear packages', 'Lower platform fees'],
+    title: 'For Pakistani buyers',
+    items: ['Verified local talent', 'Admin-approved gigs', 'Clear packages', 'Lower platform fees'],
   },
   {
-    title: 'For Pakistani graduates',
-    items: ['BS degree review', 'University details', 'Portfolio check', 'Gig approval'],
+    title: 'For Pakistani students',
+    items: ['FSc+ review', 'College details', 'Portfolio check', 'Gig approval'],
   },
   {
     title: 'Popular services',
@@ -47,26 +47,26 @@ const browseGroups = [
 const verificationSteps = [
   {
     title: 'Apply with education details',
-    description: 'Students share university, degree, department, graduation year, and portfolio links.',
+    description: 'Students share FSc, college, university, skills, and portfolio details.',
   },
   {
     title: 'UniHire reviews the profile',
-    description: 'The admin team checks identity signals, academic details, and seller readiness before approval.',
+    description: 'The admin team checks Pakistani identity, education level, and seller readiness before approval.',
   },
   {
     title: 'Gig goes live after approval',
-    description: 'Only trusted sellers can publish services, so clients see a cleaner and safer marketplace.',
+    description: 'Only trusted local sellers can publish services, so Pakistani buyers see a safer marketplace.',
   },
 ];
 
 const platformAdvantages = [
   {
     title: 'Lower commission for sellers',
-    description: 'The platform is designed so Pakistani freelancers keep more of what they earn.',
+    description: 'The platform is designed so Pakistani students keep more of what they earn.',
   },
   {
-    title: 'Pakistani talent, global clients',
-    description: 'Freelancers are local and verified, while clients can hire from anywhere in the world.',
+    title: 'Pakistani talent, Pakistani buyers',
+    description: 'Both sellers and buyers are local, so hiring feels familiar, safer, and easier to support.',
   },
   {
     title: 'Quality before quantity',
@@ -75,8 +75,8 @@ const platformAdvantages = [
 ];
 
 const proofPoints = [
-  { value: 'BS+', label: 'minimum education review' },
-  { value: 'PK', label: 'Pakistani seller network' },
+  { value: 'FSc+', label: 'minimum education review' },
+  { value: 'PK', label: 'Pakistani buyer and seller network' },
   { value: '24h', label: 'admin response target' },
   { value: 'Fair', label: 'lower commission model' },
 ];
@@ -85,14 +85,14 @@ const startCards = [
   {
     audience: 'For clients',
     title: 'Hire with more confidence',
-    description: 'Browse admin-reviewed gigs from verified Pakistani graduates and compare clear packages before ordering.',
+    description: 'Browse admin-reviewed gigs from verified Pakistani students and compare clear packages before ordering.',
     action: 'Browse verified gigs',
     href: '#marketplace',
   },
   {
     audience: 'For students',
     title: 'Apply once, then publish gigs',
-    description: 'Share your university and portfolio details. After review, your services can go live for global clients.',
+    description: 'Share your FSc, college, university, and portfolio details. After review, your services can go live for Pakistani buyers.',
     action: 'Start seller profile',
     href: '/profile',
   },
@@ -119,13 +119,13 @@ const paymentLogos = [
 
 const growthCards = [
   {
-    title: 'Verified Pakistani graduates',
-    description: 'Build trust with degree details, university badges, department tags, and public portfolios.',
+    title: 'Verified Pakistani students',
+    description: 'Build trust with FSc, college, university, skills, and public portfolios.',
     image: heroTeam,
   },
   {
-    title: 'Built for global clients',
-    description: 'Clear packages, professional profiles, and delivery terms make hiring easier from any country.',
+    title: 'Built for Pakistani buyers',
+    description: 'Clear packages, professional profiles, and local context make hiring easier across Pakistan.',
     image: heroMagazineLight,
   },
   {
@@ -166,7 +166,7 @@ const pakCategoryTiles = [
 
 const emptyStateCopy = [
   'Try a broader category or clear the filters to see more gigs.',
-  'Verified Pakistani student sellers, quick delivery, and transparent packages are always available.',
+  'Verified Pakistani student sellers, quick delivery, and transparent packages are available for Pakistani buyers.',
 ];
 
 function money(value) {
@@ -333,7 +333,7 @@ export default function GigList() {
               <div className="flex items-center px-4 py-8 sm:px-10 sm:py-12 lg:px-16">
                 <div className="mx-auto max-w-2xl space-y-4 text-center sm:space-y-5 sm:text-left">
                   <div className="inline-flex items-center rounded-full bg-soft px-4 py-1.5 text-xs font-semibold text-primary">
-                    Verified graduates only
+                    Pakistan-only users
                   </div>
                   <p className="text-sm font-semibold text-muted">
                     {user ? `Welcome back, ${heroName}` : 'Welcome to UniHire'}
@@ -376,7 +376,7 @@ export default function GigList() {
                     </a>
                   </div>
                   <div className="hidden flex-wrap gap-2 pt-2 text-xs font-semibold text-muted sm:flex">
-                    <span className="rounded-full bg-white px-4 py-2 shadow-soft">Pakistani students</span>
+                    <span className="rounded-full bg-white px-4 py-2 shadow-soft">FSc+ students</span>
                     <span className="rounded-full bg-white px-4 py-2 shadow-soft">Admin checked</span>
                     <span className="rounded-full bg-white px-4 py-2 shadow-soft">Fair fees</span>
                   </div>
@@ -385,14 +385,14 @@ export default function GigList() {
               <div className="relative min-h-[250px] bg-bg-light sm:min-h-[380px] lg:min-h-[460px]">
                 <img
                   src={heroTeam}
-                  alt="Verified Pakistani graduate talent"
+                  alt="Verified Pakistani student talent"
                   className="absolute inset-0 h-full w-full object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-white/0 to-white/20 sm:bg-gradient-to-l sm:from-black/20 sm:via-white/10 sm:to-white/75" />
                 <div className="absolute bottom-4 left-4 right-4 rounded-[20px] border border-white/60 bg-white/90 p-4 shadow-lift backdrop-blur sm:bottom-6 sm:left-6 sm:right-6 sm:rounded-[24px] sm:p-5">
                   <p className="text-sm font-semibold text-ink">Trust-first marketplace</p>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {['Degree review', 'Approved gigs', 'Lower fees'].map((item) => (
+                    {['FSc+ review', 'Approved gigs', 'Lower fees'].map((item) => (
                       <span key={item} className="rounded-full bg-soft px-3 py-2 text-xs font-semibold text-primary">
                         {item}
                       </span>
@@ -420,7 +420,7 @@ export default function GigList() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Verified services</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Admin-reviewed gigs from Pakistani graduates</h2>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Admin-reviewed gigs from Pakistani students</h2>
           </div>
           <button className="btn-ghost w-full text-sm sm:w-auto" onClick={() => setFilterOpen(true)} type="button">
             Campus filters
@@ -438,7 +438,7 @@ export default function GigList() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Marketplace</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Popular graduate-powered services</h2>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Popular student-powered services</h2>
           </div>
           <button className="btn-ghost w-full text-sm sm:w-auto" onClick={() => setFilterOpen(true)} type="button">
             Campus filters
@@ -504,9 +504,9 @@ export default function GigList() {
         <div className="grid gap-6 px-4 py-6 sm:px-6 md:grid-cols-[1.1fr,0.9fr] md:items-center">
           <div className="flex h-full flex-col justify-center gap-5">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Become a UniHire seller</p>
-            <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">Turn your Pakistani degree into global freelance work</h2>
+            <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">Turn your Pakistani education into local freelance work</h2>
             <p className="text-sm leading-6 text-muted">
-              Apply with your BS or university details, complete profile verification, and publish gigs after admin approval.
+              Apply with your FSc, college, or university details, complete verification, and publish gigs after admin approval.
             </p>
             <div className="grid gap-3 sm:flex sm:flex-wrap">
               <Link to="/profile" className="btn-gradient text-sm">
@@ -583,10 +583,10 @@ export default function GigList() {
           <div className="space-y-6">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Trust first</p>
             <h2 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">
-              A safer way to hire emerging Pakistani talent
+              A safer way for Pakistanis to hire emerging student talent
             </h2>
             <p className="text-sm text-white/70 md:text-base">
-              UniHire is not an open sign-up board. Sellers are reviewed, gig quality is checked, and clients get a clearer path to trusted graduate freelancers.
+              UniHire is not an open sign-up board. Sellers are reviewed, gig quality is checked, and Pakistani buyers get a clearer path to trusted student freelancers.
             </p>
             <div className="grid gap-5 sm:grid-cols-2">
               {supportCards.map((card) => (
@@ -617,9 +617,9 @@ export default function GigList() {
         }}
       >
         <div className="max-w-2xl space-y-4">
-          <h2 className="font-display text-2xl font-semibold sm:text-3xl">Show the world what verified Pakistani talent can build</h2>
+          <h2 className="font-display text-2xl font-semibold sm:text-3xl">Show Pakistan what verified student talent can build</h2>
           <p className="text-sm text-white/70">
-            Apply as a student seller, complete verification, and start earning from global clients with lower platform fees.
+            Apply as a student seller, complete verification, and start earning from Pakistani buyers with lower platform fees.
           </p>
           <Link to="/create" className="inline-flex rounded-full bg-white/10 px-5 py-3 text-sm font-semibold text-white">
             Get started
@@ -630,7 +630,7 @@ export default function GigList() {
       <section className="space-y-5">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Pakistan categories</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">High-demand services from verified Pakistani talent</h2>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">High-demand services from verified Pakistani students</h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {pakCategoryTiles.map((tile) => (
@@ -686,9 +686,9 @@ export default function GigList() {
         <div className="grid gap-8 md:grid-cols-[1.2fr,0.8fr,0.8fr,0.8fr]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">UniHire</p>
-            <p className="mt-3 text-lg font-semibold">Pakistan's verified graduate freelance marketplace</p>
+            <p className="mt-3 text-lg font-semibold">Pakistan's verified student freelance marketplace</p>
             <p className="mt-2 text-sm text-white/70">
-              Global clients hire trusted Pakistani students and graduates through reviewed profiles, approved gigs, and fairer fees.
+              Pakistani buyers hire trusted local students through reviewed profiles, approved gigs, and fairer fees.
             </p>
             <div className="mt-5 space-y-2 text-sm text-white/70">
               <p>Phone: 03185756022</p>

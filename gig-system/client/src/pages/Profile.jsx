@@ -101,7 +101,7 @@ export default function Profile() {
   const submitVerification = async () => {
     setVerifyStatus('');
     if (!idImage || !selfieImage) {
-      setVerifyStatus('Please upload both your university ID and a selfie.');
+      setVerifyStatus('Please upload your student ID or education proof and a selfie.');
       return;
     }
     setVerifying(true);
@@ -126,7 +126,7 @@ export default function Profile() {
                 {t('profileTitle')}
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-muted md:text-base">
-                Add your campus identity, seller details, and portfolio so buyers trust you before you create a gig.
+                Add your Pakistani student identity, seller details, and portfolio so local buyers trust you before you create a gig.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -225,20 +225,20 @@ export default function Profile() {
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               <input
                 className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
-                placeholder="University"
+                placeholder="College / University / Institute"
                 value={form.university}
                 onChange={(event) => setForm({ ...form, university: event.target.value })}
               />
               <input
                 className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
-                placeholder="University email"
+                placeholder="Education email (optional if not available)"
                 type="email"
                 value={form.universityEmail}
                 onChange={(event) => setForm({ ...form, universityEmail: event.target.value })}
               />
               <input
                 className="rounded-2xl border border-[#E5E7EB] px-4 py-3 md:col-span-2"
-                placeholder="Department"
+                placeholder="Class / Department / Program"
                 value={form.department}
                 onChange={(event) => setForm({ ...form, department: event.target.value })}
               />
@@ -258,18 +258,18 @@ export default function Profile() {
               <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                 <p className="text-sm font-semibold text-ink">Upload verification</p>
                 <p className="mt-1 text-xs text-muted">
-                  Add a clear university ID and a selfie. This is used for student verification.
+                  Add a clear student ID, FSc/college/university proof, and a selfie. This is used for student verification.
                 </p>
                 <div className="mt-3 grid gap-4 md:grid-cols-2">
                   <label className="flex flex-col gap-2 text-xs font-semibold text-muted">
-                    University ID
+                    Student ID / education proof
                     <input
                       type="file"
                       accept="image/*"
                       className="rounded-2xl border border-border-color bg-white px-4 py-2 text-sm"
                       onChange={(event) => handleFile(event.target.files?.[0], setIdImage)}
                     />
-                    {idImage && <img src={idImage} alt="University ID" className="h-24 w-full rounded-2xl object-cover" />}
+                    {idImage && <img src={idImage} alt="Student ID or education proof" className="h-24 w-full rounded-2xl object-cover" />}
                   </label>
                   <label className="flex flex-col gap-2 text-xs font-semibold text-muted">
                     Selfie
@@ -353,15 +353,15 @@ export default function Profile() {
             </div>
             <div className="mt-4 space-y-3">
               <div className="rounded-[22px] bg-[#F3F7FA] p-4">
-                <p className="text-sm text-muted">University</p>
+                <p className="text-sm text-muted">College / University / Institute</p>
                 <p className="mt-1 font-semibold text-ink">{form.university || 'Not added yet'}</p>
               </div>
               <div className="rounded-[22px] bg-[#F3F7FA] p-4">
-                <p className="text-sm text-muted">University email</p>
+                <p className="text-sm text-muted">Education email</p>
                 <p className="mt-1 font-semibold text-ink">{form.universityEmail || 'Not added yet'}</p>
               </div>
               <div className="rounded-[22px] bg-[#F3F7FA] p-4">
-                <p className="text-sm text-muted">Department</p>
+                <p className="text-sm text-muted">Class / Department / Program</p>
                 <p className="mt-1 font-semibold text-ink">{form.department || 'Not added yet'}</p>
               </div>
               <div className="rounded-[22px] bg-[#F3F7FA] p-4">
@@ -375,7 +375,7 @@ export default function Profile() {
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Checklist</p>
             <ul className="mt-4 space-y-3 text-sm text-muted">
               <li>Full name and role</li>
-              <li>University, department, and student ID</li>
+              <li>FSc, college, university, or institute details</li>
               <li>Short bio and portfolio</li>
               <li>Seller profile ready for gig creation</li>
             </ul>

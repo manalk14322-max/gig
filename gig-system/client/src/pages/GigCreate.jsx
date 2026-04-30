@@ -106,7 +106,6 @@ export default function GigCreate() {
     !!profile.description &&
     (profile.skills || []).length > 0 &&
     !!profile.university &&
-    !!profile.universityEmail &&
     !!profile.department &&
     !!profile.studentId &&
     (profile.verifiedStudent || profile.verificationStatus === 'verified') &&
@@ -311,7 +310,7 @@ export default function GigCreate() {
             <div className="mt-4 rounded-[22px] bg-white p-4 shadow-soft">
               <p className="text-lg font-semibold text-ink">{sellerSummary.name}</p>
               <p className="mt-1 text-sm text-muted">{sellerSummary.title || 'Complete your profile'}</p>
-              <p className="mt-1 text-xs text-muted">{sellerSummary.university || 'University details required'}</p>
+              <p className="mt-1 text-xs text-muted">{sellerSummary.university || 'FSc, college, or university details required'}</p>
               <span
                 className={`mt-4 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                   profileComplete ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
@@ -368,7 +367,7 @@ export default function GigCreate() {
             <StepShell
               eyebrow="Step 1"
               title="Gig basics"
-              helper="Keep the first impression clear. Tell clients exactly what you can deliver."
+              helper="Keep the first impression clear. Tell Pakistani buyers exactly what you can deliver."
             >
               <Field label="Gig title" helper="Example: I will build a responsive React landing page">
                 <input
@@ -737,7 +736,7 @@ export default function GigCreate() {
           <div className="rounded-[24px] border border-border-color bg-bg-light p-5">
             <p className="text-sm font-semibold text-ink">Publishing rule</p>
             <p className="mt-2 text-sm leading-6 text-muted">
-              Only verified Pakistani student sellers can publish. Draft fields still work so the gig can be prepared before approval.
+              Only verified Pakistani students from FSc level and above can publish. Draft fields still work so the gig can be prepared before approval.
             </p>
           </div>
         </aside>

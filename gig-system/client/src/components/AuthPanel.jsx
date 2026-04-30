@@ -30,7 +30,7 @@ export default function AuthPanel() {
   const universityHint = useMemo(
     () =>
       isSellerSignup
-        ? 'Use your approved Pakistani university email (e.g. giki.edu.pk, nust.edu.pk, lums.edu.pk).'
+        ? 'FSc, college, or university students can apply. Add a Pakistani education email if available.'
         : '',
     [isSellerSignup],
   );
@@ -56,9 +56,9 @@ export default function AuthPanel() {
         const response = await signup(form);
         if (response?.verificationRequired) {
           setNeedsVerification(true);
-          setVerificationHint(response?.verificationHint || 'Complete campus verification to unlock gig creation.');
+          setVerificationHint(response?.verificationHint || 'Complete student verification to unlock gig creation.');
           setOtpCooldown(60);
-          setStatus(response?.verificationHint || 'Complete campus verification to unlock gig creation.');
+          setStatus(response?.verificationHint || 'Complete student verification to unlock gig creation.');
         } else {
           setNeedsVerification(false);
           setStatus('Account created successfully.');
@@ -242,13 +242,13 @@ export default function AuthPanel() {
               <div className="space-y-3">
                 <input
                   className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
-                  placeholder="University"
+                  placeholder="College / University / Institute"
                   value={form.university}
                   onChange={(event) => setForm({ ...form, university: event.target.value })}
                 />
                 <input
                   className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
-                  placeholder="University email"
+                  placeholder="Education email (optional if not available)"
                   type="email"
                   value={form.universityEmail}
                   onChange={(event) => setForm({ ...form, universityEmail: event.target.value })}
@@ -257,7 +257,7 @@ export default function AuthPanel() {
                 <div className="grid gap-3 md:grid-cols-2">
                   <input
                     className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-2"
-                    placeholder="Department"
+                    placeholder="Class / Department / Program"
                     value={form.department}
                     onChange={(event) => setForm({ ...form, department: event.target.value })}
                   />
@@ -281,7 +281,7 @@ export default function AuthPanel() {
             <div className="mt-4 rounded-3xl border border-border-color bg-[#F3F7FA] p-4">
               <p className="text-sm font-semibold text-ink">{t('campusVerification')}</p>
               <p className="mt-1 text-xs text-muted">
-                {verificationHint || 'Enter the demo OTP 123456 to verify your campus account.'}
+                {verificationHint || 'Enter the demo OTP 123456 to verify your student account.'}
               </p>
               <div className="mt-3 flex flex-col gap-3 sm:flex-row">
                 <input

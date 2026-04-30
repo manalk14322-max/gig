@@ -17,6 +17,7 @@ import BuyerProfile from './pages/BuyerProfile.jsx';
 import AdminVerification from './pages/AdminVerification.jsx';
 import OAuthCallback from './pages/OAuthCallback.jsx';
 import brandLogo from './assets/brand/photos/unihire-logo.jpg';
+import { useLang } from './context/LangContext.jsx';
 
 const navLink = ({ isActive }) =>
   `inline-flex whitespace-nowrap px-3 py-2 rounded-full text-sm font-medium transition ${
@@ -25,6 +26,7 @@ const navLink = ({ isActive }) =>
 
 export default function App() {
   const { user } = useAuth();
+  const { lang, setLang, speak, t } = useLang();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -37,7 +39,7 @@ export default function App() {
             </div>
             <div className="min-w-0">
               <p className="truncate text-base font-semibold text-ink">UniHire</p>
-              <p className="truncate text-[11px] text-muted">Verified Pakistani talent</p>
+              <p className="truncate text-[11px] text-muted">Pakistan-only marketplace</p>
             </div>
           </div>
 
@@ -59,7 +61,7 @@ export default function App() {
               <span className="text-sm font-semibold text-muted">Search</span>
               <input
                 className="w-full border-none bg-transparent text-sm text-ink placeholder:text-muted focus:outline-none"
-                placeholder="What service are you looking for today?"
+                placeholder={t('searchPlaceholder')}
               />
               <button className="grid h-9 min-w-[2.25rem] place-items-center rounded-full bg-primary px-3 text-xs font-bold text-white">
                 Go
@@ -69,9 +71,21 @@ export default function App() {
 
           <div className="hidden flex-shrink-0 items-center gap-3 lg:flex">
             <div className="hidden items-center gap-2 text-muted xl:flex">
-              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white text-xs font-bold">N</button>
-              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white text-xs font-bold">M</button>
-              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white text-xs font-bold">S</button>
+              {['en', 'ur', 'ps'].map((item) => (
+                <button
+                  key={item}
+                  className={`grid h-9 min-w-9 place-items-center rounded-full border px-2 text-xs font-bold ${
+                    lang === item ? 'border-primary bg-soft text-primary' : 'border-border-color bg-white'
+                  }`}
+                  onClick={() => setLang(item)}
+                  type="button"
+                >
+                  {item.toUpperCase()}
+                </button>
+              ))}
+              <button className="grid h-9 min-w-9 place-items-center rounded-full border border-border-color bg-white px-2 text-xs font-bold" onClick={() => speak()} type="button">
+                VO
+              </button>
             </div>
             {user ? (
               <div className="flex items-center gap-2">
@@ -90,7 +104,7 @@ export default function App() {
                   Login
                 </NavLink>
                 <NavLink to="/create" className="btn-gradient text-sm">
-                  Apply
+                  {t('navApply')}
                 </NavLink>
               </>
             )}
@@ -99,31 +113,31 @@ export default function App() {
 
         <nav className="mx-auto hidden max-w-6xl items-center gap-1 overflow-x-auto px-4 pb-3 sm:px-6 lg:flex">
           <NavLink to="/" className={navLink} end>
-            Marketplace
+            {t('navMarketplace')}
           </NavLink>
           <NavLink to="/favorites" className={navLink}>
-            Saved
+            {t('navSaved')}
           </NavLink>
           <NavLink to="/create" className={navLink}>
-            Create Gig
+            {t('navCreate')}
           </NavLink>
           <NavLink to="/dashboard" className={navLink}>
-            Dashboard
+            {t('navDashboard')}
           </NavLink>
           <NavLink to="/orders" className={navLink}>
-            Orders
+            {t('navOrders')}
           </NavLink>
           <NavLink to="/messages" className={navLink}>
-            Messages
+            {t('navMessages')}
           </NavLink>
           <NavLink to="/profile" className={navLink}>
-            Profile
+            {t('navProfile')}
           </NavLink>
           <NavLink to="/wallet" className={navLink}>
-            Wallet
+            {t('navWallet')}
           </NavLink>
           <NavLink to="/settings" className={navLink}>
-            Settings
+            {t('navSettings')}
           </NavLink>
           {user?.role === 'admin' && (
             <NavLink to="/admin/verification" className={navLink}>
@@ -142,40 +156,60 @@ export default function App() {
                   </div>
                   <div>
                     <p className="text-base font-semibold">UniHire</p>
-                    <p className="text-xs text-muted">Verified talent</p>
+                    <p className="text-xs text-muted">Pakistan only</p>
                   </div>
                 </div>
                 <button className="grid h-10 w-10 place-items-center rounded-full bg-bg-light text-xl leading-none" onClick={() => setMobileOpen(false)} type="button" aria-label="Close menu">
                   x
                 </button>
               </div>
+              <div className="mt-5 rounded-2xl border border-border-color bg-bg-light p-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Language</p>
+                <div className="mt-3 grid grid-cols-4 gap-2">
+                  {['en', 'ur', 'ps'].map((item) => (
+                    <button
+                      key={item}
+                      className={`rounded-full px-3 py-2 text-xs font-bold ${
+                        lang === item ? 'bg-primary text-white' : 'bg-white text-ink'
+                      }`}
+                      onClick={() => setLang(item)}
+                      type="button"
+                    >
+                      {item.toUpperCase()}
+                    </button>
+                  ))}
+                  <button className="rounded-full bg-white px-3 py-2 text-xs font-bold text-ink" onClick={() => speak()} type="button">
+                    VO
+                  </button>
+                </div>
+              </div>
               <div className="mt-6 flex flex-col gap-2 text-sm font-semibold text-ink">
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/" onClick={() => setMobileOpen(false)}>
-                  Marketplace
+                  {t('navMarketplace')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/favorites" onClick={() => setMobileOpen(false)}>
-                  Saved
+                  {t('navSaved')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/create" onClick={() => setMobileOpen(false)}>
-                  Create Gig
+                  {t('navCreate')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/dashboard" onClick={() => setMobileOpen(false)}>
-                  Dashboard
+                  {t('navDashboard')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/orders" onClick={() => setMobileOpen(false)}>
-                  Orders
+                  {t('navOrders')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/messages" onClick={() => setMobileOpen(false)}>
-                  Messages
+                  {t('navMessages')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/profile" onClick={() => setMobileOpen(false)}>
-                  Profile
+                  {t('navProfile')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/wallet" onClick={() => setMobileOpen(false)}>
-                  Wallet
+                  {t('navWallet')}
                 </NavLink>
                 <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/settings" onClick={() => setMobileOpen(false)}>
-                  Settings
+                  {t('navSettings')}
                 </NavLink>
                 {user?.role === 'admin' && (
                   <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/admin/verification" onClick={() => setMobileOpen(false)}>
@@ -189,7 +223,7 @@ export default function App() {
                     Login
                   </NavLink>
                   <NavLink to="/create" className="btn-gradient w-full text-sm" onClick={() => setMobileOpen(false)}>
-                    Apply as seller
+                    {t('navApply')} as seller
                   </NavLink>
                 </div>
               )}
