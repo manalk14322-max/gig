@@ -23,7 +23,7 @@ const topCategories = [
   'AI Services',
 ];
 
-const quickSearches = ['Logo design', 'React website', 'WordPress fixes', 'Video editing', 'SEO help'];
+const quickSearches = ['Logo', 'React site', 'WordPress', 'Video edits'];
 
 const browseGroups = [
   {
@@ -42,12 +42,6 @@ const browseGroups = [
     title: 'Trust system',
     items: ['Human verification', 'Secure orders', 'Local payouts', 'Client protection'],
   },
-];
-
-const trustStats = [
-  { label: 'Seller type', value: 'Pakistani graduates' },
-  { label: 'Gig status', value: 'Admin reviewed' },
-  { label: 'Platform fee', value: 'Lower commission' },
 ];
 
 const verificationSteps = [
@@ -335,11 +329,11 @@ export default function GigList() {
       <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden bg-bg-light">
         <div className="px-0 py-0">
           <div className="overflow-hidden border border-border-color bg-white shadow-lift">
-            <div className="grid min-h-[620px] gap-0 lg:grid-cols-[1.05fr,1fr]">
-              <div className="flex items-center px-6 py-14 sm:px-10 lg:px-16">
-                <div className="max-w-2xl space-y-6">
-                  <div className="inline-flex items-center rounded-full bg-soft px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-secondary">
-                    Pakistan-only verified sellers
+            <div className="grid min-h-[560px] gap-0 lg:grid-cols-[0.98fr,1.02fr]">
+              <div className="flex items-center px-6 py-12 sm:px-10 lg:px-16">
+                <div className="max-w-2xl space-y-5">
+                  <div className="inline-flex items-center rounded-full bg-soft px-4 py-1.5 text-xs font-semibold text-primary">
+                    Verified graduates only
                   </div>
                   <p className="text-sm font-semibold text-muted">
                     {user ? `Welcome back, ${heroName}` : 'Welcome to UniHire'}
@@ -353,16 +347,15 @@ export default function GigList() {
                   <div className="flex max-w-xl flex-col gap-3 rounded-[22px] border border-border-color bg-bg-light p-3 shadow-soft sm:flex-row">
                     <input
                       className="min-h-12 flex-1 rounded-[16px] border border-transparent bg-white px-4 text-sm text-ink outline-none focus:border-primary"
-                      placeholder="Search web design, logo, video editing..."
+                      placeholder="What do you need built?"
                       value={query}
                       onChange={(event) => setQuery(event.target.value)}
                     />
                     <button className="rounded-[16px] bg-primary px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
-                      Search talent
+                      Search
                     </button>
                   </div>
-                  <div className="flex max-w-xl flex-wrap items-center gap-2 text-xs font-semibold text-muted">
-                    <span>Popular:</span>
+                  <div className="flex max-w-xl flex-wrap items-center gap-2 text-xs font-semibold">
                     {quickSearches.map((item) => (
                       <button
                         key={item}
@@ -376,19 +369,16 @@ export default function GigList() {
                   </div>
                   <div className="flex flex-wrap items-center gap-3">
                     <Link to="/profile" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
-                      Apply as a verified seller
+                      Apply as seller
                     </Link>
                     <a href="#marketplace" className="rounded-full border border-border-color bg-white px-6 py-3 text-sm font-semibold text-ink shadow-soft">
-                      Browse services
+                      Browse gigs
                     </a>
                   </div>
-                  <div className="grid gap-3 pt-2 sm:grid-cols-3">
-                    {trustStats.map((stat) => (
-                      <div key={stat.label} className="rounded-[18px] border border-border-color bg-white p-4 shadow-soft">
-                        <p className="text-lg font-semibold text-ink">{stat.value}</p>
-                        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted">{stat.label}</p>
-                      </div>
-                    ))}
+                  <div className="flex flex-wrap gap-2 pt-2 text-xs font-semibold text-muted">
+                    <span className="rounded-full bg-white px-4 py-2 shadow-soft">Pakistani students</span>
+                    <span className="rounded-full bg-white px-4 py-2 shadow-soft">Admin checked</span>
+                    <span className="rounded-full bg-white px-4 py-2 shadow-soft">Fair fees</span>
                   </div>
                 </div>
               </div>
@@ -400,12 +390,12 @@ export default function GigList() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-white/10 to-white/75" />
                 <div className="absolute bottom-6 left-6 right-6 rounded-[24px] border border-white/60 bg-white/90 p-5 shadow-lift backdrop-blur">
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Why clients trust it</p>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                    {['BS/degree check', 'Admin-approved gigs', 'Lower commission'].map((item) => (
-                      <div key={item} className="rounded-[16px] bg-soft px-3 py-3 text-sm font-semibold text-primary">
+                  <p className="text-sm font-semibold text-ink">Trust-first marketplace</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {['Degree review', 'Approved gigs', 'Lower fees'].map((item) => (
+                      <span key={item} className="rounded-full bg-soft px-3 py-2 text-xs font-semibold text-primary">
                         {item}
-                      </div>
+                      </span>
                     ))}
                   </div>
                 </div>
