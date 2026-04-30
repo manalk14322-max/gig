@@ -19,7 +19,7 @@ import OAuthCallback from './pages/OAuthCallback.jsx';
 import brandLogo from './assets/brand/photos/unihire-logo.jpg';
 
 const navLink = ({ isActive }) =>
-  `px-3 py-2 rounded-full text-sm font-medium transition ${
+  `inline-flex whitespace-nowrap px-3 py-2 rounded-full text-sm font-medium transition ${
     isActive ? 'bg-soft text-primary' : 'text-muted hover:text-primary'
   }`;
 
@@ -31,7 +31,7 @@ export default function App() {
     <div className="min-h-screen bg-base">
       <header className="sticky top-0 z-50 border-b border-border-color lux-blur text-ink">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="flex flex-shrink-0 items-center gap-3">
             <div className="h-11 w-11 overflow-hidden rounded-2xl border border-border-color bg-white shadow-soft">
               <img src={brandLogo} alt="UniHire" className="h-full w-full object-cover" />
             </div>
@@ -42,77 +42,36 @@ export default function App() {
           </div>
 
           <button
-            className="ml-auto inline-flex h-10 items-center justify-center rounded-full border border-[#E5E7EB] px-4 text-sm font-semibold lg:hidden"
+            className="ml-auto inline-flex h-10 items-center justify-center rounded-full border border-border-color px-4 text-sm font-semibold lg:hidden"
             onClick={() => setMobileOpen(true)}
             type="button"
           >
             Menu
           </button>
 
-          <div className="hidden lg:flex flex-1 items-center px-4">
-            <div className="flex w-full max-w-[560px] items-center gap-3 rounded-full border border-border-color bg-white px-4 py-2 shadow-soft">
-              <span className="text-muted">Search</span>
+          <div className="hidden min-w-0 flex-1 items-center px-4 lg:flex">
+            <div className="mx-auto flex w-full max-w-[520px] items-center gap-3 rounded-full border border-border-color bg-white px-4 py-2 shadow-soft">
+              <span className="text-sm font-semibold text-muted">Search</span>
               <input
                 className="w-full border-none bg-transparent text-sm text-ink placeholder:text-muted focus:outline-none"
                 placeholder="What service are you looking for today?"
               />
-              <button className="grid h-9 w-9 place-items-center rounded-full bg-ink text-white">
-                🔍
+              <button className="grid h-9 min-w-[2.25rem] place-items-center rounded-full bg-primary px-3 text-xs font-bold text-white">
+                Go
               </button>
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-2 flex-nowrap">
-            <NavLink to="/" className={navLink} end>
-              Marketplace
-            </NavLink>
-            <NavLink to="/favorites" className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-ink hover:text-primary transition">
-              Saved
-            </NavLink>
-            <NavLink to="/create" className={navLink}>
-              Create Gig
-            </NavLink>
-            <NavLink to="/dashboard" className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-ink hover:text-primary transition">
-              Dashboard
-            </NavLink>
-            <NavLink to="/orders" className={navLink}>
-              Orders
-            </NavLink>
-            <NavLink to="/messages" className={navLink}>
-              Messages
-            </NavLink>
-            <NavLink to="/profile" className={navLink}>
-              Profile
-            </NavLink>
-            <NavLink
-              to="/wallet"
-              className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-ink hover:text-primary transition"
-            >
-              Wallet
-            </NavLink>
-            <NavLink
-              to="/settings"
-              className="hidden xl:inline-flex px-4 py-2 rounded-full text-sm font-semibold text-ink hover:text-primary transition"
-            >
-              Settings
-            </NavLink>
-            {user?.role === 'admin' && (
-              <NavLink to="/admin/verification" className={navLink}>
-                Verification
-              </NavLink>
-            )}
-          </nav>
-
-          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-            <div className="flex items-center gap-3 text-muted">
-              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white">🔔</button>
-              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white">✉️</button>
-              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white">♡</button>
+          <div className="hidden flex-shrink-0 items-center gap-3 lg:flex">
+            <div className="hidden items-center gap-2 text-muted xl:flex">
+              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white text-xs font-bold">N</button>
+              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white text-xs font-bold">M</button>
+              <button className="grid h-9 w-9 place-items-center rounded-full border border-border-color bg-white text-xs font-bold">S</button>
             </div>
             {user ? (
               <div className="flex items-center gap-2">
                 {user.verifiedStudent && (
-                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  <span className="hidden rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 xl:inline-flex">
                     Verified
                   </span>
                 )}
@@ -126,12 +85,47 @@ export default function App() {
                   Login
                 </NavLink>
                 <NavLink to="/create" className="btn-gradient text-sm">
-                  Switch to Selling
+                  Apply
                 </NavLink>
               </>
             )}
           </div>
         </div>
+
+        <nav className="mx-auto hidden max-w-6xl items-center gap-1 overflow-x-auto px-4 pb-3 sm:px-6 lg:flex">
+          <NavLink to="/" className={navLink} end>
+            Marketplace
+          </NavLink>
+          <NavLink to="/favorites" className={navLink}>
+            Saved
+          </NavLink>
+          <NavLink to="/create" className={navLink}>
+            Create Gig
+          </NavLink>
+          <NavLink to="/dashboard" className={navLink}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/orders" className={navLink}>
+            Orders
+          </NavLink>
+          <NavLink to="/messages" className={navLink}>
+            Messages
+          </NavLink>
+          <NavLink to="/profile" className={navLink}>
+            Profile
+          </NavLink>
+          <NavLink to="/wallet" className={navLink}>
+            Wallet
+          </NavLink>
+          <NavLink to="/settings" className={navLink}>
+            Settings
+          </NavLink>
+          {user?.role === 'admin' && (
+            <NavLink to="/admin/verification" className={navLink}>
+              Verification
+            </NavLink>
+          )}
+        </nav>
 
         {mobileOpen && (
           <div className="fixed inset-0 z-50 bg-black/40 lg:hidden">
