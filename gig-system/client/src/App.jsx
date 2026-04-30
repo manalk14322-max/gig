@@ -31,22 +31,27 @@ export default function App() {
     <div className="min-h-screen bg-base">
       <header className="sticky top-0 z-50 border-b border-border-color lux-blur text-ink">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <div className="flex flex-shrink-0 items-center gap-3">
-            <div className="h-11 w-11 overflow-hidden rounded-2xl border border-border-color bg-white shadow-soft">
+          <div className="flex min-w-0 flex-shrink-0 items-center gap-3">
+            <div className="h-10 w-10 overflow-hidden rounded-2xl border border-border-color bg-white shadow-soft sm:h-11 sm:w-11">
               <img src={brandLogo} alt="UniHire" className="h-full w-full object-cover" />
             </div>
-            <div className="hidden sm:block">
-              <p className="text-base font-semibold text-ink">UniHire</p>
-              <p className="text-[11px] text-muted">Verified Pakistani talent</p>
+            <div className="min-w-0">
+              <p className="truncate text-base font-semibold text-ink">UniHire</p>
+              <p className="truncate text-[11px] text-muted">Verified Pakistani talent</p>
             </div>
           </div>
 
           <button
-            className="ml-auto inline-flex h-10 items-center justify-center rounded-full border border-border-color bg-white px-4 text-sm font-semibold shadow-soft lg:hidden"
+            className="ml-auto grid h-10 w-10 place-items-center rounded-full border border-border-color bg-white shadow-soft lg:hidden"
             onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
             type="button"
           >
-            Menu
+            <span className="flex flex-col gap-1">
+              <span className="block h-0.5 w-4 rounded-full bg-ink" />
+              <span className="block h-0.5 w-4 rounded-full bg-ink" />
+              <span className="block h-0.5 w-4 rounded-full bg-ink" />
+            </span>
           </button>
 
           <div className="hidden min-w-0 flex-1 items-center px-4 lg:flex">
@@ -129,10 +134,18 @@ export default function App() {
 
         {mobileOpen && (
           <div className="fixed inset-0 z-50 bg-black/40 lg:hidden">
-            <div className="absolute right-0 top-0 h-full w-[86vw] max-w-sm overflow-y-auto bg-card-bg p-6 shadow-soft">
+            <div className="absolute right-0 top-0 h-full w-[88vw] max-w-sm overflow-y-auto bg-card-bg p-5 shadow-soft sm:p-6">
               <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold">Menu</p>
-                <button className="text-xl leading-none" onClick={() => setMobileOpen(false)} type="button">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 overflow-hidden rounded-2xl border border-border-color bg-white shadow-soft">
+                    <img src={brandLogo} alt="UniHire" className="h-full w-full object-cover" />
+                  </div>
+                  <div>
+                    <p className="text-base font-semibold">UniHire</p>
+                    <p className="text-xs text-muted">Verified talent</p>
+                  </div>
+                </div>
+                <button className="grid h-10 w-10 place-items-center rounded-full bg-bg-light text-xl leading-none" onClick={() => setMobileOpen(false)} type="button" aria-label="Close menu">
                   x
                 </button>
               </div>
@@ -170,6 +183,16 @@ export default function App() {
                   </NavLink>
                 )}
               </div>
+              {!user && (
+                <div className="mt-6 grid gap-3 border-t border-border-color pt-5">
+                  <NavLink to="/profile" className="btn-ghost w-full text-sm" onClick={() => setMobileOpen(false)}>
+                    Login
+                  </NavLink>
+                  <NavLink to="/create" className="btn-gradient w-full text-sm" onClick={() => setMobileOpen(false)}>
+                    Apply as seller
+                  </NavLink>
+                </div>
+              )}
             </div>
           </div>
         )}

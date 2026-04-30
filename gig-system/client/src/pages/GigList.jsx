@@ -302,7 +302,7 @@ export default function GigList() {
 
   return (
     <div className="space-y-6 pb-0 md:space-y-10">
-      <div className="hide-scrollbar relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] flex items-center gap-2 overflow-x-auto border-y border-border-color bg-white px-4 py-2 text-xs font-semibold text-ink sm:px-6">
+      <div className="hide-scrollbar relative left-1/2 right-1/2 hidden w-screen -ml-[50vw] -mr-[50vw] items-center gap-2 overflow-x-auto border-y border-border-color bg-white px-4 py-2 text-xs font-semibold text-ink sm:flex sm:px-6">
         <button
           type="button"
           onClick={() => setCategory('')}
@@ -330,8 +330,8 @@ export default function GigList() {
         <div className="px-0 py-0">
           <div className="overflow-hidden border border-border-color bg-white shadow-lift">
             <div className="grid gap-0 lg:min-h-[560px] lg:grid-cols-[0.98fr,1.02fr]">
-              <div className="flex items-center px-4 py-10 sm:px-10 lg:px-16">
-                <div className="max-w-2xl space-y-5">
+              <div className="flex items-center px-4 py-8 sm:px-10 sm:py-12 lg:px-16">
+                <div className="mx-auto max-w-2xl space-y-4 text-center sm:space-y-5 sm:text-left">
                   <div className="inline-flex items-center rounded-full bg-soft px-4 py-1.5 text-xs font-semibold text-primary">
                     Verified graduates only
                   </div>
@@ -341,7 +341,7 @@ export default function GigList() {
                   <h1 className="font-display text-4xl font-semibold leading-[1.06] tracking-tight text-ink sm:text-5xl md:text-6xl">
                     {t('heroTitle')}
                   </h1>
-                  <p className="max-w-xl text-base leading-7 text-muted md:text-lg">
+                  <p className="mx-auto max-w-xl text-sm leading-6 text-muted sm:mx-0 sm:text-base sm:leading-7 md:text-lg">
                     {t('heroSubtitle')}
                   </p>
                   <div className="flex max-w-xl flex-col gap-3 rounded-[20px] border border-border-color bg-bg-light p-3 shadow-soft sm:flex-row sm:rounded-[22px]">
@@ -355,13 +355,13 @@ export default function GigList() {
                       Search
                     </button>
                   </div>
-                  <div className="flex max-w-xl flex-wrap items-center gap-2 text-xs font-semibold">
+                  <div className="hide-scrollbar -mx-1 flex max-w-xl items-center gap-2 overflow-x-auto px-1 text-xs font-semibold sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
                     {quickSearches.map((item) => (
                       <button
                         key={item}
                         type="button"
                         onClick={() => setQuery(item)}
-                        className="rounded-full border border-border-color bg-white px-3 py-1.5 text-ink transition hover:border-primary hover:text-primary"
+                        className="whitespace-nowrap rounded-full border border-border-color bg-white px-3 py-1.5 text-ink transition hover:border-primary hover:text-primary"
                       >
                         {item}
                       </button>
@@ -375,20 +375,20 @@ export default function GigList() {
                       Browse gigs
                     </a>
                   </div>
-                  <div className="flex flex-wrap gap-2 pt-2 text-xs font-semibold text-muted">
+                  <div className="hidden flex-wrap gap-2 pt-2 text-xs font-semibold text-muted sm:flex">
                     <span className="rounded-full bg-white px-4 py-2 shadow-soft">Pakistani students</span>
                     <span className="rounded-full bg-white px-4 py-2 shadow-soft">Admin checked</span>
                     <span className="rounded-full bg-white px-4 py-2 shadow-soft">Fair fees</span>
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[300px] bg-bg-light sm:min-h-[380px] lg:min-h-[460px]">
+              <div className="relative min-h-[250px] bg-bg-light sm:min-h-[380px] lg:min-h-[460px]">
                 <img
                   src={heroTeam}
                   alt="Verified Pakistani graduate talent"
                   className="absolute inset-0 h-full w-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-white/10 to-white/75" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-white/0 to-white/20 sm:bg-gradient-to-l sm:from-black/20 sm:via-white/10 sm:to-white/75" />
                 <div className="absolute bottom-4 left-4 right-4 rounded-[20px] border border-white/60 bg-white/90 p-4 shadow-lift backdrop-blur sm:bottom-6 sm:left-6 sm:right-6 sm:rounded-[24px] sm:p-5">
                   <p className="text-sm font-semibold text-ink">Trust-first marketplace</p>
                   <div className="mt-3 flex flex-wrap gap-2">
