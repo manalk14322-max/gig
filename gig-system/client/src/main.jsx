@@ -8,7 +8,7 @@ import { LangProvider } from './context/LangContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/gig">
       <AuthProvider>
         <LangProvider>
           <App />
