@@ -1,4 +1,4 @@
-name: Deploy UniHire Client to GitHub Pages
+name: Deploy UniHire to GitHub Pages
 
 on:
   push:
@@ -32,11 +32,11 @@ jobs:
 
       - name: Install
         working-directory: gig-system/client
-        run: npm install
+        run: npm ci
 
       - name: Build
         working-directory: gig-system/client
-        run: node node_modules/vite/bin/vite.js build
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

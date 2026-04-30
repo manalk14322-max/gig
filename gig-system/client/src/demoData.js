@@ -1,0 +1,160 @@
+export const demoUser = {
+  id: 'demo-user-1',
+  name: 'Manal Khan',
+  email: 'manal@example.com',
+  role: 'seller',
+  title: 'Student brand and web creator',
+  location: 'Lahore, Pakistan',
+  description: 'Verified student freelancer focused on clean websites, brand kits, and fast local delivery.',
+  skills: ['Branding', 'React', 'UI Design', 'WordPress'],
+  portfolio: ['https://behance.net/', 'https://dribbble.com/'],
+  university: 'University of the Punjab',
+  universityEmail: 'manal@example.edu.pk',
+  department: 'Computer Science',
+  studentId: 'PU-2026-0142',
+  verificationStatus: 'verified',
+  verifiedStudent: true,
+  verificationDocs: {
+    idImage: '',
+    selfieImage: '',
+    requestedAt: null,
+  },
+  verificationHistory: [
+    {
+      status: 'verified',
+      note: 'Demo student profile verified for GitHub Pages preview.',
+      decidedAt: '2026-04-30T00:00:00.000Z',
+      decidedBy: 'UniHire admin',
+    },
+  ],
+};
+
+export const demoGigs = [
+  {
+    _id: 'demo-gig-1',
+    title: 'Design a premium brand identity kit',
+    description: 'Logo system, colors, typography, and social templates for Pakistani startups and campus brands.',
+    category: 'Graphics & Design',
+    tags: ['branding', 'logo', 'identity', 'social media'],
+    basePrice: 35000,
+    deliveryDays: 5,
+    quickTask: false,
+    quickDeliveryHours: 2,
+    services: [
+      { title: 'Logo concepts', price: 18000, durationHours: 24, included: ['2 concepts', 'Source files'] },
+      { title: 'Social kit', price: 9000, durationHours: 12, included: ['5 templates', 'Story covers'] },
+      { title: 'Brand guide', price: 8000, durationHours: 10, included: ['Usage rules', 'Color specs'] },
+    ],
+    faqs: [
+      { question: 'Can I request revisions?', answer: 'Yes, every package includes friendly revision support.' },
+    ],
+    requirements: [
+      { question: 'Brand name', type: 'text', mandatory: true, options: [] },
+      { question: 'Color preference', type: 'text', mandatory: false, options: [] },
+      { question: 'Business details', type: 'textarea', mandatory: true, options: [] },
+    ],
+    images: [
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+    ],
+    videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    featured: true,
+    ratingAverage: 4.9,
+    ratingCount: 2,
+    freelancerId: demoUser.id,
+    freelancer: demoUser,
+  },
+  {
+    _id: 'demo-gig-2',
+    title: 'Build a responsive React landing page',
+    description: 'A polished English or Urdu landing page with modern sections, mobile layout, and SEO basics.',
+    category: 'Programming & Tech',
+    tags: ['react', 'landing page', 'seo', 'frontend'],
+    basePrice: 28000,
+    deliveryDays: 4,
+    quickTask: true,
+    quickDeliveryHours: 2,
+    services: [
+      { title: 'Hero and CTA', price: 9000, durationHours: 8, included: ['Copy polish', 'CTA design'] },
+      { title: 'Responsive layout', price: 7000, durationHours: 6, included: ['Mobile first', 'Tablet ready'] },
+      { title: 'SEO setup', price: 6000, durationHours: 4, included: ['Meta tags', 'Share preview'] },
+    ],
+    faqs: [{ question: 'Will it work on mobile?', answer: 'Yes, the layout is built mobile-first.' }],
+    requirements: [
+      { question: 'Brand details', type: 'textarea', mandatory: true, options: [] },
+      { question: 'Page content', type: 'textarea', mandatory: true, options: [] },
+      { question: 'Reference website', type: 'url', mandatory: false, options: [] },
+    ],
+    images: [
+      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80',
+    ],
+    videoUrl: 'https://www.w3schools.com/html/movie.mp4',
+    featured: true,
+    ratingAverage: 5,
+    ratingCount: 1,
+    freelancerId: demoUser.id,
+    freelancer: demoUser,
+  },
+  {
+    _id: 'demo-gig-3',
+    title: 'Create product photos and ecommerce edits',
+    description: 'Clean product visuals, retouching, and marketplace-ready image delivery for online stores.',
+    category: 'Video & Animation',
+    tags: ['product', 'photography', 'ecommerce', 'editing'],
+    basePrice: 22000,
+    deliveryDays: 3,
+    quickTask: false,
+    quickDeliveryHours: 2,
+    services: [
+      { title: '10 product shots', price: 12000, durationHours: 16, included: ['Retouching', 'White background'] },
+      { title: 'Lifestyle edits', price: 8000, durationHours: 10, included: ['2 scenes', 'Color grading'] },
+    ],
+    faqs: [{ question: 'Do you edit existing photos?', answer: 'Yes, existing product photos can be improved too.' }],
+    requirements: [
+      { question: 'Product photos', type: 'file', mandatory: true, options: [] },
+      { question: 'Brand style', type: 'text', mandatory: false, options: [] },
+      { question: 'Image sizes', type: 'multiple choice', mandatory: false, options: ['Square', 'Portrait', 'Banner'] },
+    ],
+    images: [
+      'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80',
+    ],
+    videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    featured: false,
+    ratingAverage: 4.8,
+    ratingCount: 1,
+    freelancerId: demoUser.id,
+    freelancer: demoUser,
+  },
+];
+
+export const demoReviews = [
+  { _id: 'demo-review-1', gigId: 'demo-gig-1', reviewer: 'Demo Buyer', rating: 5, comment: 'Premium work and clear communication.' },
+  { _id: 'demo-review-2', gigId: 'demo-gig-1', reviewer: 'Campus Client', rating: 5, comment: 'The brand kit looked polished and ready to use.' },
+  { _id: 'demo-review-3', gigId: 'demo-gig-2', reviewer: 'Startup Founder', rating: 5, comment: 'Fast delivery and responsive design.' },
+];
+
+export const demoOrders = [
+  {
+    _id: 'demo-order-1',
+    gigId: 'demo-gig-2',
+    title: 'Build a responsive React landing page',
+    status: 'In progress',
+    amount: 28000,
+    deliveryDays: 3,
+    paymentStatus: 'Protected',
+  },
+];
+
+export const demoChats = [
+  {
+    _id: 'demo-chat-1',
+    gigId: 'demo-gig-1',
+    title: 'Brand identity kit',
+    lastMessage: 'Thanks for the brief. I will share the first concept today.',
+    updatedAt: '2026-04-30T00:00:00.000Z',
+    messages: [
+      { _id: 'demo-message-1', senderId: 'demo-buyer-1', text: 'Can you make the brand feel premium?' },
+      { _id: 'demo-message-2', senderId: demoUser.id, text: 'Yes, I will prepare a refined direction with two concepts.' },
+    ],
+  },
+];

@@ -1,37 +1,26 @@
-# PakGigs
+# UniHire
 
-PakGigs is a clean freelance marketplace starter for Pakistani users.
+UniHire is a GitHub Pages-ready React marketplace for student freelance services.
 
-## Run
+## Project Structure
+
+- `gig-system/client` - React, Vite, and Tailwind frontend
+- `.github/workflows/pages.yml` - GitHub Pages deployment workflow
+
+## Local Preview
 
 ```bash
-npm start
+cd gig-system/client
+npm install
+npm run dev
 ```
 
-Then open `http://localhost:3000`.
+Open the local URL shown by Vite.
 
-## Includes
+## Deploy
 
-- Responsive landing page
-- Separate `How it works` page at `how.html`
-- Mobile-style dashboard at `mobile.html`
-- Seller signup at `seller-signup.html`
-- Seller onboarding at `seller-onboarding.html`
-- Step-by-step gig builder at `gig-builder.html`
-- Static file server only
-- Marketplace-style project, gig, inbox, wallet, and studio demos
-- PKR pricing and local payment options
-- City and category filters
-- Urdu and English toggle
-- LocalStorage persistence with local demo data
+Push changes to the `main` branch. GitHub Actions builds the client and publishes it to:
 
-## Google Sign-In
+`https://manalk14322-max.github.io/gig/`
 
-To enable real Google OAuth on the seller signup flow, set a web client ID before starting the app:
-
-```powershell
-$env:GOOGLE_CLIENT_ID="your-google-web-client-id"
-npm start
-```
-
-Then add `http://localhost:3000` to the Authorized JavaScript origins in your Google Cloud OAuth client.
+The frontend includes demo fallback data so the marketplace still displays properly on GitHub Pages when no backend API is connected.
