@@ -5,44 +5,59 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useLang } from '../context/LangContext.jsx';
 
 const categories = [
-  'Web Development',
-  'Graphic Design',
+  'Graphics & Design',
+  'Programming & Tech',
   'Digital Marketing',
-  'Video Editing',
+  'Video & Animation',
   'Writing & Translation',
-  'AI Services',
   'Business',
-  'Finance',
+  'AI Services',
 ];
 
 const steps = [
-  { id: 1, title: 'Overview', helper: 'Title, category, and positioning' },
-  { id: 2, title: 'Pricing', helper: 'Base price and quick task delivery' },
-  { id: 3, title: 'Packages', helper: 'Custom services and add-ons' },
-  { id: 4, title: 'Media + Extras', helper: 'Images, optional video, FAQs, requirements' },
+  { id: 1, title: 'Basics', helper: 'What you will offer' },
+  { id: 2, title: 'Pricing', helper: 'Budget and delivery' },
+  { id: 3, title: 'Packages', helper: 'Add-ons and scope' },
+  { id: 4, title: 'Media', helper: 'Images and buyer info' },
 ];
 
-const emptyService = () => ({
-  title: '',
-  price: 0,
-  durationHours: 2,
-  included: [''],
-});
+const emptyService = () => ({ title: '', price: 5000, durationHours: 24, included: [''] });
+const emptyFaq = () => ({ question: '', answer: '' });
+const emptyRequirement = () => ({ question: '', type: 'text', options: '', mandatory: true });
 
-const emptyFaq = () => ({
-  question: '',
-  answer: '',
-});
+const inputClass =
+  'w-full rounded-[18px] border border-border-color bg-white px-4 py-3 text-sm text-ink outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10';
+const labelClass = 'text-sm font-semibold text-ink';
 
-const emptyRequirement = () => ({
-  question: '',
-  type: 'text',
-  options: '',
-  mandatory: true,
-});
+function money(value) {
+  return `PKR ${Number(value || 0).toLocaleString('en-PK')}`;
+}
 
 function percent(step) {
   return `${(step / steps.length) * 100}%`;
+}
+
+function Field({ label, helper, children }) {
+  return (
+    <label className="block space-y-2">
+      <span className={labelClass}>{label}</span>
+      {children}
+      {helper && <span className="block text-xs leading-5 text-muted">{helper}</span>}
+    </label>
+  );
+}
+
+function StepShell({ eyebrow, title, helper, children }) {
+  return (
+    <section className="rounded-[24px] border border-border-color bg-card-bg p-4 shadow-soft sm:p-6">
+      <div className="border-b border-border-color pb-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">{eyebrow}</p>
+        <h2 className="mt-2 text-2xl font-semibold text-ink">{title}</h2>
+        <p className="mt-2 text-sm leading-6 text-muted">{helper}</p>
+      </div>
+      <div className="mt-5 space-y-5">{children}</div>
+    </section>
+  );
 }
 
 export default function GigCreate() {
@@ -52,7 +67,7 @@ export default function GigCreate() {
   const [form, setForm] = useState({
     title: '',
     description: '',
-    category: 'Web Development',
+    category: 'Programming & Tech',
     tags: '',
     basePrice: 15000,
     deliveryDays: 3,
@@ -65,19 +80,10 @@ export default function GigCreate() {
   const [services, setServices] = useState([emptyService()]);
   const [faqs, setFaqs] = useState([emptyFaq()]);
   const [requirements, setRequirements] = useState([emptyRequirement()]);
+  const [step, setStep] = useState(1);
   const [aiStatus, setAiStatus] = useState('');
   const [submitStatus, setSubmitStatus] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [step, setStep] = useState(1);
-  const sellerSummary = profile || user || {
-    name: 'Your profile',
-    title: 'Complete student details',
-    location: 'Pakistan',
-    university: '',
-    department: '',
-    studentId: '',
-    portfolio: [],
-  };
 
   useEffect(() => {
     if (!user) return;
@@ -106,70 +112,54 @@ export default function GigCreate() {
     (profile.verifiedStudent || profile.verificationStatus === 'verified') &&
     profile.role === 'seller';
 
-  const handleServiceChange = (index, field, value) => {
-    setServices((prev) =>
-      prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item)),
-    );
+  const sellerSummary = profile || user || {
+    name: 'Your student profile',
+    title: 'Complete your seller details first',
+    location: 'Pakistan',
+    university: '',
+    department: '',
+    role: '',
+    portfolio: [],
   };
 
-  const handleIncludeChange = (serviceIndex, includeIndex, value) => {
-    setServices((prev) =>
-      prev.map((item, idx) => {
-        if (idx !== serviceIndex) return item;
-        const nextIncluded = item.included.map((feature, fIdx) => (fIdx === includeIndex ? value : feature));
-        return { ...item, included: nextIncluded };
-      }),
-    );
+  const updateForm = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
+
+  const updateService = (index, field, value) => {
+    setServices((prev) => prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item)));
   };
 
-  const addInclude = (serviceIndex) => {
+  const updateIncluded = (serviceIndex, featureIndex, value) => {
     setServices((prev) =>
       prev.map((item, idx) =>
-        idx === serviceIndex ? { ...item, included: [...item.included, ''] } : item,
+        idx === serviceIndex
+          ? { ...item, included: item.included.map((feature, fIdx) => (fIdx === featureIndex ? value : feature)) }
+          : item,
       ),
     );
   };
 
-  const removeService = (index) => {
-    setServices((prev) => prev.filter((_, idx) => idx !== index));
-  };
-
-  const addService = () => setServices((prev) => [...prev, emptyService()]);
-
-  const handleImageChange = (index, value) => {
-    setForm((prev) => {
-      const nextImages = [...prev.images];
-      nextImages[index] = value;
-      return { ...prev, images: nextImages };
-    });
-  };
-
-  const handleFaqChange = (index, field, value) => {
+  const updateFaq = (index, field, value) => {
     setFaqs((prev) => prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item)));
   };
 
-  const addFaq = () => setFaqs((prev) => [...prev, emptyFaq()]);
-
-  const removeFaq = (index) => {
-    setFaqs((prev) => prev.filter((_, idx) => idx !== index));
-  };
-
-  const handleRequirementChange = (index, field, value) => {
+  const updateRequirement = (index, field, value) => {
     setRequirements((prev) => prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item)));
   };
 
-  const addRequirement = () => setRequirements((prev) => [...prev, emptyRequirement()]);
-
-  const removeRequirement = (index) => {
-    setRequirements((prev) => prev.filter((_, idx) => idx !== index));
+  const updateImage = (index, value) => {
+    setForm((prev) => {
+      const images = [...prev.images];
+      images[index] = value;
+      return { ...prev, images };
+    });
   };
 
   const runAiSuggest = async () => {
-    if (!form.title && !form.description) {
-      setAiStatus('Add a title or description first, then I can suggest better pricing and tags.');
+    if (!form.title.trim() && !form.description.trim()) {
+      setAiStatus('Add a title or description first.');
       return;
     }
-    setAiStatus('Generating AI suggestions...');
+    setAiStatus('Preparing suggestions...');
     try {
       const response = await Promise.race([
         aiSuggest({
@@ -182,30 +172,31 @@ export default function GigCreate() {
       ]);
       setForm((prev) => ({
         ...prev,
-        basePrice: response.price,
-        description: response.description,
-        tags: response.tags.join(', '),
-        deliveryDays: response.deliveryDays,
+        basePrice: response.price || prev.basePrice,
+        description: response.description || prev.description,
+        tags: (response.tags || []).join(', ') || prev.tags,
+        deliveryDays: response.deliveryDays || prev.deliveryDays,
       }));
-      setAiStatus('AI suggestions applied.');
+      setAiStatus('Suggestions applied.');
     } catch {
-      setAiStatus('AI service unavailable. Start the server at http://localhost:5050 and try again.');
+      setAiStatus('AI suggestions are not available right now.');
     }
   };
 
-  const handleSubmit = async (event) => {
+  const publishGig = async (event) => {
     event.preventDefault();
     setSubmitStatus('');
+
     if (!user) {
-      setSubmitStatus('Please login to publish a gig.');
+      setSubmitStatus('Please login before publishing.');
       return;
     }
     if (user.role !== 'seller') {
-      setSubmitStatus('Switch to seller mode first, then complete your student profile.');
+      setSubmitStatus('Create or switch to a seller profile first.');
       return;
     }
     if (!profileComplete) {
-      setSubmitStatus('Please complete your student profile and get verified before creating a gig.');
+      setSubmitStatus('Complete and verify your student profile before publishing.');
       setStep(1);
       return;
     }
@@ -213,47 +204,38 @@ export default function GigCreate() {
     const missing = [];
     if (!form.title.trim()) missing.push('title');
     if (!form.description.trim()) missing.push('description');
-    if (!form.category.trim()) missing.push('category');
     if (!Number(form.basePrice)) missing.push('base price');
     if (!Number(form.deliveryDays)) missing.push('delivery days');
-    if ((form.images || []).filter((item) => item.trim()).length < 2) missing.push('at least 2 images');
+    if (form.images.filter((item) => item.trim()).length < 2) missing.push('2 images');
+
     if (missing.length) {
-      const firstMissing = missing[0];
-      if (firstMissing === 'title' || firstMissing === 'description' || firstMissing === 'category') {
-        setStep(1);
-      } else if (firstMissing === 'base price' || firstMissing === 'delivery days') {
-        setStep(2);
-      } else if (firstMissing === 'at least 2 images') {
-        setStep(4);
-      }
       setSubmitStatus(`Please complete: ${missing.join(', ')}.`);
+      if (missing.includes('title') || missing.includes('description')) setStep(1);
+      else if (missing.includes('base price') || missing.includes('delivery days')) setStep(2);
+      else setStep(4);
       return;
     }
+
     setSubmitting(true);
     try {
-      const payload = {
-        title: form.title,
-        description: form.description,
-        category: form.category,
+      await createGig({
+        ...form,
         tags: tagList,
         basePrice: Number(form.basePrice),
         deliveryDays: Number(form.deliveryDays),
-        quickTask: form.quickTask,
         quickDeliveryHours: Number(form.quickDeliveryHours),
         images: form.images.map((item) => item.trim()).filter(Boolean),
         videoUrl: form.videoUrl.trim(),
-        featured: form.featured,
-        services: services.map((item) => ({
-          ...item,
-          price: Number(item.price),
-          durationHours: Number(item.durationHours),
-          included: item.included.filter(Boolean),
-        })),
-        faqs: faqs
+        services: services
           .map((item) => ({
-            question: item.question.trim(),
-            answer: item.answer.trim(),
+            ...item,
+            price: Number(item.price),
+            durationHours: Number(item.durationHours),
+            included: item.included.map((feature) => feature.trim()).filter(Boolean),
           }))
+          .filter((item) => item.title.trim()),
+        faqs: faqs
+          .map((item) => ({ question: item.question.trim(), answer: item.answer.trim() }))
           .filter((item) => item.question && item.answer),
         requirements: requirements
           .map((item) => ({
@@ -269,9 +251,8 @@ export default function GigCreate() {
             mandatory: Boolean(item.mandatory),
           }))
           .filter((item) => item.question),
-      };
-      await createGig(payload);
-      setAiStatus('Gig published successfully.');
+      });
+      setSubmitStatus('Gig published successfully.');
       setForm((prev) => ({ ...prev, title: '', description: '', tags: '', images: ['', '', ''], videoUrl: '' }));
       setServices([emptyService()]);
       setFaqs([emptyFaq()]);
@@ -284,506 +265,468 @@ export default function GigCreate() {
     }
   };
 
-  const previewTitle = form.title || 'Your gig title will appear here';
-  const previewDescription = form.description || 'Add a strong description, then the preview updates as you type.';
-  const previewImage = form.images.find((item) => item.trim()) || '';
-  const checklistItems = [
-    { label: 'Student profile complete', done: profileComplete },
-    { label: 'University email verified', done: !!profile?.universityEmail },
-    { label: 'At least 2 images added', done: form.images.filter((item) => item.trim()).length >= 2 },
-    { label: 'Title and description filled', done: !!form.title.trim() && !!form.description.trim() },
-    { label: 'Student verification applied', done: !!profile?.verifiedStudent || profile?.verificationStatus === 'verified' },
-    { label: 'FAQs added (optional)', done: faqs.some((item) => item.question.trim() && item.answer.trim()) },
-    { label: 'Requirements added (optional)', done: requirements.some((item) => item.question.trim()) },
+  const checklist = [
+    { label: 'Verified student seller', done: profileComplete },
+    { label: 'Clear title', done: !!form.title.trim() },
+    { label: 'Strong description', done: form.description.trim().length > 40 },
+    { label: 'Price and delivery', done: Number(form.basePrice) > 0 && Number(form.deliveryDays) > 0 },
+    { label: 'At least 2 images', done: form.images.filter((item) => item.trim()).length >= 2 },
+    { label: 'Service package', done: services.some((item) => item.title.trim()) },
   ];
-  const checklistDone = checklistItems.filter((item) => item.done).length;
+  const doneCount = checklist.filter((item) => item.done).length;
+  const readiness = Math.round((doneCount / checklist.length) * 100);
+  const previewImage = form.images.find((item) => item.trim());
 
   return (
-    <div className="space-y-8 pb-24 md:pb-10">
-      {!user && (
-        <div className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft">
-          <p className="font-semibold text-ink">Login required</p>
-          <p className="mt-1 text-sm text-muted">Please login or sign up to create a gig.</p>
-        </div>
-      )}
+    <div className="space-y-6 pb-28 md:pb-10">
+      <section className="overflow-hidden rounded-[26px] border border-border-color bg-card-bg shadow-soft">
+        <div className="grid gap-0 lg:grid-cols-[1.15fr,0.85fr]">
+          <div className="p-5 sm:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Create gig</p>
+            <h1 className="mt-3 font-display text-3xl font-semibold leading-tight text-ink sm:text-5xl">
+              {t('createGigTitle')}
+            </h1>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-muted sm:text-base sm:leading-7">
+              Build a clean, trusted service listing. UniHire keeps this process simple so verified students can publish professional gigs faster.
+            </p>
 
-      {user && !profileComplete && (
-        <div className="rounded-[24px] border border-border-color bg-[#F3F7FA] p-6 shadow-soft">
-          <p className="font-semibold text-ink">Complete your student profile first</p>
-          <p className="mt-1 text-sm text-muted">Add title, location, description, skills, and campus details to unlock gig creation.</p>
-          <Link className="btn-secondary mt-4 inline-flex" to="/profile">
-            Complete profile
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-[20px] bg-bg-light p-4">
+                <p className="text-xl font-semibold text-primary">01</p>
+                <p className="mt-1 text-sm font-semibold text-ink">Describe service</p>
+              </div>
+              <div className="rounded-[20px] bg-bg-light p-4">
+                <p className="text-xl font-semibold text-primary">02</p>
+                <p className="mt-1 text-sm font-semibold text-ink">Set package</p>
+              </div>
+              <div className="rounded-[20px] bg-bg-light p-4">
+                <p className="text-xl font-semibold text-primary">03</p>
+                <p className="mt-1 text-sm font-semibold text-ink">Publish after review</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-border-color bg-bg-light p-5 sm:p-8 lg:border-l lg:border-t-0">
+            <p className="text-sm font-semibold text-ink">Seller status</p>
+            <div className="mt-4 rounded-[22px] bg-white p-4 shadow-soft">
+              <p className="text-lg font-semibold text-ink">{sellerSummary.name}</p>
+              <p className="mt-1 text-sm text-muted">{sellerSummary.title || 'Complete your profile'}</p>
+              <p className="mt-1 text-xs text-muted">{sellerSummary.university || 'University details required'}</p>
+              <span
+                className={`mt-4 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                  profileComplete ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                }`}
+              >
+                {profileComplete ? 'Ready to publish' : 'Profile verification required'}
+              </span>
+              {!profileComplete && (
+                <Link to="/profile" className="btn-secondary mt-4 w-full text-sm">
+                  Complete profile
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {!user && (
+        <div className="rounded-[22px] border border-border-color bg-white p-5 shadow-soft">
+          <p className="font-semibold text-ink">Login required</p>
+          <p className="mt-1 text-sm text-muted">You can prepare the gig, but publishing requires a seller account.</p>
+          <Link to="/profile" className="btn-primary mt-4 text-sm">
+            Login or create account
           </Link>
         </div>
       )}
 
-      <section className="overflow-hidden rounded-[28px] border border-border-color bg-card-bg shadow-soft">
-        <div className="grid gap-0 lg:grid-cols-[1.35fr,0.65fr]">
-          <div className="p-6 md:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Gig creation</p>
-            <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <h1 className="font-display text-3xl font-semibold text-ink md:text-5xl">{t('createGigTitle')}</h1>
-                <p className="mt-3 max-w-2xl text-base leading-7 text-muted">
-                  Profile first, gig later. A clean builder for pricing, packages, media, and an optional video intro.
-                </p>
-              </div>
-              <button className="btn-gradient" type="button" onClick={runAiSuggest}>
-                AI Suggest
-              </button>
-            </div>
-            {aiStatus && <p className="mt-4 text-sm text-primary">{aiStatus}</p>}
-
-            <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4 text-sm text-muted">
-              Gig creation is unlocked after a completed student profile with verified campus details.
-            </div>
-
-            <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <form onSubmit={publishGig} className="grid gap-6 lg:grid-cols-[1.25fr,0.75fr]">
+        <div className="space-y-5">
+          <div className="rounded-[24px] border border-border-color bg-white p-4 shadow-soft">
+            <div className="grid gap-3 sm:grid-cols-4">
               {steps.map((item) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => setStep(item.id)}
-                  className={`rounded-[22px] border p-4 text-left transition ${
+                  className={`rounded-[18px] border p-3 text-left transition ${
                     step === item.id
-                      ? 'border-secondary bg-[#F7F3EA] shadow-soft'
-                      : 'border-border-color bg-[#F3F7FA] hover:bg-[#E7EDF4]'
+                      ? 'border-primary bg-soft text-primary'
+                      : 'border-border-color bg-bg-light text-muted hover:text-primary'
                   }`}
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-secondary">{item.title}</p>
-                  <p className="mt-2 text-sm text-muted">{item.helper}</p>
+                  <p className="text-sm font-semibold">{item.title}</p>
+                  <p className="mt-1 text-xs">{item.helper}</p>
                 </button>
               ))}
             </div>
-
-            <div className="mt-4 h-2 w-full rounded-full bg-soft">
+            <div className="mt-4 h-2 rounded-full bg-bg-light">
               <div className="h-2 rounded-full bg-primary transition-all" style={{ width: percent(step) }} />
             </div>
           </div>
 
-          <aside className="border-t border-border-color bg-[#F3F7FA] p-5 lg:border-l lg:border-t-0 lg:sticky lg:top-24 h-fit">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Preview</p>
-            <div className="mt-4 overflow-hidden rounded-[24px] bg-primary shadow-lift">
-              <div className="aspect-[3/4] w-full bg-black">
-                {form.videoUrl ? (
-                  <video className="h-full w-full object-cover" controls>
-                    <source src={form.videoUrl} />
-                  </video>
-                ) : (
-                  <div className="grid h-full place-items-center px-6 text-center text-sm text-white/75">
-                    Compact preview
-                  </div>
-                )}
-              </div>
-              <div className="space-y-3 p-4 text-white">
-                <p className="text-xs uppercase tracking-[0.25em] text-white/70">{form.category}</p>
-                <p className="text-xl font-semibold leading-tight">{previewTitle}</p>
-                <p className="text-sm leading-6 text-white/80">{previewDescription}</p>
-                <div className="flex flex-wrap gap-2">
-                  {tagList.slice(0, 3).map((tag) => (
-                    <span key={tag} className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                {previewImage ? (
-                  <div className="overflow-hidden rounded-[18px] border border-white/10 bg-white/5">
-                    <img src={previewImage} alt="Preview" className="h-24 w-full object-cover" />
-                  </div>
-                ) : (
-                  <div className="rounded-[18px] border border-dashed border-white/20 px-4 py-4 text-xs text-white/70">
-                    Add 2-3 images for a stronger listing.
-                  </div>
-                )}
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <form onSubmit={handleSubmit} noValidate className="grid gap-8 lg:grid-cols-[1.35fr,0.65fr]">
-        <div className="space-y-6">
-          <section className={`rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft ${step === 1 ? '' : 'hidden'}`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Step 1</p>
-                <h2 className="mt-2 text-xl font-semibold text-ink">Gig essentials</h2>
-              </div>
-              <span className="text-xs text-muted">Overview</span>
-            </div>
-            <div className="mt-5 space-y-4">
-              <input
-                className="w-full rounded-[20px] border border-[#E5E7EB] px-4 py-3"
-                placeholder="Gig title"
-                value={form.title}
-                onChange={(event) => setForm({ ...form, title: event.target.value })}
-              />
-              <textarea
-                className="w-full rounded-[20px] border border-[#E5E7EB] px-4 py-3"
-                rows="5"
-                placeholder="Describe your gig"
-                value={form.description}
-                onChange={(event) => setForm({ ...form, description: event.target.value })}
-              />
-              <div className="grid gap-4 md:grid-cols-2">
-                <select
-                  className="rounded-[20px] border border-[#E5E7EB] px-4 py-3"
-                  value={form.category}
-                  onChange={(event) => setForm({ ...form, category: event.target.value })}
-                >
-                  {categories.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
+          {step === 1 && (
+            <StepShell
+              eyebrow="Step 1"
+              title="Gig basics"
+              helper="Keep the first impression clear. Tell clients exactly what you can deliver."
+            >
+              <Field label="Gig title" helper="Example: I will build a responsive React landing page">
                 <input
-                  className="rounded-[20px] border border-[#E5E7EB] px-4 py-3"
-                  placeholder="Tags (comma separated)"
-                  value={form.tags}
-                  onChange={(event) => setForm({ ...form, tags: event.target.value })}
+                  className={inputClass}
+                  value={form.title}
+                  onChange={(event) => updateForm('title', event.target.value)}
+                  placeholder="I will..."
                 />
-              </div>
-            </div>
-          </section>
+              </Field>
 
-          <section className={`rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft ${step === 2 ? '' : 'hidden'}`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Step 2</p>
-                <h2 className="mt-2 text-xl font-semibold text-ink">Pricing + delivery</h2>
-              </div>
-              <span className="text-xs text-muted">Flexible packages</span>
-            </div>
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
-              <input
-                type="number"
-                className="rounded-[20px] border border-[#E5E7EB] px-4 py-3"
-                placeholder="Base price"
-                value={form.basePrice}
-                onChange={(event) => setForm({ ...form, basePrice: event.target.value })}
-              />
-              <input
-                type="number"
-                className="rounded-[20px] border border-[#E5E7EB] px-4 py-3"
-                placeholder="Delivery days"
-                value={form.deliveryDays}
-                onChange={(event) => setForm({ ...form, deliveryDays: event.target.value })}
-              />
-            </div>
-            <label className="mt-4 flex items-center gap-3 rounded-[20px] border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-muted">
-              <input
-                type="checkbox"
-                checked={form.quickTask}
-                onChange={(event) => setForm({ ...form, quickTask: event.target.checked })}
-              />
-              Quick Task Mode (1-2 hour delivery)
-            </label>
-            {form.quickTask && (
-              <input
-                type="number"
-                className="mt-4 w-full rounded-[20px] border border-border-color px-4 py-3"
-                placeholder="Quick delivery hours"
-                value={form.quickDeliveryHours}
-                onChange={(event) => setForm({ ...form, quickDeliveryHours: event.target.value })}
-              />
-            )}
-          </section>
+              <Field label="Description" helper="Explain scope, tools, deliverables, and what makes your service trusted.">
+                <textarea
+                  className={inputClass}
+                  rows="6"
+                  value={form.description}
+                  onChange={(event) => updateForm('description', event.target.value)}
+                  placeholder="Describe your service in a friendly, professional tone."
+                />
+              </Field>
 
-          <section className={`rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft ${step === 3 ? '' : 'hidden'}`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Step 3</p>
-                <h2 className="mt-2 text-xl font-semibold text-ink">Packages & add-ons</h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field label="Category">
+                  <select className={inputClass} value={form.category} onChange={(event) => updateForm('category', event.target.value)}>
+                    {categories.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <Field label="Search tags" helper="Separate tags with commas.">
+                  <input
+                    className={inputClass}
+                    value={form.tags}
+                    onChange={(event) => updateForm('tags', event.target.value)}
+                    placeholder="react, portfolio, landing page"
+                  />
+                </Field>
               </div>
-              <button className="btn-ghost text-sm" type="button" onClick={addService}>
-                Add service
-              </button>
-            </div>
-            <div className="mt-5 space-y-4">
-              {services.map((service, index) => (
-                <div key={`service-${index}`} className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <input
-                      className="w-full rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
-                      placeholder="Service title (logo, social kit, etc.)"
-                      value={service.title}
-                      onChange={(event) => handleServiceChange(index, 'title', event.target.value)}
-                    />
-                    {services.length > 1 && (
+            </StepShell>
+          )}
+
+          {step === 2 && (
+            <StepShell eyebrow="Step 2" title="Pricing and delivery" helper="Set a fair starting price and a delivery promise you can keep.">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field label="Base price">
+                  <input
+                    className={inputClass}
+                    type="number"
+                    min="0"
+                    value={form.basePrice}
+                    onChange={(event) => updateForm('basePrice', event.target.value)}
+                  />
+                </Field>
+                <Field label="Delivery days">
+                  <input
+                    className={inputClass}
+                    type="number"
+                    min="1"
+                    value={form.deliveryDays}
+                    onChange={(event) => updateForm('deliveryDays', event.target.value)}
+                  />
+                </Field>
+              </div>
+
+              <label className="flex items-start gap-3 rounded-[20px] border border-border-color bg-bg-light p-4">
+                <input
+                  className="mt-1"
+                  type="checkbox"
+                  checked={form.quickTask}
+                  onChange={(event) => updateForm('quickTask', event.target.checked)}
+                />
+                <span>
+                  <span className="block text-sm font-semibold text-ink">Quick task mode</span>
+                  <span className="mt-1 block text-xs leading-5 text-muted">Use this for small jobs you can deliver within hours.</span>
+                </span>
+              </label>
+
+              {form.quickTask && (
+                <Field label="Quick delivery hours">
+                  <input
+                    className={inputClass}
+                    type="number"
+                    min="1"
+                    value={form.quickDeliveryHours}
+                    onChange={(event) => updateForm('quickDeliveryHours', event.target.value)}
+                  />
+                </Field>
+              )}
+            </StepShell>
+          )}
+
+          {step === 3 && (
+            <StepShell eyebrow="Step 3" title="Packages and services" helper="Add small service blocks so buyers understand what they are paying for.">
+              <div className="space-y-4">
+                {services.map((service, index) => (
+                  <div key={`service-${index}`} className="rounded-[22px] border border-border-color bg-bg-light p-4">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="font-semibold text-ink">Service {index + 1}</p>
+                      {services.length > 1 && (
+                        <button
+                          type="button"
+                          className="text-left text-xs font-semibold text-primary"
+                          onClick={() => setServices((prev) => prev.filter((_, idx) => idx !== index))}
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                      <input
+                        className={`${inputClass} sm:col-span-3`}
+                        value={service.title}
+                        onChange={(event) => updateService(index, 'title', event.target.value)}
+                        placeholder="Service title"
+                      />
+                      <input
+                        className={inputClass}
+                        type="number"
+                        value={service.price}
+                        onChange={(event) => updateService(index, 'price', event.target.value)}
+                        placeholder="Price"
+                      />
+                      <input
+                        className={inputClass}
+                        type="number"
+                        value={service.durationHours}
+                        onChange={(event) => updateService(index, 'durationHours', event.target.value)}
+                        placeholder="Hours"
+                      />
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                      {service.included.map((feature, featureIndex) => (
+                        <input
+                          key={`feature-${index}-${featureIndex}`}
+                          className={inputClass}
+                          value={feature}
+                          onChange={(event) => updateIncluded(index, featureIndex, event.target.value)}
+                          placeholder="Included feature"
+                        />
+                      ))}
                       <button
                         type="button"
-                        className="text-xs font-semibold text-primary hover:text-secondary"
-                        onClick={() => removeService(index)}
+                        className="text-xs font-semibold text-primary"
+                        onClick={() =>
+                          setServices((prev) =>
+                            prev.map((item, idx) =>
+                              idx === index ? { ...item, included: [...item.included, ''] } : item,
+                            ),
+                          )
+                        }
                       >
-                        Remove
+                        Add included feature
                       </button>
-                    )}
+                    </div>
                   </div>
-                  <div className="mt-3 grid gap-3 md:grid-cols-3">
-                    <input
-                      type="number"
-                      className="rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
-                      placeholder="Price"
-                      value={service.price}
-                      onChange={(event) => handleServiceChange(index, 'price', event.target.value)}
-                    />
-                    <input
-                      type="number"
-                      className="rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
-                      placeholder="Duration (hours)"
-                      value={service.durationHours}
-                      onChange={(event) => handleServiceChange(index, 'durationHours', event.target.value)}
-                    />
-                  </div>
-                  <div className="mt-4 space-y-2">
-                    {service.included.map((feature, fIdx) => (
-                      <input
-                        key={`feature-${index}-${fIdx}`}
-                      className="w-full rounded-full border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm"
-                        placeholder="Included feature"
-                        value={feature}
-                        onChange={(event) => handleIncludeChange(index, fIdx, event.target.value)}
-                      />
-                    ))}
-                    <button className="text-xs font-semibold text-primary" type="button" onClick={() => addInclude(index)}>
-                      Add included feature
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className={`rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft ${step === 4 ? '' : 'hidden'}`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Step 4</p>
-                <h2 className="mt-2 text-xl font-semibold text-ink">Media + extras</h2>
-              </div>
-              <span className="text-xs text-muted">Optional video intro</span>
-            </div>
-            <div className="mt-5 space-y-4">
-              <div className="grid gap-3 md:grid-cols-3">
-                {form.images.map((image, index) => (
-                  <input
-                    key={`image-${index}`}
-                    className="rounded-[20px] border border-border-color px-4 py-3"
-                    placeholder={`Image ${index + 1} URL`}
-                    value={image}
-                    onChange={(event) => handleImageChange(index, event.target.value)}
-                  />
                 ))}
               </div>
-              <input
-                className="w-full rounded-[20px] border border-border-color px-4 py-3"
-                placeholder="Video intro URL (optional)"
-                value={form.videoUrl}
-                onChange={(event) => setForm({ ...form, videoUrl: event.target.value })}
-              />
-              <p className="text-xs text-muted">Video is optional. Add it later if you want a richer preview.</p>
-            </div>
-            <div className="mt-6 grid gap-4 lg:grid-cols-2">
-              <div className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-ink">FAQs (optional)</p>
-                  <button className="btn-ghost text-xs" type="button" onClick={addFaq}>
-                    Add FAQ
-                  </button>
-                </div>
-                <div className="mt-4 space-y-3">
-                  {faqs.map((item, index) => (
-                    <div key={`faq-${index}`} className="rounded-[18px] border border-border-color bg-white p-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">FAQ {index + 1}</p>
+              <button type="button" className="btn-ghost w-full text-sm" onClick={() => setServices((prev) => [...prev, emptyService()])}>
+                Add another service
+              </button>
+            </StepShell>
+          )}
+
+          {step === 4 && (
+            <StepShell eyebrow="Step 4" title="Media and buyer info" helper="Add visuals, FAQs, and what you need from the buyer before starting.">
+              <div className="grid gap-4 sm:grid-cols-3">
+                {form.images.map((image, index) => (
+                  <Field key={`image-${index}`} label={`Image ${index + 1}`}>
+                    <input className={inputClass} value={image} onChange={(event) => updateImage(index, event.target.value)} placeholder="Image URL" />
+                  </Field>
+                ))}
+              </div>
+
+              <Field label="Video intro URL" helper="Optional, but useful for a premium gig preview.">
+                <input className={inputClass} value={form.videoUrl} onChange={(event) => updateForm('videoUrl', event.target.value)} placeholder="https://..." />
+              </Field>
+
+              <div className="grid gap-4 xl:grid-cols-2">
+                <div className="rounded-[22px] border border-border-color bg-bg-light p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-semibold text-ink">FAQs</p>
+                    <button type="button" className="text-xs font-semibold text-primary" onClick={() => setFaqs((prev) => [...prev, emptyFaq()])}>
+                      Add FAQ
+                    </button>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {faqs.map((item, index) => (
+                      <div key={`faq-${index}`} className="rounded-[18px] bg-white p-3">
+                        <input
+                          className={inputClass}
+                          value={item.question}
+                          onChange={(event) => updateFaq(index, 'question', event.target.value)}
+                          placeholder="Question"
+                        />
+                        <textarea
+                          className={`${inputClass} mt-2`}
+                          rows="3"
+                          value={item.answer}
+                          onChange={(event) => updateFaq(index, 'answer', event.target.value)}
+                          placeholder="Answer"
+                        />
                         {faqs.length > 1 && (
-                          <button
-                            type="button"
-                            className="text-xs font-semibold text-primary"
-                            onClick={() => removeFaq(index)}
-                          >
+                          <button type="button" className="mt-2 text-xs font-semibold text-primary" onClick={() => setFaqs((prev) => prev.filter((_, idx) => idx !== index))}>
                             Remove
                           </button>
                         )}
                       </div>
-                      <input
-                        className="mt-2 w-full rounded-[18px] border border-border-color px-3 py-2 text-sm"
-                        placeholder="Question"
-                        value={item.question}
-                        onChange={(event) => handleFaqChange(index, 'question', event.target.value)}
-                      />
-                      <textarea
-                        className="mt-2 w-full rounded-[18px] border border-border-color px-3 py-2 text-sm"
-                        rows="3"
-                        placeholder="Answer"
-                        value={item.answer}
-                        onChange={(event) => handleFaqChange(index, 'answer', event.target.value)}
-                      />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-ink">Buyer requirements (optional)</p>
-                  <button className="btn-ghost text-xs" type="button" onClick={addRequirement}>
-                    Add
-                  </button>
-                </div>
-                <div className="mt-4 space-y-3">
-                  {requirements.map((item, index) => (
-                    <div key={`req-${index}`} className="rounded-[18px] border border-border-color bg-white p-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">
-                          Requirement {index + 1}
-                        </p>
+                <div className="rounded-[22px] border border-border-color bg-bg-light p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-semibold text-ink">Buyer requirements</p>
+                    <button
+                      type="button"
+                      className="text-xs font-semibold text-primary"
+                      onClick={() => setRequirements((prev) => [...prev, emptyRequirement()])}
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {requirements.map((item, index) => (
+                      <div key={`requirement-${index}`} className="rounded-[18px] bg-white p-3">
+                        <input
+                          className={inputClass}
+                          value={item.question}
+                          onChange={(event) => updateRequirement(index, 'question', event.target.value)}
+                          placeholder="What do you need from buyer?"
+                        />
+                        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                          <select className={inputClass} value={item.type} onChange={(event) => updateRequirement(index, 'type', event.target.value)}>
+                            <option value="text">Text</option>
+                            <option value="file">File upload</option>
+                            <option value="multiple-choice">Multiple choice</option>
+                          </select>
+                          <label className="flex items-center gap-2 rounded-[18px] border border-border-color bg-white px-4 py-3 text-xs font-semibold text-muted">
+                            <input
+                              type="checkbox"
+                              checked={item.mandatory}
+                              onChange={(event) => updateRequirement(index, 'mandatory', event.target.checked)}
+                            />
+                            Required
+                          </label>
+                        </div>
+                        {item.type === 'multiple-choice' && (
+                          <input
+                            className={`${inputClass} mt-2`}
+                            value={item.options}
+                            onChange={(event) => updateRequirement(index, 'options', event.target.value)}
+                            placeholder="Options separated by commas"
+                          />
+                        )}
                         {requirements.length > 1 && (
                           <button
                             type="button"
-                            className="text-xs font-semibold text-primary"
-                            onClick={() => removeRequirement(index)}
+                            className="mt-2 text-xs font-semibold text-primary"
+                            onClick={() => setRequirements((prev) => prev.filter((_, idx) => idx !== index))}
                           >
                             Remove
                           </button>
                         )}
                       </div>
-                      <input
-                        className="mt-2 w-full rounded-[18px] border border-border-color px-3 py-2 text-sm"
-                        placeholder="Question or file request"
-                        value={item.question}
-                        onChange={(event) => handleRequirementChange(index, 'question', event.target.value)}
-                      />
-                      <div className="mt-2 grid gap-2 md:grid-cols-2">
-                        <select
-                          className="rounded-[18px] border border-border-color px-3 py-2 text-sm"
-                          value={item.type}
-                          onChange={(event) => handleRequirementChange(index, 'type', event.target.value)}
-                        >
-                          <option value="text">Text response</option>
-                          <option value="file">File upload</option>
-                          <option value="multiple-choice">Multiple choice</option>
-                        </select>
-                        <label className="flex items-center gap-2 rounded-[18px] border border-border-color bg-white px-3 py-2 text-xs font-semibold text-muted">
-                          <input
-                            type="checkbox"
-                            checked={item.mandatory}
-                            onChange={(event) => handleRequirementChange(index, 'mandatory', event.target.checked)}
-                          />
-                          Required
-                        </label>
-                      </div>
-                      {item.type === 'multiple-choice' && (
-                        <input
-                          className="mt-2 w-full rounded-[18px] border border-border-color px-3 py-2 text-sm"
-                          placeholder="Options (comma separated)"
-                          value={item.options}
-                          onChange={(event) => handleRequirementChange(index, 'options', event.target.value)}
-                        />
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </StepShell>
+          )}
 
-          <div className="flex items-center justify-between">
+          <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
             <button
               type="button"
-              className="btn-ghost disabled:opacity-60 disabled:cursor-not-allowed"
+              className="btn-ghost w-full text-sm disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               disabled={step === 1}
               onClick={() => setStep((prev) => Math.max(1, prev - 1))}
             >
               Back
             </button>
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={() => setStep((prev) => Math.min(steps.length, prev + 1))}
-            >
-              Continue
-            </button>
+            <div className="grid gap-3 sm:flex sm:items-center">
+              <button type="button" className="btn-secondary w-full text-sm sm:w-auto" onClick={runAiSuggest}>
+                Improve with AI
+              </button>
+              {step < steps.length ? (
+                <button type="button" className="btn-primary w-full text-sm sm:w-auto" onClick={() => setStep((prev) => prev + 1)}>
+                  Continue
+                </button>
+              ) : (
+                <button type="submit" className="btn-gradient w-full text-sm sm:w-auto" disabled={submitting}>
+                  {submitting ? 'Publishing...' : 'Publish gig'}
+                </button>
+              )}
+            </div>
           </div>
+          {submitStatus && <p className="rounded-[18px] bg-soft px-4 py-3 text-sm font-semibold text-primary">{submitStatus}</p>}
+          {aiStatus && <p className="rounded-[18px] bg-bg-light px-4 py-3 text-sm text-muted">{aiStatus}</p>}
         </div>
 
-        <aside className="space-y-6 lg:sticky lg:top-24 h-fit">
-          <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Student summary</p>
-            <h3 className="mt-3 text-2xl font-semibold text-ink">{sellerSummary.name}</h3>
-            <p className="mt-1 text-sm text-muted">{sellerSummary.title}</p>
-            <p className="mt-1 text-sm text-muted">{sellerSummary.location}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                  profileComplete ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                }`}
-              >
-                {profileComplete ? 'Ready to publish' : 'Profile first'}
-              </span>
-              <span className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary">
-                {sellerSummary.role === 'seller' ? 'Student seller account' : 'Buyer account'}
-              </span>
-            </div>
-            {(sellerSummary.university || sellerSummary.department) && (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {sellerSummary.university && (
-                  <span className="rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary">
-                    {sellerSummary.university}
-                  </span>
-                )}
-                {sellerSummary.department && (
-              <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-ink">
-                    {sellerSummary.department}
-                  </span>
-                )}
-              </div>
-            )}
-              <div className="mt-4 rounded-[22px] bg-[#F3F7FA] p-4">
-              <p className="text-sm font-semibold text-ink">Portfolio links</p>
-              <ul className="mt-2 space-y-1 text-xs text-primary">
-                {(sellerSummary.portfolio || ['Add portfolio links in your profile']).map((link) => (
-                  <li key={link}>{link}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="rounded-[28px] border border-border-color bg-[#F3F7FA] p-6 shadow-soft">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Campus checklist</p>
-            <ul className="mt-4 space-y-3 text-sm text-muted">
-              <li>Title, description, category, and tags</li>
-              <li>Base price and delivery estimate</li>
-              <li>Custom services and add-ons</li>
-              <li>Images and optional video intro</li>
-              <li>Optional FAQs and buyer requirements</li>
-            </ul>
-          </div>
-
-          <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Live checklist</p>
-            <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-sm font-semibold text-ink">Gig readiness</p>
-                  <p className="mt-1 text-xs text-muted">
-                    {checklistDone} of {checklistItems.length} items complete
-                  </p>
+        <aside className="space-y-5 lg:sticky lg:top-24 lg:h-fit">
+          <div className="overflow-hidden rounded-[24px] border border-border-color bg-card-bg shadow-soft">
+            <div className="h-44 bg-bg-light sm:h-56">
+              {previewImage ? (
+                <img src={previewImage} alt="Gig preview" className="h-full w-full object-cover" />
+              ) : (
+                <div className="grid h-full place-items-center px-6 text-center text-sm font-semibold text-muted">
+                  Add image URLs to preview your gig
                 </div>
-                <span className="price-pill">{Math.round((checklistDone / checklistItems.length) * 100)}%</span>
+              )}
+            </div>
+            <div className="space-y-4 p-5">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">{form.category}</p>
+                  <h3 className="mt-2 text-xl font-semibold leading-tight text-ink">
+                    {form.title || 'Your gig title will appear here'}
+                  </h3>
+                </div>
+                <span className="price-pill whitespace-nowrap">{money(form.basePrice)}</span>
               </div>
-              <div className="mt-3 h-2 w-full rounded-full bg-[#F3F7FA]">
-                <div
-                  className="h-2 rounded-full bg-primary transition-all"
-                  style={{ width: `${(checklistDone / checklistItems.length) * 100}%` }}
-                />
+              <p className="text-sm leading-6 text-muted">
+                {form.description || 'Add a clear description so buyers understand your service.'}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {tagList.length ? (
+                  tagList.slice(0, 4).map((tag) => (
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
+                  ))
+                ) : (
+                  <span className="tag">Add tags</span>
+                )}
               </div>
             </div>
-            <div className="mt-4 space-y-3">
-              {checklistItems.map((item) => (
-                <div key={item.label} className="flex items-center justify-between rounded-[18px] bg-[#F3F7FA] px-4 py-3">
-                  <p className="text-sm text-ink">{item.label}</p>
-                  <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${item.done ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+          </div>
+
+          <div className="rounded-[24px] border border-border-color bg-card-bg p-5 shadow-soft">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-ink">Gig readiness</p>
+                <p className="mt-1 text-xs text-muted">
+                  {doneCount} of {checklist.length} complete
+                </p>
+              </div>
+              <span className="price-pill">{readiness}%</span>
+            </div>
+            <div className="mt-4 h-2 rounded-full bg-bg-light">
+              <div className="h-2 rounded-full bg-primary transition-all" style={{ width: `${readiness}%` }} />
+            </div>
+            <div className="mt-4 space-y-2">
+              {checklist.map((item) => (
+                <div key={item.label} className="flex items-center justify-between gap-3 rounded-[16px] bg-bg-light px-3 py-2">
+                  <span className="text-sm text-ink">{item.label}</span>
+                  <span className={`rounded-full px-2 py-1 text-[10px] font-semibold ${item.done ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                     {item.done ? 'Done' : 'Missing'}
                   </span>
                 </div>
@@ -791,11 +734,11 @@ export default function GigCreate() {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-border-color bg-card-bg p-6 shadow-soft">
-            <button className="btn-gradient w-full" type="submit" disabled={submitting}>
-              {submitting ? 'Publishing...' : 'Publish gig'}
-            </button>
-            {submitStatus && <p className="mt-3 text-sm text-primary">{submitStatus}</p>}
+          <div className="rounded-[24px] border border-border-color bg-bg-light p-5">
+            <p className="text-sm font-semibold text-ink">Publishing rule</p>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Only verified Pakistani student sellers can publish. Draft fields still work so the gig can be prepared before approval.
+            </p>
           </div>
         </aside>
       </form>
