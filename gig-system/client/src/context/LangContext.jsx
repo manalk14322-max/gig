@@ -15,9 +15,9 @@ const translations = {
     campusVerification: 'Campus verification',
     verify: 'Verify',
     resendOtp: 'Resend OTP',
-    heroTitle: 'Find verified student talent.',
+    heroTitle: 'Hire verified Pakistani graduate talent.',
     heroSubtitle:
-      'Discover university-verified sellers, compare packages, and launch faster with premium local support and smart matching.',
+      'UniHire connects global clients with trusted Pakistani students and graduates whose education, identity, and gigs are reviewed before they go live.',
     createGigTitle: 'Create a campus gig buyers trust',
     profileTitle: 'Build a trusted student seller profile',
   },

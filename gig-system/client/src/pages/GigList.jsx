@@ -23,48 +23,59 @@ const topCategories = [
   'AI Services',
 ];
 
-const heroTags = ['Website Design', 'Logo', 'AI Video', 'SEO', 'Translation'];
-
-const recommendationCards = [
-  {
-    title: 'Complete your student profile',
-    description: 'Unlock gig publishing after adding campus details and verification.',
-    cta: 'Open profile',
-    to: '/create',
-    accent: 'bg-[#F7F3EA]',
-  },
-  {
-    title: 'Browse verified student talent',
-    description: 'Compare reviews, universities, packages, and fast delivery options.',
-    cta: 'Explore now',
-    to: '/',
-    accent: 'bg-card-bg',
-  },
-];
-
 const browseGroups = [
   {
-    title: 'For Clients',
-    items: ['Verified student sellers', 'Website Development', 'Logo Design', 'AI Video'],
+    title: 'For global clients',
+    items: ['Verified Pakistani talent', 'Admin-approved gigs', 'Clear packages', 'Lower platform fees'],
   },
   {
-    title: 'For Students',
-    items: ['Profile first', 'Gig Creation', 'Portfolio', 'Quick Task Mode'],
+    title: 'For Pakistani graduates',
+    items: ['BS degree review', 'University details', 'Portfolio check', 'Gig approval'],
   },
   {
-    title: 'Business Solutions',
-    items: ['Branding', 'Social Media', 'Product Videos', 'Ecommerce'],
+    title: 'Popular services',
+    items: ['Web development', 'UI/UX design', 'Branding', 'Digital marketing'],
   },
   {
-    title: 'Campus',
-    items: ['About', 'Support', 'Payments', 'Terms'],
+    title: 'Trust system',
+    items: ['Human verification', 'Secure orders', 'Local payouts', 'Client protection'],
   },
 ];
 
 const trustStats = [
-  { label: 'Verified students', value: '1,250+' },
-  { label: 'Avg response', value: '1 hour' },
-  { label: 'Projects delivered', value: '24k+' },
+  { label: 'Seller type', value: 'Pakistani graduates' },
+  { label: 'Gig status', value: 'Admin reviewed' },
+  { label: 'Platform fee', value: 'Lower commission' },
+];
+
+const verificationSteps = [
+  {
+    title: 'Apply with education details',
+    description: 'Students share university, degree, department, graduation year, and portfolio links.',
+  },
+  {
+    title: 'UniHire reviews the profile',
+    description: 'The admin team checks identity signals, academic details, and seller readiness before approval.',
+  },
+  {
+    title: 'Gig goes live after approval',
+    description: 'Only trusted sellers can publish services, so clients see a cleaner and safer marketplace.',
+  },
+];
+
+const platformAdvantages = [
+  {
+    title: 'Lower commission for sellers',
+    description: 'The platform is designed so Pakistani freelancers keep more of what they earn.',
+  },
+  {
+    title: 'Pakistani talent, global clients',
+    description: 'Freelancers are local and verified, while clients can hire from anywhere in the world.',
+  },
+  {
+    title: 'Quality before quantity',
+    description: 'Every seller profile and gig is reviewed before being visible to buyers.',
+  },
 ];
 
 const paymentLogos = [
@@ -88,36 +99,36 @@ const paymentLogos = [
 
 const growthCards = [
   {
-    title: 'Verified student talent, everywhere',
-    description: 'Build trust with campus badges, department tags, and public portfolios.',
+    title: 'Verified Pakistani graduates',
+    description: 'Build trust with degree details, university badges, department tags, and public portfolios.',
     image: heroTeam,
   },
   {
-    title: 'Grow across major Pakistani cities',
-    description: 'Localized discovery by university, city, and delivery speed.',
+    title: 'Built for global clients',
+    description: 'Clear packages, professional profiles, and delivery terms make hiring easier from any country.',
     image: heroMagazineLight,
   },
   {
-    title: 'Secure local payouts, globally ready',
-    description: 'Withdraw with Easypaisa, JazzCash, Raast, or bank transfer.',
+    title: 'Fairer earnings for students',
+    description: 'A lower-commission model helps freelancers turn education into real work opportunities.',
     image: heroWelcome,
   },
 ];
 
 const supportCards = [
   {
-    title: 'Tools that streamline student work',
-    description: 'AI-assisted briefs, smart pricing hints, and quick delivery tags.',
+    title: 'Verified before visible',
+    description: 'Student profiles and gigs are reviewed before clients can order.',
     tone: 'bg-[#121826] text-white',
   },
   {
-    title: 'Payouts you can trust',
-    description: 'Escrow-style release, milestone protection, and instant local transfer.',
+    title: 'Lower fee promise',
+    description: 'A lean commission model keeps the marketplace affordable for new freelancers.',
     tone: 'bg-[#E1F5EF] text-ink',
   },
   {
-    title: 'Real partners on the road ahead',
-    description: 'Campus mentors and admin verification keep the marketplace safe.',
+    title: 'Client confidence',
+    description: 'Education checks, portfolios, reviews, and order protection reduce hiring risk.',
     tone: 'bg-[#1C2B3A] text-white',
   },
 ];
@@ -135,7 +146,7 @@ const pakCategoryTiles = [
 
 const emptyStateCopy = [
   'Try a broader category or clear the filters to see more gigs.',
-  'Verified student sellers, quick delivery, and local payment options are always available.',
+  'Verified Pakistani student sellers, quick delivery, and transparent packages are always available.',
 ];
 
 function money(value) {
@@ -245,7 +256,6 @@ export default function GigList() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [featured, setFeatured] = useState([]);
   const [results, setResults] = useState([]);
-  const [bestMatch, setBestMatch] = useState(null);
   const [searchReady, setSearchReady] = useState(false);
 
   useEffect(() => {
@@ -262,14 +272,12 @@ export default function GigList() {
       maxPrice: priceRange[1] || undefined,
     }).then((data) => {
       setResults(data.results || []);
-      setBestMatch(data.bestMatch || null);
       setSearchReady(true);
     });
   }, [query, category, quickOnly, priceRange]);
 
   const liveCatalog = searchReady ? results : featured;
   const curatedGigs = (liveCatalog.length ? liveCatalog : featured).slice(0, 6);
-  const heroSpotlight = bestMatch || curatedGigs[0] || featured[0];
   const heroName = user?.name?.split(' ')[0] || 'there';
 
   return (
@@ -280,7 +288,7 @@ export default function GigList() {
           onClick={() => setCategory('')}
           className="whitespace-nowrap rounded-full bg-[#F5F7FB] px-4 py-1.5 text-muted hover:text-primary border border-[#E2E8F0]"
         >
-          Trending 🔥
+          Trending now
         </button>
         {topCategories.map((item) => (
           <button
@@ -300,52 +308,89 @@ export default function GigList() {
 
       <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden bg-[#EEF2F7]">
         <div className="px-0 py-0">
-          <div className="overflow-hidden rounded-[28px] border border-border-color bg-white shadow-lift">
-            <div className="grid min-h-[560px] gap-0 lg:grid-cols-[1.05fr,1fr]">
+          <div className="overflow-hidden border border-border-color bg-white shadow-lift">
+            <div className="grid min-h-[620px] gap-0 lg:grid-cols-[1.05fr,1fr]">
               <div className="flex items-center px-6 py-14 sm:px-10 lg:px-16">
-                <div className="space-y-5">
-              <div className="inline-flex items-center rounded-full bg-soft px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-secondary">
-                Trusted freelance marketplace
-              </div>
-              <p className="text-sm font-semibold text-muted">{user ? `Welcome back, ${heroName}` : 'Welcome to UniHire'}</p>
-              <h1 className="font-display text-[2.8rem] font-semibold leading-[1.02] tracking-tight text-ink md:text-5xl">
-                {t('heroTitle')}
-              </h1>
-              <p className="max-w-xl text-base leading-7 text-muted md:text-lg">
-                {t('heroSubtitle')}
-              </p>
-              <div className="flex flex-wrap items-center gap-3 pt-3">
-                <button className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
-                  Get started
-                </button>
-                <div className="flex flex-wrap items-center gap-3">
-                  {paymentLogos.map((logo) => (
-                    <div key={logo.name} className="rounded-full border border-border-color bg-white px-3 py-2 shadow-soft">
-                      <img src={logo.url} alt={logo.name} className="h-5 w-auto" />
-                    </div>
-                  ))}
+                <div className="max-w-2xl space-y-6">
+                  <div className="inline-flex items-center rounded-full bg-soft px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-secondary">
+                    Pakistan-only verified sellers
+                  </div>
+                  <p className="text-sm font-semibold text-muted">
+                    {user ? `Welcome back, ${heroName}` : 'Welcome to UniHire'}
+                  </p>
+                  <h1 className="font-display text-[2.8rem] font-semibold leading-[1.02] tracking-tight text-ink md:text-6xl">
+                    {t('heroTitle')}
+                  </h1>
+                  <p className="max-w-xl text-base leading-7 text-muted md:text-lg">
+                    {t('heroSubtitle')}
+                  </p>
+                  <div className="flex max-w-xl flex-col gap-3 rounded-[22px] border border-border-color bg-[#F8FAFC] p-3 shadow-soft sm:flex-row">
+                    <input
+                      className="min-h-12 flex-1 rounded-[16px] border border-transparent bg-white px-4 text-sm text-ink outline-none focus:border-primary"
+                      placeholder="Search web design, logo, video editing..."
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                    />
+                    <button className="rounded-[16px] bg-primary px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+                      Search talent
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Link to="/profile" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
+                      Apply as a verified seller
+                    </Link>
+                    <Link to="#marketplace" className="rounded-full border border-border-color bg-white px-6 py-3 text-sm font-semibold text-ink shadow-soft">
+                      Browse services
+                    </Link>
+                  </div>
+                  <div className="grid gap-3 pt-2 sm:grid-cols-3">
+                    {trustStats.map((stat) => (
+                      <div key={stat.label} className="rounded-[18px] border border-border-color bg-white p-4 shadow-soft">
+                        <p className="text-lg font-semibold text-ink">{stat.value}</p>
+                        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted">{stat.label}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-              </div>
-              <div className="relative min-h-[420px] bg-[#F2F5FA]">
+              <div className="relative min-h-[460px] bg-[#F2F5FA]">
                 <img
                   src={heroTeam}
-                  alt="Verified student teams"
+                  alt="Verified Pakistani graduate talent"
                   className="absolute inset-0 h-full w-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-gradient-to-l from-white/10 via-white/40 to-white/80" />
+                <div className="absolute inset-0 bg-gradient-to-l from-black/20 via-white/10 to-white/75" />
+                <div className="absolute bottom-6 left-6 right-6 rounded-[24px] border border-white/60 bg-white/90 p-5 shadow-lift backdrop-blur">
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Why clients trust it</p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                    {['BS/degree check', 'Admin-approved gigs', 'Lower commission'].map((item) => (
+                      <div key={item} className="rounded-[16px] bg-[#EEF2F7] px-3 py-3 text-sm font-semibold text-ink">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-3">
+        {platformAdvantages.map((item) => (
+          <div key={item.title} className="rounded-[24px] border border-border-color bg-card-bg p-6 shadow-soft">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">UniHire difference</p>
+            <h2 className="mt-3 text-xl font-semibold text-ink">{item.title}</h2>
+            <p className="mt-3 text-sm leading-6 text-muted">{item.description}</p>
+          </div>
+        ))}
+      </section>
+
       <section className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Recommended</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Based on your campus needs</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Verified services</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Admin-reviewed gigs from Pakistani graduates</h2>
           </div>
           <button className="btn-ghost text-sm" onClick={() => setFilterOpen(true)} type="button">
             Campus filters
@@ -359,11 +404,11 @@ export default function GigList() {
         </div>
       </section>
 
-      <section className="space-y-5">
+      <section id="marketplace" className="space-y-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Popular gigs</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Most popular campus services</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Marketplace</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Popular graduate-powered services</h2>
           </div>
           <button className="btn-ghost text-sm" onClick={() => setFilterOpen(true)} type="button">
             Campus filters
@@ -388,8 +433,8 @@ export default function GigList() {
       <section className="space-y-5">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Browse</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Categories and campus info</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Explore</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Built differently from open marketplaces</h2>
           </div>
           <button className="btn-ghost text-sm">All categories</button>
         </div>
@@ -417,10 +462,9 @@ export default function GigList() {
         <div className="grid gap-6 px-6 py-6 md:grid-cols-[1.1fr,0.9fr] md:items-center">
           <div className="flex h-full flex-col justify-center gap-5">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Become a UniHire seller</p>
-            <h2 className="font-display text-3xl font-semibold text-ink">Grow a global business from your campus</h2>
+            <h2 className="font-display text-3xl font-semibold text-ink">Turn your Pakistani degree into global freelance work</h2>
             <p className="text-sm leading-6 text-muted">
-              Build trust with verified student badges, polished gig packaging, and a payout stack designed for
-              Pakistan.
+              Apply with your BS or university details, complete profile verification, and publish gigs after admin approval.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link to="/profile" className="btn-gradient text-sm">
@@ -448,8 +492,26 @@ export default function GigList() {
 
       <section className="space-y-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">A smarter way to work</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Grow, earn, and scale across Pakistan</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Verification flow</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">How trusted students get approved</h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {verificationSteps.map((stepItem, index) => (
+            <div key={stepItem.title} className="card-premium rounded-[22px] p-6 shadow-soft">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-sm font-bold text-white">
+                0{index + 1}
+              </div>
+              <p className="mt-5 text-lg font-semibold text-ink">{stepItem.title}</p>
+              <p className="mt-2 text-sm leading-6 text-muted">{stepItem.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Why it works</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">A marketplace designed for Pakistan's student economy</h2>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {growthCards.map((card) => (
@@ -477,13 +539,12 @@ export default function GigList() {
           }}
         >
           <div className="space-y-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Campus first</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">Trust first</p>
             <h2 className="font-display text-3xl font-semibold leading-tight">
-              Make it real with verified student freelancers
+              A safer way to hire emerging Pakistani talent
             </h2>
             <p className="text-sm text-white/70 md:text-base">
-              A premium marketplace built for Pakistan’s campuses — fast matching, secure payouts, and verified
-              profiles that build trust quickly.
+              UniHire is not an open sign-up board. Sellers are reviewed, gig quality is checked, and clients get a clearer path to trusted graduate freelancers.
             </p>
             <div className="grid gap-5 sm:grid-cols-2">
               {supportCards.map((card) => (
@@ -514,9 +575,9 @@ export default function GigList() {
         }}
       >
         <div className="max-w-2xl space-y-4">
-          <h2 className="font-display text-3xl font-semibold">Let’s show the world what you’ve got to offer</h2>
+          <h2 className="font-display text-3xl font-semibold">Show the world what verified Pakistani talent can build</h2>
           <p className="text-sm text-white/70">
-            Publish your gig, verify your profile, and start earning with trusted local payments.
+            Apply as a student seller, complete verification, and start earning from global clients with lower platform fees.
           </p>
           <Link to="/create" className="inline-flex rounded-full bg-white/10 px-5 py-3 text-sm font-semibold text-white">
             Get started
@@ -527,7 +588,7 @@ export default function GigList() {
       <section className="space-y-5">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Pakistan categories</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Explore what’s hot in Pakistan</h2>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">High-demand services from verified Pakistani talent</h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {pakCategoryTiles.map((tile) => (
@@ -548,9 +609,9 @@ export default function GigList() {
         <div className="grid gap-8 md:grid-cols-[1.2fr,0.8fr,0.8fr,0.8fr]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">UniHire</p>
-            <p className="mt-3 text-lg font-semibold">Pakistan’s verified student marketplace</p>
+            <p className="mt-3 text-lg font-semibold">Pakistan's verified graduate freelance marketplace</p>
             <p className="mt-2 text-sm text-white/70">
-              Build trust with campus verification, premium gig packaging, and secure local payouts.
+              Global clients hire trusted Pakistani students and graduates through reviewed profiles, approved gigs, and fairer fees.
             </p>
             <div className="mt-5 space-y-2 text-sm text-white/70">
               <p>Phone: 03185756022</p>
@@ -565,9 +626,9 @@ export default function GigList() {
           <div>
             <p className="text-sm font-semibold text-white">Open hours</p>
             <ul className="mt-3 space-y-2 text-sm text-white/70">
-              <li>Mon–Fri: 9am – 8pm</li>
-              <li>Saturday: 10am – 6pm</li>
-              <li>Sunday: 12pm – 4pm</li>
+              <li>Mon-Fri: 9am - 8pm</li>
+              <li>Saturday: 10am - 6pm</li>
+              <li>Sunday: 12pm - 4pm</li>
             </ul>
           </div>
           <div>
