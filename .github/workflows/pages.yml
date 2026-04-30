@@ -38,6 +38,10 @@ jobs:
         working-directory: gig-system/client
         run: npm run build
 
+      - name: Add SPA fallback
+        working-directory: gig-system/client
+        run: cp dist/index.html dist/404.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
