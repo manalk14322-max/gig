@@ -19,11 +19,14 @@ export default function Profile() {
     universityEmail: '',
     department: '',
     studentId: '',
+    cnicNumber: '',
     verificationStatus: 'pending',
     verifiedStudent: false,
   });
   const [idImage, setIdImage] = useState('');
   const [selfieImage, setSelfieImage] = useState('');
+  const [cnicFrontImage, setCnicFrontImage] = useState('');
+  const [cnicBackImage, setCnicBackImage] = useState('');
   const [verifyStatus, setVerifyStatus] = useState('');
   const [status, setStatus] = useState('');
   const [saving, setSaving] = useState(false);
@@ -46,11 +49,14 @@ export default function Profile() {
           universityEmail: data.universityEmail || '',
           department: data.department || '',
           studentId: data.studentId || '',
+          cnicNumber: data.cnicNumber || data.verificationDocs?.cnicNumber || '',
           verificationStatus: data.verificationStatus || 'pending',
           verifiedStudent: Boolean(data.verifiedStudent),
         });
         setIdImage(data.verificationDocs?.idImage || '');
         setSelfieImage(data.verificationDocs?.selfieImage || '');
+        setCnicFrontImage(data.verificationDocs?.cnicFrontImage || '');
+        setCnicBackImage(data.verificationDocs?.cnicBackImage || '');
       })
       .catch(() => {});
   }, [ready]);
@@ -79,6 +85,7 @@ export default function Profile() {
         universityEmail: form.universityEmail,
         department: form.department,
         studentId: form.studentId,
+        cnicNumber: form.cnicNumber,
       };
       const updated = await updateProfile(payload);
       setStatus(`Profile updated for ${updated.name}.`);
@@ -100,13 +107,19 @@ export default function Profile() {
 
   const submitVerification = async () => {
     setVerifyStatus('');
-    if (!idImage || !selfieImage) {
-      setVerifyStatus('Please upload your student ID or education proof and a selfie.');
+    if (!form.cnicNumber.trim() || !idImage || !selfieImage || !cnicFrontImage || !cnicBackImage) {
+      setVerifyStatus('Please add CNIC number, CNIC front/back, student proof, and a selfie.');
       return;
     }
     setVerifying(true);
     try {
-      await requestVerification({ idImage, selfieImage });
+      await requestVerification({
+        idImage,
+        selfieImage,
+        cnicNumber: form.cnicNumber.trim(),
+        cnicFrontImage,
+        cnicBackImage,
+      });
       setVerifyStatus('Verification request submitted. You will see the badge after approval.');
     } catch (error) {
       setVerifyStatus(error?.response?.data?.error || 'Could not submit verification request.');
@@ -243,24 +256,52 @@ export default function Profile() {
                 onChange={(event) => setForm({ ...form, department: event.target.value })}
               />
             </div>
-              <div className="mt-4 grid gap-4 md:grid-cols-[1.2fr,0.8fr]">
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
                 <input
                   className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
                   placeholder="Student ID / Roll number"
                   value={form.studentId}
                   onChange={(event) => setForm({ ...form, studentId: event.target.value })}
                 />
-                <div className="rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm text-muted">
-                  Verified student badge appears after review.
+                <input
+                  className="rounded-2xl border border-[#E5E7EB] px-4 py-3"
+                  placeholder="CNIC number (13 digits)"
+                  inputMode="numeric"
+                  maxLength="15"
+                  value={form.cnicNumber}
+                  onChange={(event) => setForm({ ...form, cnicNumber: event.target.value })}
+                />
+                <div className="rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm text-muted md:col-span-2">
+                  CNIC helps verify Pakistani identity before the student badge appears.
                 </div>
               </div>
 
               <div className="mt-4 rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
                 <p className="text-sm font-semibold text-ink">Upload verification</p>
                 <p className="mt-1 text-xs text-muted">
-                  Add a clear student ID, FSc/college/university proof, and a selfie. This is used for student verification.
+                  Add CNIC front/back, student education proof, and a selfie. This is used for Pakistani identity and student verification.
                 </p>
                 <div className="mt-3 grid gap-4 md:grid-cols-2">
+                  <label className="flex flex-col gap-2 text-xs font-semibold text-muted">
+                    CNIC front
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="rounded-2xl border border-border-color bg-white px-4 py-2 text-sm"
+                      onChange={(event) => handleFile(event.target.files?.[0], setCnicFrontImage)}
+                    />
+                    {cnicFrontImage && <img src={cnicFrontImage} alt="CNIC front" className="h-24 w-full rounded-2xl object-cover" />}
+                  </label>
+                  <label className="flex flex-col gap-2 text-xs font-semibold text-muted">
+                    CNIC back
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="rounded-2xl border border-border-color bg-white px-4 py-2 text-sm"
+                      onChange={(event) => handleFile(event.target.files?.[0], setCnicBackImage)}
+                    />
+                    {cnicBackImage && <img src={cnicBackImage} alt="CNIC back" className="h-24 w-full rounded-2xl object-cover" />}
+                  </label>
                   <label className="flex flex-col gap-2 text-xs font-semibold text-muted">
                     Student ID / education proof
                     <input
@@ -368,6 +409,10 @@ export default function Profile() {
                 <p className="text-sm text-muted">Student ID</p>
                 <p className="mt-1 font-semibold text-ink">{form.studentId || 'Not added yet'}</p>
               </div>
+              <div className="rounded-[22px] bg-[#F3F7FA] p-4">
+                <p className="text-sm text-muted">CNIC</p>
+                <p className="mt-1 font-semibold text-ink">{form.cnicNumber || 'Not added yet'}</p>
+              </div>
             </div>
           </section>
 
@@ -375,6 +420,7 @@ export default function Profile() {
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Checklist</p>
             <ul className="mt-4 space-y-3 text-sm text-muted">
               <li>Full name and role</li>
+              <li>CNIC number and CNIC front/back images</li>
               <li>FSc, college, university, or institute details</li>
               <li>Short bio and portfolio</li>
               <li>Seller profile ready for gig creation</li>

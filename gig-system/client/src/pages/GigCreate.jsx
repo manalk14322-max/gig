@@ -108,6 +108,7 @@ export default function GigCreate() {
     !!profile.university &&
     !!profile.department &&
     !!profile.studentId &&
+    !!(profile.cnicNumber || profile.verificationDocs?.cnicNumber) &&
     (profile.verifiedStudent || profile.verificationStatus === 'verified') &&
     profile.role === 'seller';
 
@@ -736,7 +737,7 @@ export default function GigCreate() {
           <div className="rounded-[24px] border border-border-color bg-bg-light p-5">
             <p className="text-sm font-semibold text-ink">Publishing rule</p>
             <p className="mt-2 text-sm leading-6 text-muted">
-              Only verified Pakistani students from FSc level and above can publish. Draft fields still work so the gig can be prepared before approval.
+              Only verified Pakistani students from FSc level and above can publish. CNIC verification is required before approval.
             </p>
           </div>
         </aside>

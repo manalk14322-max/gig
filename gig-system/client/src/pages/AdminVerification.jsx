@@ -69,6 +69,11 @@ export default function AdminVerification() {
                     {item.university || 'University not set'}
                   </p>
                   {item.department && <p className="text-sm text-muted">{item.department}</p>}
+                  {(item.cnicNumber || item.verificationDocs?.cnicNumber) && (
+                    <p className="mt-2 text-xs font-semibold text-ink">
+                      CNIC: {item.cnicNumber || item.verificationDocs?.cnicNumber}
+                    </p>
+                  )}
                 </div>
                 <span className="rounded-full bg-[#F3F7FA] px-3 py-1 text-xs font-semibold text-primary">
                   {item.verificationStatus}
@@ -77,7 +82,43 @@ export default function AdminVerification() {
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-border-color bg-[#F3F7FA] p-3">
-                  <p className="text-xs font-semibold text-muted">Student ID</p>
+                  <p className="text-xs font-semibold text-muted">CNIC front</p>
+                  {item.verificationDocs?.cnicFrontImage ? (
+                    <img
+                      src={item.verificationDocs.cnicFrontImage}
+                      alt="CNIC front"
+                      className="mt-2 h-40 w-full cursor-zoom-in rounded-xl object-cover transition hover:scale-[1.02]"
+                      onClick={() => {
+                        setZoomed(false);
+                        setPreview({ src: item.verificationDocs.cnicFrontImage, label: 'CNIC front' });
+                      }}
+                    />
+                  ) : (
+                    <div className="mt-2 flex h-40 items-center justify-center rounded-xl bg-white text-xs text-muted">
+                      No CNIC front uploaded
+                    </div>
+                  )}
+                </div>
+                <div className="rounded-2xl border border-border-color bg-[#F3F7FA] p-3">
+                  <p className="text-xs font-semibold text-muted">CNIC back</p>
+                  {item.verificationDocs?.cnicBackImage ? (
+                    <img
+                      src={item.verificationDocs.cnicBackImage}
+                      alt="CNIC back"
+                      className="mt-2 h-40 w-full cursor-zoom-in rounded-xl object-cover transition hover:scale-[1.02]"
+                      onClick={() => {
+                        setZoomed(false);
+                        setPreview({ src: item.verificationDocs.cnicBackImage, label: 'CNIC back' });
+                      }}
+                    />
+                  ) : (
+                    <div className="mt-2 flex h-40 items-center justify-center rounded-xl bg-white text-xs text-muted">
+                      No CNIC back uploaded
+                    </div>
+                  )}
+                </div>
+                <div className="rounded-2xl border border-border-color bg-[#F3F7FA] p-3">
+                  <p className="text-xs font-semibold text-muted">Student ID / education proof</p>
                   {item.verificationDocs?.idImage ? (
                     <img
                       src={item.verificationDocs.idImage}

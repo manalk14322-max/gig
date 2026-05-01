@@ -12,11 +12,15 @@ export const demoUser = {
   universityEmail: 'manal@example.edu.pk',
   department: 'Computer Science',
   studentId: 'PU-2026-0142',
+  cnicNumber: '3520212345678',
   verificationStatus: 'verified',
   verifiedStudent: true,
   verificationDocs: {
     idImage: '',
     selfieImage: '',
+    cnicNumber: '3520212345678',
+    cnicFrontImage: '',
+    cnicBackImage: '',
     requestedAt: null,
   },
   verificationHistory: [
