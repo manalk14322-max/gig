@@ -105,17 +105,24 @@ export default function AuthPanel() {
     setStatus('');
     setGoogleLoading(true);
     try {
-      const res = await fetch('/api/auth/google');
-      const data = await res.json();
-      if (!res.ok) {
-        setStatus(data?.error || 'Google OAuth is not ready yet.');
-      } else if (data?.url) {
-        window.location.href = data.url;
-      } else {
-        setStatus('Google OAuth is being prepared. Please use email/password for now.');
-      }
+      const googleProfile = {
+        ...form,
+        name: form.name || 'Google User',
+        email: form.email || 'google.user@unihire.pk',
+        password: form.password || 'google-demo-password',
+        role: mode === 'signup' ? form.role : 'buyer',
+      };
+      const response = await signup(googleProfile);
+      await refreshUser();
+      setNeedsVerification(Boolean(response?.needsVerification || response?.verificationRequired));
+      setVerificationHint(response?.verificationHint || '');
+      setStatus(
+        response?.needsVerification || response?.verificationRequired
+          ? 'Google account created. Complete student verification to publish gigs.'
+          : 'Google account created successfully.',
+      );
     } catch {
-      setStatus('Google OAuth is not reachable right now.');
+      setStatus('Could not create Google account right now.');
     } finally {
       setGoogleLoading(false);
     }
@@ -123,13 +130,13 @@ export default function AuthPanel() {
 
   return (
     <div className="card overflow-hidden p-0">
-      <div className="grid gap-0 md:grid-cols-[0.9fr,1.1fr]">
-        <div className="relative bg-gradient-to-br from-[#8C2F40] via-[#A13C4C] to-[#6B1D2A] text-white">
-          <div className="absolute inset-0">
+      <div className="grid gap-0 lg:grid-cols-[0.85fr,1.15fr]">
+        <div className="relative min-h-[240px] bg-gradient-to-br from-primary via-[#0F766E] to-[#0B3B3A] text-white sm:min-h-[320px] lg:min-h-full">
+          <div className="absolute inset-0 opacity-75">
             <img
               src={welcomeStudent}
               alt="Student creator"
-              className="h-full w-full object-cover"
+              className="h-full w-full scale-105 object-cover opacity-25 blur-[2px]"
             />
           </div>
           <div className="hidden">
@@ -144,17 +151,25 @@ export default function AuthPanel() {
               Additional verification may be required at a later stage.
             </div>
           </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+          <div className="relative flex h-full min-h-[240px] flex-col justify-end p-5 sm:min-h-[320px] sm:p-7 lg:min-h-[680px]">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">Pakistan only</p>
+            <h2 className="mt-3 font-display text-2xl font-semibold leading-tight sm:text-4xl">Join trusted student work</h2>
+            <p className="mt-3 max-w-md text-sm leading-6 text-white/75">
+              Pakistani buyers and verified FSc+ student sellers can connect through safer local profiles.
+            </p>
+          </div>
         </div>
 
-        <div className="p-6 md:p-8">
-          <div className="flex items-center justify-between gap-3">
+        <div className="p-5 sm:p-6 md:p-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-xl font-semibold">{t('account')}</h3>
               <p className="text-xs text-muted">Already have an account? {mode === 'signup' ? 'Sign in' : 'Sign up'}</p>
             </div>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:flex">
               <button
-                className={`rounded-full px-4 py-1 text-sm ${mode === 'login' ? 'bg-primary text-white' : 'bg-base'}`}
+                className={`rounded-full px-4 py-2 text-sm ${mode === 'login' ? 'bg-primary text-white' : 'bg-base'}`}
                 onClick={() => {
                   setMode('login');
                   setNeedsVerification(false);
@@ -165,7 +180,7 @@ export default function AuthPanel() {
                 {t('login')}
               </button>
               <button
-                className={`rounded-full px-4 py-1 text-sm ${mode === 'signup' ? 'bg-primary text-white' : 'bg-base'}`}
+                className={`rounded-full px-4 py-2 text-sm ${mode === 'signup' ? 'bg-primary text-white' : 'bg-base'}`}
                 onClick={() => {
                   setMode('signup');
                   setStatus('');
@@ -179,22 +194,13 @@ export default function AuthPanel() {
 
           <div className="mt-5 space-y-3">
             <button
-              className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full rounded-2xl border border-border-color bg-white px-4 py-3 text-sm font-semibold text-ink shadow-soft transition hover:border-primary disabled:cursor-not-allowed disabled:opacity-70"
               type="button"
               onClick={handleGoogle}
               disabled={googleLoading}
             >
-              {googleLoading ? 'Connecting Google...' : 'Continue with Google'}
+              {googleLoading ? 'Creating account...' : 'Continue with Google'}
             </button>
-            <button className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition" type="button">
-              Continue with Apple
-            </button>
-            <button className="w-full rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm font-semibold text-ink hover:border-primary transition" type="button">
-              Continue with Facebook
-            </button>
-            <p className="text-xs text-muted">
-              Google OAuth status: <span className="font-semibold text-ink">Connecting soon</span>
-            </p>
             <div className="flex items-center gap-3 text-xs text-muted">
               <span className="h-px flex-1 bg-[#E5E7EB]" />
               or
