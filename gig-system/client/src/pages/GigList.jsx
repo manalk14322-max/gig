@@ -382,14 +382,16 @@ export default function GigList() {
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[250px] bg-bg-light sm:min-h-[380px] lg:min-h-[460px]">
-                <img
-                  src={heroTeam}
-                  alt="Verified Pakistani student talent"
-                  className="absolute inset-0 h-full w-full object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-white/0 to-white/20 sm:bg-gradient-to-l sm:from-black/20 sm:via-white/10 sm:to-white/75" />
-                <div className="absolute bottom-4 left-4 right-4 rounded-[20px] border border-white/60 bg-white/90 p-4 shadow-lift backdrop-blur sm:bottom-6 sm:left-6 sm:right-6 sm:rounded-[24px] sm:p-5">
+              <div className="bg-bg-light px-4 pb-6 sm:px-0 sm:pb-0 lg:relative lg:min-h-[460px]">
+                <div className="relative overflow-hidden rounded-[24px] sm:rounded-none lg:absolute lg:inset-0">
+                  <img
+                    src={heroTeam}
+                    alt="Verified Pakistani student talent"
+                    className="h-64 w-full object-cover object-[50%_28%] sm:h-[380px] lg:h-full lg:object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/10 sm:bg-gradient-to-l sm:from-black/20 sm:via-white/10 sm:to-white/75" />
+                </div>
+                <div className="relative z-10 mx-2 -mt-12 rounded-[20px] border border-white/70 bg-white/95 p-4 shadow-lift backdrop-blur sm:absolute sm:bottom-6 sm:left-6 sm:right-6 sm:mx-0 sm:mt-0 sm:rounded-[24px] sm:p-5">
                   <p className="text-sm font-semibold text-ink">Trust-first marketplace</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {['FSc+ review', 'Approved gigs', 'Lower fees'].map((item) => (

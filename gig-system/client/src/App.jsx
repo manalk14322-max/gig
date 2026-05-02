@@ -130,8 +130,8 @@ export default function App() {
         </nav>
 
         {mobileOpen && (
-          <div className="fixed inset-0 z-50 bg-black/40 lg:hidden">
-            <div className="absolute right-0 top-0 h-full w-[88vw] max-w-sm overflow-y-auto bg-card-bg p-5 shadow-soft sm:p-6">
+          <div className="fixed inset-0 z-50 bg-card-bg lg:hidden">
+            <div className="h-full w-full overflow-y-auto bg-card-bg p-5 shadow-soft sm:p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 overflow-hidden rounded-2xl border border-border-color bg-white shadow-soft">
