@@ -130,9 +130,9 @@ export default function App() {
         </nav>
 
         {mobileOpen && (
-          <div className="fixed inset-0 z-50 bg-card-bg lg:hidden">
-            <div className="h-full w-full overflow-y-auto bg-card-bg p-5 shadow-soft sm:p-6">
-              <div className="flex items-center justify-between">
+          <div className="fixed bottom-0 left-0 right-0 top-0 z-[100] bg-white lg:hidden">
+            <div className="min-h-dvh w-full overflow-y-auto bg-white px-5 pb-8 pt-5 shadow-soft sm:p-6">
+              <div className="sticky top-0 z-10 -mx-5 -mt-5 flex items-center justify-between border-b border-border-color bg-white/95 px-5 py-4 backdrop-blur sm:-mx-6 sm:-mt-6 sm:px-6">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 overflow-hidden rounded-2xl border border-border-color bg-white shadow-soft">
                     <img src={brandLogo} alt="UniHire" className="h-full w-full object-cover" />
