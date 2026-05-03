@@ -23,7 +23,24 @@ const topCategories = [
   'AI Services',
 ];
 
-const quickSearches = ['Logo', 'React site', 'WordPress', 'Video edits'];
+const quickSearches = ['Logo design', 'Website', 'Urdu content', 'Video editing'];
+
+const cityOptions = ['Lahore', 'Karachi', 'Islamabad', 'Peshawar', 'Quetta', 'Multan', 'Online'];
+
+const buyerPath = [
+  {
+    title: 'Choose a service',
+    description: 'Pick a category or send a short request in simple words.',
+  },
+  {
+    title: 'Compare trusted sellers',
+    description: 'See reviewed gigs, clear prices, and Pakistani seller profiles.',
+  },
+  {
+    title: 'Start safely',
+    description: 'Chat first, confirm scope, then place the order when ready.',
+  },
+];
 
 const browseGroups = [
   {
@@ -277,6 +294,10 @@ export default function GigList() {
   const [featured, setFeatured] = useState([]);
   const [results, setResults] = useState([]);
   const [searchReady, setSearchReady] = useState(false);
+  const [briefCategory, setBriefCategory] = useState('Programming & Tech');
+  const [briefBudget, setBriefBudget] = useState('15000');
+  const [briefCity, setBriefCity] = useState('Online');
+  const [briefSent, setBriefSent] = useState(false);
 
   useEffect(() => {
     fetchGigs({ featured: true }).then(setFeatured);
@@ -299,6 +320,15 @@ export default function GigList() {
   const liveCatalog = searchReady ? results : featured;
   const curatedGigs = (liveCatalog.length ? liveCatalog : featured).slice(0, 6);
   const heroName = user?.name?.split(' ')[0] || 'there';
+
+  const submitQuickBrief = (event) => {
+    event.preventDefault();
+    setCategory(briefCategory);
+    setPriceRange([0, Number(briefBudget)]);
+    setQuery('');
+    setBriefSent(true);
+    document.getElementById('marketplace')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <div className="space-y-6 pb-0 md:space-y-10">
@@ -472,6 +502,93 @@ export default function GigList() {
             ))}
           </div>
         )}
+      </section>
+
+      <section className="grid gap-4 rounded-[28px] border border-border-color bg-white p-4 shadow-soft md:grid-cols-[0.9fr,1.1fr] md:p-6">
+        <div className="rounded-[24px] bg-bg-light p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Quick start</p>
+          <h2 className="mt-3 font-display text-2xl font-semibold text-ink">Find the right Pakistani seller faster</h2>
+          <div className="mt-5 space-y-3">
+            {buyerPath.map((item, index) => (
+              <div key={item.title} className="flex gap-3 rounded-[18px] bg-white p-4 shadow-soft">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-sm font-bold text-white">
+                  {index + 1}
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-ink">{item.title}</p>
+                  <p className="mt-1 text-xs leading-5 text-muted">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <form onSubmit={submitQuickBrief} className="rounded-[24px] border border-border-color bg-card-bg p-5 shadow-soft">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Buyer request</p>
+              <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Tell us what you need</h2>
+            </div>
+            {briefSent && (
+              <span className="rounded-full bg-soft px-3 py-2 text-xs font-semibold text-primary">
+                Matching gigs updated
+              </span>
+            )}
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <label className="space-y-2 text-sm font-semibold text-muted">
+              Service type
+              <select
+                value={briefCategory}
+                onChange={(event) => setBriefCategory(event.target.value)}
+                className="w-full rounded-2xl border border-border-color bg-bg-light px-4 py-3 text-sm text-ink outline-none focus:border-primary"
+              >
+                {topCategories.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="space-y-2 text-sm font-semibold text-muted">
+              Max budget
+              <select
+                value={briefBudget}
+                onChange={(event) => setBriefBudget(event.target.value)}
+                className="w-full rounded-2xl border border-border-color bg-bg-light px-4 py-3 text-sm text-ink outline-none focus:border-primary"
+              >
+                <option value="10000">Under PKR 10,000</option>
+                <option value="15000">Under PKR 15,000</option>
+                <option value="30000">Under PKR 30,000</option>
+                <option value="70000">Flexible budget</option>
+              </select>
+            </label>
+            <label className="space-y-2 text-sm font-semibold text-muted sm:col-span-2">
+              Buyer city
+              <select
+                value={briefCity}
+                onChange={(event) => setBriefCity(event.target.value)}
+                className="w-full rounded-2xl border border-border-color bg-bg-light px-4 py-3 text-sm text-ink outline-none focus:border-primary"
+              >
+                {cityOptions.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <button type="submit" className="btn-gradient text-sm">
+              Show matching gigs
+            </button>
+            <p className="text-xs leading-5 text-muted">
+              This demo keeps your request on this page. Full saved requests can be connected with backend later.
+            </p>
+          </div>
+        </form>
       </section>
 
       <section className="space-y-5">
