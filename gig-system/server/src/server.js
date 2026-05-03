@@ -21,22 +21,105 @@ app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(',') || true, credential
 app.use(express.json({ limit: '2mb' }));
 app.use('/uploads', express.static(uploadDir));
 
-async function ensureAdmin() {
+async function ensureSeedData() {
   const db = await readDb();
   const email = process.env.ADMIN_EMAIL || 'admin@unihire.pk';
-  if (db.users.some((user) => user.email === email)) return;
-  db.users.push({
-    id: 'admin-1',
-    name: 'UniHire Admin',
-    email,
-    passwordHash: await bcrypt.hash(process.env.ADMIN_PASSWORD || 'admin12345', 10),
-    role: 'admin',
-    verificationStatus: 'verified',
-    verifiedStudent: false,
-    cnicVerified: false,
-    blocked: false,
-    createdAt: new Date().toISOString(),
-  });
+  if (!db.users.some((user) => user.email === email)) {
+    db.users.push({
+      id: 'admin-1',
+      name: 'UniHire Admin',
+      email,
+      passwordHash: await bcrypt.hash(process.env.ADMIN_PASSWORD || 'admin12345', 10),
+      role: 'admin',
+      verificationStatus: 'verified',
+      verifiedStudent: false,
+      cnicVerified: false,
+      blocked: false,
+      createdAt: new Date().toISOString(),
+    });
+  }
+
+  if (!db.users.some((user) => user.id === 'seller-demo-1')) {
+    db.users.push({
+      id: 'seller-demo-1',
+      name: 'Ayesha Khan',
+      email: 'seller@unihire.pk',
+      passwordHash: await bcrypt.hash('seller12345', 10),
+      role: 'seller',
+      title: 'Verified student web and brand creator',
+      location: 'Lahore, Pakistan',
+      description: 'FSc+ verified student seller for websites, branding, and content work.',
+      skills: ['React', 'Logo Design', 'SEO', 'Urdu Content'],
+      portfolio: ['https://behance.net/'],
+      university: 'University of the Punjab',
+      department: 'Computer Science',
+      studentId: 'PU-2026-0142',
+      studentLevel: 'BS',
+      cnicNumber: '3520212345678',
+      verificationStatus: 'verified',
+      verifiedStudent: true,
+      cnicVerified: true,
+      blocked: false,
+      responseTime: '1 hour',
+      verificationDocs: {},
+      verificationHistory: [{ status: 'verified', note: 'Seed seller approved.', decidedAt: new Date().toISOString(), decidedBy: 'UniHire admin' }],
+      createdAt: new Date().toISOString(),
+    });
+  }
+
+  if (!db.gigs.length) {
+    const seller = publicUser(db.users.find((user) => user.id === 'seller-demo-1'));
+    db.gigs.push(
+      {
+        _id: 'gig-demo-brand',
+        title: 'Design a premium logo and brand kit',
+        description: 'Logo, color palette, typography, and social templates for Pakistani small businesses.',
+        category: 'Graphics & Design',
+        tags: ['logo', 'branding', 'social media'],
+        city: 'Lahore',
+        studentLevel: 'BS',
+        basePrice: 18000,
+        deliveryDays: 4,
+        quickTask: false,
+        quickDeliveryHours: 2,
+        services: [{ title: 'Logo starter', price: 12000, durationHours: 24, included: ['2 concepts', 'PNG files'] }],
+        requirements: [{ question: 'Brand name', type: 'text', mandatory: true, options: [] }],
+        images: ['https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80'],
+        featured: true,
+        approvalStatus: 'approved',
+        ratingAverage: 4.9,
+        ratingCount: 2,
+        responseTime: '1 hour',
+        freelancerId: seller.id,
+        freelancer: seller,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        _id: 'gig-demo-react',
+        title: 'Build a responsive React landing page',
+        description: 'Mobile-friendly React landing page with sections, CTA, SEO basics, and clean design.',
+        category: 'Programming & Tech',
+        tags: ['react', 'website', 'frontend', 'seo'],
+        city: 'Islamabad',
+        studentLevel: 'BS',
+        basePrice: 28000,
+        deliveryDays: 5,
+        quickTask: true,
+        quickDeliveryHours: 8,
+        services: [{ title: 'Landing page', price: 22000, durationHours: 48, included: ['Hero section', 'Responsive layout'] }],
+        requirements: [{ question: 'Page content', type: 'textarea', mandatory: true, options: [] }],
+        images: ['https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80'],
+        featured: true,
+        approvalStatus: 'approved',
+        ratingAverage: 5,
+        ratingCount: 1,
+        responseTime: '45 min',
+        freelancerId: seller.id,
+        freelancer: seller,
+        createdAt: new Date().toISOString(),
+      },
+    );
+  }
   await writeDb(db);
 }
 
@@ -352,7 +435,7 @@ app.patch('/api/admin/users/:id/block', requireAuth, requireAdmin, async (req, r
   res.json(publicUser(db.users[index]));
 });
 
-await ensureAdmin();
+await ensureSeedData();
 await fs.mkdir(uploadDir, { recursive: true });
 app.listen(port, () => {
   console.log(`UniHire API running on http://localhost:${port}`);
