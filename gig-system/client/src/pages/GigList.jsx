@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { fetchGigs, searchGigs } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useLang } from '../context/LangContext.jsx';
@@ -22,6 +22,25 @@ const topCategories = [
   'Business',
   'AI Services',
 ];
+
+const categorySlugs = {
+  'graphics-design': 'Graphics & Design',
+  'programming-tech': 'Programming & Tech',
+  'digital-marketing': 'Digital Marketing',
+  'video-animation': 'Video & Animation',
+  'writing-translation': 'Writing & Translation',
+  'music-audio': 'Music & Audio',
+  business: 'Business',
+  'ai-services': 'AI Services',
+};
+
+function categorySlug(category) {
+  return category
+    .toLowerCase()
+    .replace(/&/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
 const quickSearches = ['Logo design', 'Website', 'Urdu content', 'Video editing'];
 
@@ -296,8 +315,10 @@ function GigCard({ gig }) {
 export default function GigList() {
   const { user } = useAuth();
   const { t } = useLang();
+  const { slug } = useParams();
+  const routeCategory = slug ? categorySlugs[slug] || '' : '';
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(routeCategory);
   const [quickOnly, setQuickOnly] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 70000]);
   const [maxDelivery, setMaxDelivery] = useState(10);
@@ -316,6 +337,10 @@ export default function GigList() {
   useEffect(() => {
     fetchGigs({ featured: true }).then(setFeatured);
   }, []);
+
+  useEffect(() => {
+    setCategory(routeCategory);
+  }, [routeCategory]);
 
   useEffect(() => {
     setSearchReady(false);
@@ -338,6 +363,8 @@ export default function GigList() {
   const liveCatalog = searchReady ? results : featured;
   const curatedGigs = (liveCatalog.length ? liveCatalog : featured).slice(0, 6);
   const heroName = user?.name?.split(' ')[0] || 'there';
+  const categoryPage = Boolean(routeCategory);
+  const pageTitle = categoryPage ? `${routeCategory} services` : 'Popular student-powered services';
 
   const submitQuickBrief = (event) => {
     event.preventDefault();
@@ -351,18 +378,16 @@ export default function GigList() {
   return (
     <div className="space-y-6 pb-0 md:space-y-10">
       <div className="hide-scrollbar relative left-1/2 right-1/2 hidden w-screen -ml-[50vw] -mr-[50vw] items-center gap-2 overflow-x-auto border-y border-border-color bg-white px-4 py-2 text-xs font-semibold text-ink sm:flex sm:px-6">
-        <button
-          type="button"
-          onClick={() => setCategory('')}
+        <Link
+          to="/"
           className="whitespace-nowrap rounded-full bg-bg-light px-4 py-1.5 text-muted hover:text-primary border border-border-color"
         >
           Trending now
-        </button>
+        </Link>
         {topCategories.map((item) => (
-          <button
+          <Link
             key={item}
-            type="button"
-            onClick={() => setCategory(item)}
+            to={`/category/${categorySlug(item)}`}
             className={`whitespace-nowrap rounded-full px-4 py-1.5 transition ${
               category === item
                 ? 'bg-primary text-white shadow-soft'
@@ -370,10 +395,28 @@ export default function GigList() {
             }`}
           >
             {item}
-          </button>
+          </Link>
         ))}
       </div>
 
+      {categoryPage && (
+        <section className="rounded-[26px] border border-border-color bg-white p-5 shadow-soft md:p-7">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Category page</p>
+              <h1 className="mt-2 font-display text-3xl font-semibold text-ink">{routeCategory}</h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
+                Browse verified Pakistani sellers for {routeCategory.toLowerCase()} with clear packages, ratings, and admin-reviewed profiles.
+              </p>
+            </div>
+            <button className="btn-ghost text-sm" onClick={() => setFilterOpen(true)} type="button">
+              Refine results
+            </button>
+          </div>
+        </section>
+      )}
+
+      {!categoryPage && (
       <section className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] overflow-hidden bg-bg-light">
         <div className="px-0 py-0">
           <div className="overflow-hidden border border-border-color bg-white shadow-lift">
@@ -454,7 +497,9 @@ export default function GigList() {
           </div>
         </div>
       </section>
+      )}
 
+      {!categoryPage && (
       <section className="rounded-[26px] border border-border-color bg-white p-4 shadow-soft md:p-5">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {proofPoints.map((item) => (
@@ -465,7 +510,9 @@ export default function GigList() {
           ))}
         </div>
       </section>
+      )}
 
+      {!categoryPage && (
       <section className="space-y-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -483,12 +530,13 @@ export default function GigList() {
           ))}
         </div>
       </section>
+      )}
 
       <section id="marketplace" className="scroll-mt-36 space-y-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Marketplace</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">Popular student-powered services</h2>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-ink">{pageTitle}</h2>
           </div>
           <button className="btn-ghost w-full text-sm sm:w-auto" onClick={() => setFilterOpen(true)} type="button">
             Campus filters
@@ -526,6 +574,8 @@ export default function GigList() {
         )}
       </section>
 
+      {!categoryPage && (
+      <>
       <section className="grid gap-4 rounded-[28px] border border-border-color bg-white p-4 shadow-soft md:grid-cols-[0.9fr,1.1fr] md:p-6">
         <div className="rounded-[24px] bg-bg-light p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Quick start</p>
@@ -822,6 +872,8 @@ export default function GigList() {
           </div>
         ))}
       </section>
+      </>
+      )}
 
       <footer className="relative left-1/2 right-1/2 w-screen -ml-[50vw] -mr-[50vw] bg-[#0B0F1D] px-4 py-10 text-white shadow-lift sm:px-6 md:px-10 -mb-24 md:-mb-10">
         <div className="grid gap-8 md:grid-cols-[1.2fr,0.8fr,0.8fr,0.8fr]">

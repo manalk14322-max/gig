@@ -210,6 +210,7 @@ export default function App() {
       <main className="mx-auto max-w-6xl px-4 py-6 pb-28 sm:px-6 md:py-10 md:pb-10">
         <Routes>
           <Route path="/" element={<GigList />} />
+          <Route path="/category/:slug" element={<GigList />} />
           <Route path="/create" element={<GigCreate />} />
           <Route path="/gig/:id" element={<GigDetail />} />
           <Route path="/dashboard" element={user ? <Dashboard /> : <AuthPanel />} />

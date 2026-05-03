@@ -44,7 +44,7 @@ jobs:
         working-directory: gig-system/client
         run: |
           cp dist/index.html dist/404.html
-          for route in profile create dashboard orders messages wallet settings favorites buyer admin/verification admin/database; do
+          for route in profile create dashboard orders messages wallet settings favorites buyer admin/verification admin/database category/graphics-design category/programming-tech category/digital-marketing category/video-animation category/writing-translation category/music-audio category/business category/ai-services; do
             mkdir -p "dist/$route"
             cp dist/index.html "dist/$route/index.html"
           done
