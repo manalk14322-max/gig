@@ -2,6 +2,9 @@ node_modules/
 dist/
 .env
 .env.*
+!.env.example
+!gig-system/server/.env.example
 *.log
 *.local
-
+gig-system/server/data/
+gig-system/server/uploads/

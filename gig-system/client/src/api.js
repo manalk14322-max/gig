@@ -7,7 +7,7 @@ const GIGS_KEY = 'gig.demoGigs';
 const ORDERS_KEY = 'gig.demoOrders';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   timeout: 5000,
 });
 
