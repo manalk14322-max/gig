@@ -28,6 +28,7 @@ export default function App() {
   const { user } = useAuth();
   const { t } = useLang();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const accountLabel = user?.role === 'admin' ? 'Admin panel' : user?.name || 'Account';
 
   return (
     <div className="min-h-screen bg-base">
@@ -78,7 +79,7 @@ export default function App() {
                   </span>
                 )}
                 <NavLink to="/dashboard" className="btn-ghost text-sm">
-                  {user.name}
+                  {accountLabel}
                 </NavLink>
               </div>
             ) : (

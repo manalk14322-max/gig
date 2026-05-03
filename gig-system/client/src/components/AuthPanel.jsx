@@ -107,7 +107,7 @@ export default function AuthPanel() {
     try {
       const googleProfile = {
         ...form,
-        name: form.name || 'Google User',
+        name: form.name || 'PakSkill Member',
         email: form.email || 'google.user@unihire.pk',
         password: form.password || 'google-demo-password',
         role: mode === 'signup' ? form.role : 'buyer',

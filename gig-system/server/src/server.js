@@ -402,6 +402,26 @@ app.get('/api/admin/verification', requireAuth, requireAdmin, async (req, res) =
   });
 });
 
+app.get('/api/admin/database', requireAuth, requireAdmin, async (req, res) => {
+  const db = await readDb();
+  res.json({
+    counts: {
+      users: db.users.length,
+      gigs: db.gigs.length,
+      orders: db.orders.length,
+      reviews: db.reviews.length,
+      chats: db.chats.length,
+      pendingGigs: db.gigs.filter((gig) => gig.approvalStatus === 'pending').length,
+      pendingSellers: db.users.filter((user) => user.role === 'seller' && user.verificationStatus === 'pending').length,
+    },
+    latest: {
+      users: db.users.slice(-5).map(publicUser),
+      gigs: db.gigs.slice(0, 5),
+      orders: db.orders.slice(0, 5),
+    },
+  });
+});
+
 app.patch('/api/admin/verification/:id', requireAuth, requireAdmin, async (req, res) => {
   const db = await readDb();
   const index = db.users.findIndex((user) => user.id === req.params.id);
