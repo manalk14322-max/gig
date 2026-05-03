@@ -11,6 +11,8 @@ const api = axios.create({
   timeout: 5000,
 });
 
+const realBackendEnabled = Boolean(import.meta.env.VITE_API_URL);
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem(TOKEN_KEY);
   if (token) {
@@ -94,7 +96,10 @@ async function withFallback(request, fallback) {
   try {
     const response = await request();
     return response.data;
-  } catch {
+  } catch (error) {
+    if (realBackendEnabled) {
+      throw error;
+    }
     return typeof fallback === 'function' ? fallback() : fallback;
   }
 }
@@ -284,6 +289,24 @@ export const requestVerification = (payload) =>
 
 export const fetchVerificationQueue = () =>
   withFallback(() => api.get('/admin/verification'), () => ({ items: [getDemoUser()], gigs: getDemoGigs() }));
+
+export const fetchAdminDatabase = () =>
+  withFallback(() => api.get('/admin/database'), () => ({
+    counts: {
+      users: 1,
+      gigs: getDemoGigs().length,
+      orders: getDemoOrders().length,
+      reviews: demoReviews.length,
+      chats: demoChats.length,
+      pendingGigs: getDemoGigs().filter((gig) => gig.approvalStatus === 'pending').length,
+      pendingSellers: 0,
+    },
+    latest: {
+      users: [getDemoUser()],
+      gigs: getDemoGigs().slice(0, 5),
+      orders: getDemoOrders().slice(0, 5),
+    },
+  }));
 
 export const approveVerification = (id, payload) =>
   withFallback(

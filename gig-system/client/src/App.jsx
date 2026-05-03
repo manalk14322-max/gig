@@ -15,6 +15,7 @@ import Settings from './pages/Settings.jsx';
 import Favorites from './pages/Favorites.jsx';
 import BuyerProfile from './pages/BuyerProfile.jsx';
 import AdminVerification from './pages/AdminVerification.jsx';
+import AdminDatabase from './pages/AdminDatabase.jsx';
 import OAuthCallback from './pages/OAuthCallback.jsx';
 import brandLogo from './assets/brand/photos/unihire-logo.jpg';
 import { useLang } from './context/LangContext.jsx';
@@ -124,9 +125,14 @@ export default function App() {
             {t('navSettings')}
           </NavLink>
           {user?.role === 'admin' && (
-            <NavLink to="/admin/verification" className={navLink}>
-              Verification
-            </NavLink>
+            <>
+              <NavLink to="/admin/verification" className={navLink}>
+                Verification
+              </NavLink>
+              <NavLink to="/admin/database" className={navLink}>
+                Database
+              </NavLink>
+            </>
           )}
         </nav>
 
@@ -176,9 +182,14 @@ export default function App() {
                   {t('navSettings')}
                 </NavLink>
                 {user?.role === 'admin' && (
-                  <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/admin/verification" onClick={() => setMobileOpen(false)}>
-                    Verification
-                  </NavLink>
+                  <>
+                    <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/admin/verification" onClick={() => setMobileOpen(false)}>
+                      Verification
+                    </NavLink>
+                    <NavLink className="rounded-2xl bg-bg-light px-4 py-3" to="/admin/database" onClick={() => setMobileOpen(false)}>
+                      Database
+                    </NavLink>
+                  </>
                 )}
               </div>
               {!user && (
@@ -211,6 +222,7 @@ export default function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/admin/verification" element={<AdminVerification />} />
+          <Route path="/admin/database" element={<AdminDatabase />} />
           <Route path="/oauth" element={<OAuthCallback />} />
         </Routes>
       </main>
