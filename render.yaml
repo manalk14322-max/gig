@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: unihire-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: gig-system/server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: 22.22.0
+      - key: CLIENT_ORIGIN
+        value: https://manalk14322-max.github.io
+      - key: ADMIN_EMAIL
+        value: manalk4322@gmail.com
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
