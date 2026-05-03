@@ -26,6 +26,8 @@ const topCategories = [
 const quickSearches = ['Logo design', 'Website', 'Urdu content', 'Video editing'];
 
 const cityOptions = ['Lahore', 'Karachi', 'Islamabad', 'Peshawar', 'Quetta', 'Multan', 'Online'];
+const filterCities = ['Any', ...cityOptions];
+const studentLevels = ['Any', 'FSc', 'BS', 'MS'];
 
 const buyerPath = [
   {
@@ -258,6 +260,11 @@ function GigCard({ gig }) {
                     Verified badge
                   </span>
                 )}
+                {gig.freelancer?.cnicVerified && (
+                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold text-blue-700">
+                    CNIC verified
+                  </span>
+                )}
                 <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] font-semibold text-secondary">
                   {gig.freelancer?.verifiedStudent ? 'Verified student' : 'Student seller'}
                 </span>
@@ -266,6 +273,9 @@ function GigCard({ gig }) {
                     {gig.freelancer.university}
                   </span>
                 )}
+                <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-ink">
+                  Replies {gig.responseTime || gig.freelancer?.responseTime || 'fast'}
+                </span>
               </div>
             </div>
           </div>
@@ -290,6 +300,10 @@ export default function GigList() {
   const [category, setCategory] = useState('');
   const [quickOnly, setQuickOnly] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 70000]);
+  const [maxDelivery, setMaxDelivery] = useState(10);
+  const [cityFilter, setCityFilter] = useState('Any');
+  const [studentLevel, setStudentLevel] = useState('Any');
+  const [skillFilter, setSkillFilter] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
   const [featured, setFeatured] = useState([]);
   const [results, setResults] = useState([]);
@@ -311,11 +325,15 @@ export default function GigList() {
       quick: quickOnly ? 'true' : undefined,
       minPrice: priceRange[0] || undefined,
       maxPrice: priceRange[1] || undefined,
+      maxDelivery,
+      city: cityFilter,
+      studentLevel,
+      skill: skillFilter || undefined,
     }).then((data) => {
       setResults(data.results || []);
       setSearchReady(true);
     });
-  }, [query, category, quickOnly, priceRange]);
+  }, [query, category, quickOnly, priceRange, maxDelivery, cityFilter, studentLevel, skillFilter]);
 
   const liveCatalog = searchReady ? results : featured;
   const curatedGigs = (liveCatalog.length ? liveCatalog : featured).slice(0, 6);
@@ -489,6 +507,10 @@ export default function GigList() {
                 setCategory('');
                 setQuickOnly(false);
                 setPriceRange([0, 70000]);
+                setMaxDelivery(10);
+                setCityFilter('Any');
+                setStudentLevel('Any');
+                setSkillFilter('');
               }}
               className="mt-5 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white"
             >
@@ -890,6 +912,57 @@ export default function GigList() {
                   onChange={(event) => setPriceRange([0, Number(event.target.value)])}
                 />
                 <p className="mt-2 text-sm text-muted">Up to PKR {priceRange[1].toLocaleString('en-PK')}</p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-muted">Delivery time</p>
+                <input
+                  className="mt-4 w-full"
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={maxDelivery}
+                  onChange={(event) => setMaxDelivery(Number(event.target.value))}
+                />
+                <p className="mt-2 text-sm text-muted">Within {maxDelivery} days</p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <p className="text-sm font-semibold text-muted">City</p>
+                  <select
+                    className="mt-3 w-full rounded-xl border border-border-color bg-bg-light px-4 py-3 text-sm focus:border-primary focus:outline-none"
+                    value={cityFilter}
+                    onChange={(event) => setCityFilter(event.target.value)}
+                  >
+                    {filterCities.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-muted">Student level</p>
+                  <select
+                    className="mt-3 w-full rounded-xl border border-border-color bg-bg-light px-4 py-3 text-sm focus:border-primary focus:outline-none"
+                    value={studentLevel}
+                    onChange={(event) => setStudentLevel(event.target.value)}
+                  >
+                    {studentLevels.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-muted">Skill</p>
+                <input
+                  className="mt-3 w-full rounded-xl border border-border-color bg-bg-light px-4 py-3 text-sm focus:border-primary focus:outline-none"
+                  placeholder="react, logo, seo..."
+                  value={skillFilter}
+                  onChange={(event) => setSkillFilter(event.target.value)}
+                />
               </div>
               <button
                 className={`rounded-full border px-4 py-3 text-sm font-semibold transition ${

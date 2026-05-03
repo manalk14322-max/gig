@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
-import { fetchChats, fetchOrders } from '../api.js';
+import { fetchChats, fetchOrders, fetchSellerPublic } from '../api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [orders, setOrders] = useState([]);
   const [chats, setChats] = useState([]);
+  const [gigs, setGigs] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [message, setMessage] = useState('');
   const socketRef = useRef(null);
@@ -14,7 +15,10 @@ export default function Dashboard() {
   useEffect(() => {
     fetchOrders().then(setOrders);
     fetchChats().then(setChats);
-  }, []);
+    if (user?.id) {
+      fetchSellerPublic(user.id).then((data) => setGigs(data.gigs || []));
+    }
+  }, [user?.id]);
 
   useEffect(() => {
     const socket = io('/', { transports: ['websocket'] });
@@ -52,13 +56,25 @@ export default function Dashboard() {
     return <p className="text-muted">Please login to access your dashboard.</p>;
   }
 
+  const activeOrders = orders.filter((order) => !['Completed', 'Cancelled'].includes(order.status)).length;
+  const earnings = orders
+    .filter((order) => order.paymentStatus === 'Protected' || order.paymentStatus === 'Paid')
+    .reduce((sum, order) => sum + Number(order.amount || 0), 0);
+  const pendingGigs = gigs.filter((gig) => (gig.approvalStatus || 'approved') === 'pending').length;
+  const pendingTasks = [
+    user.verificationStatus !== 'verified' && 'Complete CNIC/student verification',
+    pendingGigs > 0 && `${pendingGigs} gig waiting for admin approval`,
+    !gigs.length && 'Create your first gig',
+    orders.some((order) => order.status === 'Placed') && 'Review newly placed orders',
+  ].filter(Boolean);
+
   return (
     <div className="space-y-8">
       <section className="card p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="font-display text-2xl font-semibold">Welcome back, {user.name}</h1>
-            <p className="text-muted">Manage orders, revenue, and messages in one premium workspace.</p>
+            <p className="text-muted">Manage gigs, orders, earnings, verification, and messages in one workspace.</p>
           </div>
           <button className="btn-ghost text-sm" onClick={logout} type="button">
             Sign out
@@ -66,13 +82,55 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {['Active orders', 'Pending review', 'Total earnings'].map((item) => (
-          <div key={item} className="card card-hover p-5">
-            <p className="text-sm text-muted">{item}</p>
-            <p className="mt-2 text-2xl font-semibold text-ink">PKR 0</p>
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: 'Active orders', value: activeOrders },
+          { label: 'Gig approval', value: pendingGigs ? `${pendingGigs} pending` : 'Clear' },
+          { label: 'Total earnings', value: `PKR ${earnings.toLocaleString('en-PK')}` },
+          { label: 'Verification', value: user.verificationStatus || 'pending' },
+        ].map((item) => (
+          <div key={item.label} className="card card-hover p-5">
+            <p className="text-sm text-muted">{item.label}</p>
+            <p className="mt-2 text-2xl font-semibold capitalize text-ink">{item.value}</p>
           </div>
         ))}
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-[0.8fr,1.2fr]">
+        <div className="card p-6">
+          <h2 className="text-xl font-semibold">Pending tasks</h2>
+          <div className="mt-4 space-y-3">
+            {pendingTasks.map((task) => (
+              <div key={task} className="rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm text-muted">
+                {task}
+              </div>
+            ))}
+            {!pendingTasks.length && <p className="rounded-2xl bg-soft px-4 py-3 text-sm font-semibold text-primary">All clear for now.</p>}
+          </div>
+        </div>
+
+        <div className="card p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-xl font-semibold">My gigs</h2>
+            <span className="text-sm text-muted">{gigs.length} total</span>
+          </div>
+          <div className="mt-4 grid gap-3">
+            {gigs.slice(0, 4).map((gig) => (
+              <div key={gig._id} className="rounded-2xl border border-border-color bg-card-bg p-4">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="font-semibold text-ink">{gig.title}</p>
+                    <p className="text-sm text-muted">PKR {Number(gig.basePrice || 0).toLocaleString('en-PK')} - {gig.deliveryDays} days</p>
+                  </div>
+                  <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold capitalize text-primary">
+                    {gig.approvalStatus || 'approved'}
+                  </span>
+                </div>
+              </div>
+            ))}
+            {!gigs.length && <p className="text-sm text-muted">No gigs yet.</p>}
+          </div>
+        </div>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[1.2fr,1fr]">

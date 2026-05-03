@@ -4,6 +4,7 @@ import { demoChats, demoGigs, demoOrders, demoReviews, demoUser } from './demoDa
 const TOKEN_KEY = 'gig.token';
 const USER_KEY = 'gig.demoUser';
 const GIGS_KEY = 'gig.demoGigs';
+const ORDERS_KEY = 'gig.demoOrders';
 
 const api = axios.create({
   baseURL: '/api',
@@ -48,18 +49,34 @@ function setDemoGigs(gigs) {
   return writeJson(GIGS_KEY, gigs);
 }
 
+function getDemoOrders() {
+  return readJson(ORDERS_KEY, demoOrders);
+}
+
+function setDemoOrders(orders) {
+  return writeJson(ORDERS_KEY, orders);
+}
+
 function demoSearch(params = {}) {
   const q = String(params.q || '').toLowerCase();
   const minPrice = Number(params.minPrice || 0);
   const maxPrice = Number(params.maxPrice || Number.MAX_SAFE_INTEGER);
   const quickOnly = params.quick === 'true' || params.quick === true;
+  const maxDelivery = Number(params.maxDelivery || Number.MAX_SAFE_INTEGER);
+  const skill = String(params.skill || '').toLowerCase();
 
   const results = getDemoGigs()
     .filter((gig) => {
+      if ((gig.approvalStatus || 'approved') !== 'approved') return false;
+      if (gig.freelancer?.blocked) return false;
       if (params.featured && !gig.featured) return false;
       if (params.category && gig.category !== params.category) return false;
+      if (params.city && params.city !== 'Any' && gig.city !== params.city) return false;
+      if (params.studentLevel && params.studentLevel !== 'Any' && gig.studentLevel !== params.studentLevel) return false;
       if (quickOnly && !gig.quickTask) return false;
       if (gig.basePrice < minPrice || gig.basePrice > maxPrice) return false;
+      if (Number(gig.deliveryDays || 0) > maxDelivery) return false;
+      if (skill && !(gig.tags || []).join(' ').toLowerCase().includes(skill)) return false;
       if (!q) return true;
 
       const haystack = `${gig.title} ${gig.description} ${gig.category} ${(gig.tags || []).join(' ')}`.toLowerCase();
@@ -108,7 +125,10 @@ export const createGig = (payload) =>
         basePrice: Number(payload.basePrice || 0),
         deliveryDays: Number(payload.deliveryDays || 1),
         quickTask: Boolean(payload.quickTask),
-        featured: true,
+        featured: false,
+        approvalStatus: 'pending',
+        city: payload.city || user.location?.split(',')[0] || 'Online',
+        studentLevel: user.studentLevel || 'FSc',
         ratingAverage: 0,
         ratingCount: 0,
         freelancerId: user.id,
@@ -204,14 +224,22 @@ export const fetchMe = () =>
   );
 
 export const createOrder = (payload) =>
-  withFallback(() => api.post('/orders', payload), () => ({
-    _id: `demo-order-${Date.now()}`,
-    ...payload,
-    status: 'Placed',
-    paymentStatus: 'Protected',
-  }));
+  withFallback(
+    () => api.post('/orders', payload),
+    () => {
+      const order = {
+        _id: `demo-order-${Date.now()}`,
+        ...payload,
+        status: 'Placed',
+        paymentStatus: 'Payment pending',
+        createdAt: new Date().toISOString(),
+      };
+      setDemoOrders([order, ...getDemoOrders()]);
+      return order;
+    },
+  );
 
-export const fetchOrders = () => withFallback(() => api.get('/orders'), () => demoOrders);
+export const fetchOrders = () => withFallback(() => api.get('/orders'), () => getDemoOrders());
 
 export const startChat = (payload) =>
   withFallback(() => api.post('/chats/start', payload), () => ({ _id: `demo-chat-${Date.now()}`, ...payload }));
@@ -255,20 +283,71 @@ export const requestVerification = (payload) =>
   );
 
 export const fetchVerificationQueue = () =>
-  withFallback(() => api.get('/admin/verification'), () => [getDemoUser()]);
+  withFallback(() => api.get('/admin/verification'), () => ({ items: [getDemoUser()], gigs: getDemoGigs() }));
 
 export const approveVerification = (id, payload) =>
-  withFallback(() => api.patch(`/admin/verification/${id}`, { status: 'verified', ...(payload || {}) }), () => ({
-    ...getDemoUser(),
-    verificationStatus: 'verified',
-    verifiedStudent: true,
-  }));
+  withFallback(
+    () => api.patch(`/admin/verification/${id}`, { status: 'verified', ...(payload || {}) }),
+    () => setDemoUser({
+      ...getDemoUser(),
+      verificationStatus: 'verified',
+      verifiedStudent: true,
+      cnicVerified: true,
+      verificationHistory: [
+        ...(getDemoUser().verificationHistory || []),
+        {
+          status: 'verified',
+          note: payload?.note || 'Approved by admin.',
+          decidedAt: new Date().toISOString(),
+          decidedBy: 'UniHire admin',
+        },
+      ],
+    }),
+  );
 
 export const rejectVerification = (id, payload) =>
-  withFallback(() => api.patch(`/admin/verification/${id}`, { status: 'rejected', ...(payload || {}) }), () => ({
-    ...getDemoUser(),
-    verificationStatus: 'rejected',
-    verifiedStudent: false,
-  }));
+  withFallback(
+    () => api.patch(`/admin/verification/${id}`, { status: 'rejected', ...(payload || {}) }),
+    () => setDemoUser({
+      ...getDemoUser(),
+      verificationStatus: 'rejected',
+      verifiedStudent: false,
+      verificationHistory: [
+        ...(getDemoUser().verificationHistory || []),
+        {
+          status: 'rejected',
+          note: payload?.note || 'Rejected by admin.',
+          decidedAt: new Date().toISOString(),
+          decidedBy: 'UniHire admin',
+        },
+      ],
+    }),
+  );
+
+export const approveGig = (id) =>
+  withFallback(
+    () => api.patch(`/admin/gigs/${id}`, { approvalStatus: 'approved' }),
+    () => updateGig(id, { approvalStatus: 'approved', featured: true }),
+  );
+
+export const rejectGig = (id) =>
+  withFallback(
+    () => api.patch(`/admin/gigs/${id}`, { approvalStatus: 'rejected' }),
+    () => updateGig(id, { approvalStatus: 'rejected', featured: false }),
+  );
+
+export const blockUser = (id) =>
+  withFallback(
+    () => api.patch(`/admin/users/${id}/block`, { blocked: true }),
+    () => {
+      const current = getDemoUser();
+      const user = setDemoUser({ ...current, blocked: current.id === id ? true : current.blocked });
+      setDemoGigs(getDemoGigs().map((gig) => ({
+        ...gig,
+        freelancer: gig.freelancer?.id === id ? { ...gig.freelancer, blocked: true } : gig.freelancer,
+      })));
+      return user;
+    },
+  );
 
 export default api;

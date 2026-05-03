@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
-import { approveVerification, fetchVerificationQueue, rejectVerification } from '../api.js';
+import { approveGig, approveVerification, blockUser, fetchVerificationQueue, rejectGig, rejectVerification } from '../api.js';
 
 export default function AdminVerification() {
   const [items, setItems] = useState([]);
+  const [gigs, setGigs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [preview, setPreview] = useState(null);
   const [zoomed, setZoomed] = useState(false);
   const [notes, setNotes] = useState({});
 
-  const pendingCount = items.length;
+  const pendingGigs = gigs.filter((gig) => (gig.approvalStatus || 'approved') === 'pending');
+  const pendingCount = items.length + pendingGigs.length;
 
   const loadQueue = async () => {
     setLoading(true);
     try {
       const data = await fetchVerificationQueue();
       setItems(data.items || []);
+      setGigs(data.gigs || []);
     } finally {
       setLoading(false);
     }
@@ -33,6 +36,20 @@ export default function AdminVerification() {
     loadQueue();
   };
 
+  const handleGigAction = async (id, status) => {
+    if (status === 'approved') {
+      await approveGig(id);
+    } else {
+      await rejectGig(id);
+    }
+    loadQueue();
+  };
+
+  const handleBlock = async (id) => {
+    await blockUser(id);
+    loadQueue();
+  };
+
   return (
     <div className="space-y-6">
       <section className="card p-6">
@@ -43,13 +60,46 @@ export default function AdminVerification() {
           {[
             { label: 'Pending reviews', value: pendingCount },
             { label: 'Decision SLA', value: '24h' },
-            { label: 'Queue status', value: pendingCount ? 'Active' : 'Clear' },
+            { label: 'Pending gigs', value: pendingGigs.length },
           ].map((item) => (
             <div key={item.label} className="rounded-2xl border border-border-color bg-[#F3F7FA] px-4 py-3 text-sm">
               <p className="text-xs uppercase tracking-[0.18em] text-muted">{item.label}</p>
               <p className="mt-2 text-lg font-semibold text-ink">{item.value}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="card p-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-secondary">Gig approval</p>
+            <h2 className="mt-2 text-xl font-semibold text-ink">Review gigs before marketplace</h2>
+          </div>
+          <span className="rounded-full bg-soft px-3 py-1 text-sm font-semibold text-primary">{pendingGigs.length} pending</span>
+        </div>
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          {pendingGigs.map((gig) => (
+            <div key={gig._id} className="rounded-[22px] border border-border-color bg-[#F3F7FA] p-4">
+              <p className="font-semibold text-ink">{gig.title}</p>
+              <p className="mt-1 text-sm text-muted">{gig.category} - PKR {Number(gig.basePrice || 0).toLocaleString('en-PK')}</p>
+              <p className="mt-2 line-clamp-2 text-sm text-muted">{gig.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {(gig.tags || []).map((tag) => (
+                  <span key={tag} className="tag">{tag}</span>
+                ))}
+              </div>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <button className="btn-primary" onClick={() => handleGigAction(gig._id, 'approved')} type="button">
+                  Approve gig
+                </button>
+                <button className="btn-ghost" onClick={() => handleGigAction(gig._id, 'rejected')} type="button">
+                  Reject gig
+                </button>
+              </div>
+            </div>
+          ))}
+          {!pendingGigs.length && <p className="text-sm text-muted">No gigs waiting for approval.</p>}
         </div>
       </section>
 
@@ -189,6 +239,9 @@ export default function AdminVerification() {
                 </button>
                 <button className="btn-ghost" onClick={() => handleAction(item.id, 'rejected')} type="button">
                   Reject
+                </button>
+                <button className="rounded-full border border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-700" onClick={() => handleBlock(item.id)} type="button">
+                  Block fake user
                 </button>
               </div>
             </div>

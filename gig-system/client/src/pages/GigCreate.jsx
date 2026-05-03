@@ -68,6 +68,8 @@ export default function GigCreate() {
     title: '',
     description: '',
     category: 'Programming & Tech',
+    city: 'Online',
+    studentLevel: 'FSc',
     tags: '',
     basePrice: 15000,
     deliveryDays: 3,
@@ -221,6 +223,8 @@ export default function GigCreate() {
       await createGig({
         ...form,
         tags: tagList,
+        city: form.city,
+        studentLevel: form.studentLevel,
         basePrice: Number(form.basePrice),
         deliveryDays: Number(form.deliveryDays),
         quickDeliveryHours: Number(form.quickDeliveryHours),
@@ -252,7 +256,7 @@ export default function GigCreate() {
           }))
           .filter((item) => item.question),
       });
-      setSubmitStatus('Gig published successfully.');
+      setSubmitStatus('Gig submitted for admin approval. It will appear in marketplace after review.');
       setForm((prev) => ({ ...prev, title: '', description: '', tags: '', images: ['', '', ''], videoUrl: '' }));
       setServices([emptyService()]);
       setFaqs([emptyFaq()]);
@@ -406,6 +410,26 @@ export default function GigCreate() {
                     onChange={(event) => updateForm('tags', event.target.value)}
                     placeholder="react, portfolio, landing page"
                   />
+                </Field>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field label="Seller city">
+                  <select className={inputClass} value={form.city} onChange={(event) => updateForm('city', event.target.value)}>
+                    {['Online', 'Lahore', 'Karachi', 'Islamabad', 'Peshawar', 'Quetta', 'Multan'].map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <Field label="Student level">
+                  <select className={inputClass} value={form.studentLevel} onChange={(event) => updateForm('studentLevel', event.target.value)}>
+                    {['FSc', 'BS', 'MS'].map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
                 </Field>
               </div>
             </StepShell>
