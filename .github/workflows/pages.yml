@@ -42,7 +42,12 @@ jobs:
 
       - name: Add SPA fallback
         working-directory: gig-system/client
-        run: cp dist/index.html dist/404.html
+        run: |
+          cp dist/index.html dist/404.html
+          for route in profile create dashboard orders messages wallet settings favorites buyer admin/verification admin/database; do
+            mkdir -p "dist/$route"
+            cp dist/index.html "dist/$route/index.html"
+          done
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
