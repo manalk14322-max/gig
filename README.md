@@ -48,23 +48,29 @@ Push changes to the `main` branch. GitHub Actions builds the client and publishe
 
 `https://manalk14322-max.github.io/gig/`
 
-The frontend includes demo fallback data so the marketplace still displays properly on GitHub Pages when no backend API is connected. GitHub Pages only hosts the frontend; the backend must be deployed separately on a Node host such as Render, Railway, or VPS.
+The frontend includes demo fallback data so the marketplace still displays properly on GitHub Pages when no backend API is connected. GitHub Pages only hosts the frontend; the backend must be deployed separately.
 
-## Render Backend Deploy
+## Vercel Backend Deploy
 
-This repo includes `render.yaml` for a Render Blueprint. In Render:
+This repo includes a Vercel serverless API entry at `api/index.js`.
 
-1. Create a new Blueprint.
-2. Select the GitHub repo `manalk14322-max/gig`.
-3. Render will detect `render.yaml`.
-4. Set `ADMIN_PASSWORD` to your private admin password.
-5. Deploy the service.
-6. After deploy, open `/api/health` on the Render URL.
+In Vercel:
 
-After Render gives you a URL like:
+1. Import the GitHub repo `manalk14322-max/gig`.
+2. Framework preset can stay as Other.
+3. Leave Root Directory as the repo root.
+4. Add environment variables:
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `JWT_SECRET`
+   - `CLIENT_ORIGIN`
+5. Deploy.
+6. After deploy, open `/api/health` on the Vercel URL.
 
-`https://unihire-api.onrender.com`
+After Vercel gives you a URL like:
+
+`https://your-project.vercel.app`
 
 set the GitHub Pages build variable:
 
-`VITE_API_URL=https://unihire-api.onrender.com/api`
+`VITE_API_URL=https://your-project.vercel.app/api`

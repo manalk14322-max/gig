@@ -13,7 +13,7 @@ const app = express();
 const port = Number(process.env.PORT || 5050);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const uploadDir = path.join(__dirname, '..', 'uploads');
+const uploadDir = process.env.VERCEL ? path.join('/tmp', 'unihire-uploads') : path.join(__dirname, '..', 'uploads');
 
 const upload = multer({ dest: uploadDir, limits: { fileSize: 5 * 1024 * 1024 } });
 
@@ -437,6 +437,11 @@ app.patch('/api/admin/users/:id/block', requireAuth, requireAdmin, async (req, r
 
 await ensureSeedData();
 await fs.mkdir(uploadDir, { recursive: true });
-app.listen(port, () => {
-  console.log(`UniHire API running on http://localhost:${port}`);
-});
+
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`UniHire API running on http://localhost:${port}`);
+  });
+}
+
+export default app;

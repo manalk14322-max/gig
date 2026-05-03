@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const dataDir = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
+const dataDir = process.env.DATA_DIR || (process.env.VERCEL ? path.join('/tmp', 'unihire-data') : path.join(__dirname, '..', 'data'));
 const dbFile = path.join(dataDir, 'db.json');
 
 const starter = {
