@@ -127,6 +127,10 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, service: 'unihire-api' });
 });
 
+app.get('/', (req, res) => {
+  res.json({ ok: true, service: 'unihire-api', health: '/api/health' });
+});
+
 app.post('/api/auth/signup', async (req, res) => {
   const db = await readDb();
   const email = String(req.body.email || '').trim().toLowerCase();
