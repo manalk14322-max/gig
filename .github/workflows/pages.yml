@@ -36,6 +36,8 @@ jobs:
 
       - name: Build
         working-directory: gig-system/client
+        env:
+          VITE_API_URL: https://gig-ruby.vercel.app/api
         run: npm run build
 
       - name: Add SPA fallback
